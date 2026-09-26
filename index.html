@@ -1,1313 +1,1124 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Buy Asthetic - Pakistani Store</title>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     :root {
-      --grass-dark: #1b5e20;
-      --grass-primary: #2e7d32;
-      --grass-secondary: #43a047;
-      --grass-light: #81c784;
-      --grass-container: #e8f5e9;
-      --white: #ffffff;
-      --off-white: #f8faf8;
-      --surface: #f1f5f1;
-      --text-dark: #152216;
-      --text-muted: #5e6b5d;
-      --border: #e2ebe1;
-      --amber: #f59e0b;
-      --red: #dc2626;
-      --radius: 14px;
-      --shadow: 0 4px 20px rgba(46, 125, 50, 0.08);
-      --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      --primary: #0D47A1;
+      --primary-dark: #0A2540;
+      --primary-light: #1976D2;
+      --soft-azure: #E3F2FD;
+      --bg-ice: #F4F8FC;
+      --white: #FFFFFF;
+      --slate-dark: #1E293B;
+      --slate-medium: #475569;
+      --slate-light: #94A3B8;
+      --border: #E2E8F0;
+      --success: #10B981;
+      --warning: #F59E0B;
+      --error: #EF4444;
+      --radius: 12px;
+      --shadow: 0 4px 16px rgba(13, 71, 161, 0.07);
     }
-
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
-    body { background-color: var(--off-white); color: var(--text-dark); min-height: 100vh; display: flex; flex-direction: column; }
-
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; -webkit-tap-highlight-color: transparent; }
+    body { background-color: var(--bg-ice); color: var(--slate-dark); min-height: 100vh; display: flex; flex-direction: column; transform: translateZ(0); }
+    
     /* Header */
-    header {
-      background: var(--white);
-      border-bottom: 1px solid var(--border);
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.03);
-    }
-    .header-container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 12px 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      text-decoration: none;
-      cursor: pointer;
-    }
-    .brand-logo {
-      width: 44px;
-      height: 44px;
-      background: linear-gradient(135deg, var(--grass-primary), var(--grass-dark));
-      border-radius: 12px;
-      display: grid;
-      place-items: center;
-      color: var(--white);
-      font-weight: 800;
-      font-size: 20px;
-      box-shadow: 0 4px 10px rgba(46,125,50,0.25);
-    }
-    .brand-text h1 {
-      font-size: 22px;
-      font-weight: 800;
-      color: var(--grass-dark);
-      letter-spacing: -0.5px;
-      line-height: 1.1;
-    }
-    .brand-text p {
-      font-size: 12px;
-      font-weight: 500;
-      color: var(--grass-primary);
-      letter-spacing: 0.3px;
-    }
-    .nav-actions {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .nav-btn {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      color: var(--grass-dark);
-      padding: 8px 14px;
-      border-radius: 20px;
-      font-weight: 600;
-      font-size: 13px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      transition: var(--transition);
-      position: relative;
-    }
-    .nav-btn:hover, .nav-btn.active {
-      background: var(--grass-primary);
-      color: var(--white);
-      border-color: var(--grass-primary);
-    }
-    .badge {
-      background: var(--red);
-      color: var(--white);
-      font-size: 11px;
-      border-radius: 10px;
-      padding: 1px 7px;
-      font-weight: 700;
-    }
+    header { background: linear-gradient(135deg, var(--primary-dark), var(--primary)); color: var(--white); padding: 14px 20px; position: sticky; top: 0; z-index: 100; box-shadow: 0 4px 12px rgba(10,37,64,0.14); }
+    .header-content { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+    .logo-container { display: flex; align-items: center; gap: 12px; cursor: pointer; }
+    .logo-icon { background: rgba(255,255,255,0.18); width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 19px; }
+    .store-title { font-size: 22px; font-weight: 800; letter-spacing: 0.5px; line-height: 1.1; }
+    .store-subtitle { font-size: 12px; font-weight: 400; color: var(--soft-azure); letter-spacing: 0.2px; }
+    .nav-actions { display: flex; gap: 14px; align-items: center; }
+    .btn-icon { background: rgba(255,255,255,0.18); border: none; color: var(--white); width: 40px; height: 40px; border-radius: 50%; cursor: pointer; position: relative; display: flex; align-items: center; justify-content: center; font-size: 16px; transition: transform 0.15s; }
+    .btn-icon:active { transform: scale(0.92); }
+    .cart-badge { position: absolute; top: -3px; right: -3px; background: var(--error); color: var(--white); font-size: 11px; font-weight: 800; width: 19px; height: 19px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
 
-    /* Container */
-    main { max-width: 1200px; margin: 0 auto; padding: 20px; flex: 1; width: 100%; }
+    /* Top Navigation */
+    .top-nav { background: var(--white); border-bottom: 1px solid var(--border); }
+    .top-nav-container { max-width: 1200px; margin: 0 auto; display: flex; gap: 14px; padding: 8px 20px; }
+    .nav-link { color: var(--slate-medium); text-decoration: none; font-weight: 600; font-size: 13px; padding: 6px 14px; border-radius: 8px; cursor: pointer; transition: 0.15s; display: flex; align-items: center; gap: 6px; }
+    .nav-link.active, .nav-link:hover { color: var(--primary); background: var(--soft-azure); }
 
-    /* Promo Banner */
-    .promo-banner {
-      background: linear-gradient(135deg, var(--grass-dark) 0%, var(--grass-primary) 60%, var(--grass-secondary) 100%);
-      color: var(--white);
-      padding: 24px;
-      border-radius: 18px;
-      margin-bottom: 24px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      box-shadow: 0 10px 25px rgba(30,107,36,0.2);
-      animation: fadeIn 0.4s ease-out;
-    }
-    .promo-tag {
-      background: rgba(255,255,255,0.2);
-      padding: 4px 10px;
-      border-radius: 20px;
-      font-size: 11px;
-      font-weight: 700;
-      display: inline-block;
-      margin-bottom: 8px;
-    }
-    .promo-banner h2 { font-size: 24px; font-weight: 800; margin-bottom: 4px; }
-    .promo-banner p { font-size: 13px; opacity: 0.9; }
+    /* Main Container */
+    main { max-width: 1200px; margin: 0 auto; padding: 20px 16px; flex: 1; width: 100%; }
 
-    /* Search & Filter Bar */
-    .filter-bar {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 20px;
-    }
-    .search-input {
-      flex: 1;
-      min-width: 250px;
-      padding: 11px 18px;
-      border-radius: 24px;
-      border: 1px solid var(--border);
-      background: var(--white);
-      font-size: 14px;
-      outline: none;
-      transition: var(--transition);
-    }
-    .search-input:focus { border-color: var(--grass-primary); box-shadow: 0 0 0 3px rgba(46,125,50,0.12); }
-    .category-scroll {
-      display: flex;
-      gap: 8px;
-      overflow-x: auto;
-      padding-bottom: 4px;
-    }
-    .chip {
-      padding: 7px 16px;
-      border-radius: 20px;
-      background: var(--white);
-      border: 1px solid var(--border);
-      color: var(--text-dark);
-      font-size: 13px;
-      font-weight: 600;
-      cursor: pointer;
-      white-space: nowrap;
-      transition: var(--transition);
-    }
-    .chip:hover, .chip.active {
-      background: var(--grass-primary);
-      color: var(--white);
-      border-color: var(--grass-primary);
-    }
+    /* Hero Banner */
+    .hero-banner { background: linear-gradient(135deg, rgba(10,37,64,0.92), rgba(13,71,161,0.85)), url('https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=1200&q=80') center/cover; border-radius: 14px; padding: 36px 30px; color: var(--white); margin-bottom: 24px; box-shadow: var(--shadow); }
+    .hero-tag { background: rgba(255,255,255,0.22); display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 800; letter-spacing: 0.8px; margin-bottom: 10px; }
+    .hero-banner h1 { font-size: 28px; font-weight: 800; margin-bottom: 6px; }
+    .hero-banner p { font-size: 14px; color: var(--soft-azure); margin-bottom: 18px; max-width: 520px; line-height: 1.4; }
+    .btn-hero { background: var(--white); color: var(--primary); padding: 9px 20px; border-radius: 8px; font-weight: 700; font-size: 13px; border: none; cursor: pointer; transition: 0.15s; }
+    .btn-hero:hover { background: var(--soft-azure); }
+
+    /* Filter Controls */
+    .controls-bar { display: flex; flex-wrap: wrap; gap: 12px; justify-content: space-between; align-items: center; margin-bottom: 20px; background: var(--white); padding: 14px; border-radius: var(--radius); border: 1px solid var(--border); }
+    .search-box { display: flex; align-items: center; gap: 8px; background: var(--bg-ice); padding: 8px 12px; border-radius: 8px; border: 1px solid var(--border); flex: 1; min-width: 240px; }
+    .search-box input { border: none; background: transparent; outline: none; width: 100%; font-size: 13px; }
+    .chips-group { display: flex; gap: 6px; flex-wrap: wrap; }
+    .chip { padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; cursor: pointer; background: var(--bg-ice); border: 1px solid var(--border); color: var(--slate-dark); transition: 0.15s; user-select: none; }
+    .chip.active { background: var(--primary); color: var(--white); border-color: var(--primary); }
 
     /* Product Grid */
-    .product-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-      gap: 20px;
-    }
-    .product-card {
-      background: var(--white);
-      border-radius: var(--radius);
-      border: 1px solid var(--border);
-      overflow: hidden;
-      transition: var(--transition);
-      cursor: pointer;
-      display: flex;
-      flex-direction: column;
-      position: relative;
-    }
-    .product-card:hover {
-      transform: translateY(-4px);
-      box-shadow: var(--shadow);
-      border-color: var(--grass-light);
-    }
-    .card-img-wrap {
-      width: 100%;
-      height: 200px;
-      position: relative;
-      background: var(--surface);
-      overflow: hidden;
-    }
-    .card-img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: transform 0.4s ease;
-    }
-    .product-card:hover .card-img { transform: scale(1.05); }
-    .card-category {
-      position: absolute;
-      top: 10px;
-      left: 10px;
-      background: rgba(27,94,32,0.85);
-      color: var(--white);
-      font-size: 11px;
-      font-weight: 700;
-      padding: 3px 8px;
-      border-radius: 6px;
-    }
-    .card-rating {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      background: rgba(255,255,255,0.95);
-      color: var(--text-dark);
-      font-size: 11px;
-      font-weight: 700;
-      padding: 3px 8px;
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      gap: 3px;
-    }
-    .card-info { padding: 14px; display: flex; flex-direction: column; flex: 1; }
-    .card-title { font-size: 15px; font-weight: 700; margin-bottom: 6px; }
-    .card-price-row { display: flex; align-items: baseline; gap: 8px; margin-bottom: 12px; }
-    .card-price { font-size: 17px; font-weight: 800; color: var(--grass-dark); }
-    .card-cut-price { font-size: 12px; color: var(--text-muted); text-decoration: line-through; }
-    .card-btn {
-      margin-top: auto;
-      background: var(--grass-container);
-      color: var(--grass-dark);
-      border: 1px solid transparent;
-      padding: 9px;
-      border-radius: 10px;
-      font-size: 13px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: var(--transition);
-      text-align: center;
-    }
-    .card-btn:hover { background: var(--grass-primary); color: var(--white); }
+    .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 18px; }
+    .product-card { background: var(--white); border-radius: var(--radius); border: 1px solid var(--border); overflow: hidden; transition: transform 0.18s, box-shadow 0.18s; box-shadow: var(--shadow); display: flex; flex-direction: column; cursor: pointer; position: relative; }
+    .product-card:hover { transform: translateY(-3px); box-shadow: 0 8px 22px rgba(13, 71, 161, 0.12); }
+    .product-img-wrap { height: 210px; background: #eaeff5; position: relative; overflow: hidden; }
+    .product-img-wrap img { width: 100%; height: 100%; object-fit: cover; }
+    .card-badge { position: absolute; top: 8px; left: 8px; background: var(--primary); color: var(--white); font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 4px; }
+    .card-gender { position: absolute; top: 8px; right: 8px; background: rgba(255,255,255,0.92); color: var(--slate-dark); font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 4px; }
+    .product-info { padding: 14px; flex: 1; display: flex; flex-direction: column; }
+    .product-title { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+    .product-desc { font-size: 11px; color: var(--slate-medium); margin-bottom: 8px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.4; }
+    .price-row { display: flex; justify-content: space-between; align-items: baseline; margin-top: auto; padding-top: 8px; border-top: 1px solid var(--border); }
+    .current-price { font-size: 16px; font-weight: 800; color: var(--primary); }
+    .orig-price { font-size: 11px; color: var(--slate-light); text-decoration: line-through; margin-left: 5px; }
+    .card-buttons { display: flex; gap: 8px; margin-top: 10px; }
+    .btn-buy { flex: 1; background: var(--primary); color: var(--white); border: none; padding: 8px 10px; border-radius: 6px; font-weight: 700; font-size: 12px; cursor: pointer; text-align: center; }
+    .btn-buy:hover { background: var(--primary-light); }
+    .btn-cart { background: var(--soft-azure); color: var(--primary); border: 1px solid var(--primary-light); padding: 8px 10px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 700; display: flex; align-items: center; gap: 4px; }
+    .btn-cart:hover { background: #bbdefb; }
 
-    /* Modals & Popups */
-    .modal-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.5);
-      backdrop-filter: blur(4px);
-      z-index: 1000;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 16px;
-    }
-    .modal-overlay.open { display: flex; animation: fadeIn 0.2s ease-out; }
-    .modal-box {
-      background: var(--white);
-      border-radius: 20px;
-      width: 100%;
-      max-width: 680px;
-      max-height: 90vh;
-      overflow-y: auto;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-      animation: slideUp 0.3s ease-out;
-      position: relative;
-    }
-    .modal-header {
-      padding: 16px 20px;
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      position: sticky;
-      top: 0;
-      background: var(--white);
-      z-index: 10;
-    }
-    .modal-close {
-      background: none;
-      border: none;
-      font-size: 22px;
-      color: var(--text-muted);
-      cursor: pointer;
-      line-height: 1;
-    }
-    .modal-body { padding: 20px; }
+    /* Modal / Popups */
+    .modal-overlay { position: fixed; inset: 0; background: rgba(10,37,64,0.65); display: none; align-items: center; justify-content: center; z-index: 1000; padding: 16px; backdrop-filter: blur(3px); }
+    .modal-overlay.active { display: flex; }
+    .modal-content { background: var(--white); width: 100%; max-width: 620px; border-radius: 16px; max-height: 90vh; overflow-y: auto; padding: 22px; position: relative; box-shadow: 0 10px 40px rgba(0,0,0,0.25); }
+    .modal-close { position: absolute; top: 16px; right: 16px; background: none; border: none; font-size: 22px; color: var(--slate-light); cursor: pointer; line-height: 1; }
 
-    /* Product Detail Gallery */
-    .gallery-main {
-      width: 100%;
-      height: 280px;
-      border-radius: 14px;
-      object-fit: cover;
-      background: var(--surface);
-      margin-bottom: 10px;
-    }
-    .gallery-thumbs {
-      display: flex;
-      gap: 8px;
-      overflow-x: auto;
-      margin-bottom: 16px;
-    }
-    .thumb-item {
-      width: 60px;
-      height: 60px;
-      border-radius: 8px;
-      border: 2px solid transparent;
-      cursor: pointer;
-      object-fit: cover;
-      background: var(--surface);
-    }
-    .thumb-item.active { border-color: var(--grass-primary); }
-    .size-picker { display: flex; gap: 8px; margin: 12px 0; }
-    .size-btn {
-      width: 44px;
-      height: 44px;
-      border-radius: 10px;
-      border: 1px solid var(--border);
-      background: var(--surface);
-      font-weight: 700;
-      cursor: pointer;
-      transition: var(--transition);
-    }
-    .size-btn.active { background: var(--grass-primary); color: var(--white); border-color: var(--grass-primary); }
+    /* Product Detail Elements */
+    .detail-gallery { width: 100%; height: 260px; border-radius: 12px; overflow: hidden; background: #eef3f8; margin-bottom: 12px; }
+    .detail-gallery img { width: 100%; height: 100%; object-fit: cover; }
+    .detail-thumbs { display: flex; gap: 8px; overflow-x: auto; margin-bottom: 14px; padding-bottom: 4px; }
+    .detail-thumb { width: 55px; height: 55px; border-radius: 8px; object-fit: cover; cursor: pointer; border: 2px solid transparent; }
+    .detail-thumb.active { border-color: var(--primary); }
+    .qty-stepper { display: flex; align-items: center; gap: 10px; margin: 14px 0; }
+    .btn-step { width: 32px; height: 32px; border-radius: 6px; border: 1px solid var(--border); background: var(--bg-ice); font-weight: 700; cursor: pointer; }
 
-    /* Form Styles */
-    .form-group { margin-bottom: 14px; text-align: left; }
-    .form-label { display: block; font-size: 13px; font-weight: 700; margin-bottom: 6px; color: var(--text-dark); }
-    .form-input, .form-select, .form-textarea {
-      width: 100%;
-      padding: 10px 14px;
-      border-radius: 10px;
-      border: 1px solid var(--border);
-      font-size: 14px;
-      outline: none;
-      background: var(--white);
-    }
-    .form-input:focus, .form-select:focus, .form-textarea:focus {
-      border-color: var(--grass-primary);
-      box-shadow: 0 0 0 3px rgba(46,125,50,0.12);
-    }
-    .btn-primary {
-      width: 100%;
-      background: var(--grass-primary);
-      color: var(--white);
-      padding: 12px;
-      border-radius: 12px;
-      font-size: 15px;
-      font-weight: 700;
-      border: none;
-      cursor: pointer;
-      transition: var(--transition);
-    }
-    .btn-primary:hover { background: var(--grass-dark); }
-    .btn-secondary {
-      background: var(--surface);
-      color: var(--grass-dark);
-      border: 1px solid var(--border);
-      padding: 10px 16px;
-      border-radius: 10px;
-      font-weight: 700;
-      cursor: pointer;
-    }
+    /* Gallery Upload Elements */
+    .btn-gallery { width: 100%; background: var(--primary); color: var(--white); padding: 12px; border-radius: 8px; border: none; font-weight: 700; font-size: 13px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 10px; }
+    .btn-gallery:hover { background: var(--primary-light); }
+    .preview-thumbs-grid { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+    .preview-thumb-box { width: 60px; height: 60px; border-radius: 6px; position: relative; overflow: hidden; border: 1px solid var(--border); }
+    .preview-thumb-box img { width: 100%; height: 100%; object-fit: cover; }
+    .preview-del-btn { position: absolute; top: 2px; right: 2px; background: rgba(0,0,0,0.65); color: #fff; border: none; border-radius: 50%; width: 18px; height: 18px; font-size: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
 
-    /* Checkout & Payment */
-    .payment-option {
-      border: 2px solid var(--border);
-      border-radius: 12px;
-      padding: 12px;
-      margin-bottom: 10px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      transition: var(--transition);
-    }
-    .payment-option.active { border-color: var(--grass-primary); background: var(--grass-container); }
-    .bank-box {
-      background: var(--grass-container);
-      border: 1px dashed var(--grass-primary);
-      border-radius: 12px;
-      padding: 14px;
-      margin: 14px 0;
-      font-size: 13px;
-    }
-    .copy-pill {
-      background: var(--white);
-      padding: 3px 8px;
-      border-radius: 6px;
-      font-size: 11px;
-      cursor: pointer;
-      font-weight: 700;
-      margin-left: 6px;
-      color: var(--grass-dark);
-      border: 1px solid var(--border);
-    }
+    /* Payment Card */
+    .pay-card { border: 2px solid var(--border); border-radius: 10px; padding: 12px; margin-bottom: 10px; cursor: pointer; transition: 0.15s; display: flex; align-items: center; justify-content: space-between; }
+    .pay-card.selected { border-color: var(--primary); background: var(--soft-azure); }
+    .copy-badge { background: var(--primary); color: var(--white); font-size: 10px; padding: 3px 8px; border-radius: 4px; cursor: pointer; border: none; font-weight: 700; }
 
     /* Timeline */
-    .timeline { position: relative; padding-left: 24px; margin-top: 14px; }
-    .timeline::before {
-      content: '';
-      position: absolute;
-      left: 7px;
-      top: 8px;
-      bottom: 8px;
-      width: 2px;
-      background: var(--border);
-    }
-    .timeline-step { position: relative; margin-bottom: 16px; }
-    .timeline-dot {
-      position: absolute;
-      left: -24px;
-      top: 2px;
-      width: 16px;
-      height: 16px;
-      border-radius: 50%;
-      background: var(--border);
-      border: 2px solid var(--white);
-    }
-    .timeline-step.completed .timeline-dot { background: var(--grass-primary); }
-    .timeline-step.current .timeline-dot { background: var(--amber); }
+    .timeline { position: relative; padding-left: 22px; margin: 12px 0; border-left: 2px solid var(--border); }
+    .timeline-item { position: relative; margin-bottom: 12px; }
+    .timeline-dot { position: absolute; left: -29px; top: 2px; width: 12px; height: 12px; border-radius: 50%; background: var(--border); border: 2px solid var(--white); }
+    .timeline-item.done .timeline-dot { background: var(--success); }
+    .timeline-title { font-size: 12px; font-weight: 700; }
 
-    /* Table / Lists */
-    .admin-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; margin-bottom: 20px; }
-    .stat-card {
-      background: var(--white);
-      padding: 16px;
-      border-radius: 14px;
-      border: 1px solid var(--border);
-    }
-    .stat-val { font-size: 22px; font-weight: 800; color: var(--grass-dark); }
-    .stat-lbl { font-size: 12px; color: var(--text-muted); font-weight: 600; }
+    /* Form Controls */
+    .form-group { margin-bottom: 12px; }
+    .form-group label { display: block; font-size: 11px; font-weight: 700; color: var(--slate-medium); margin-bottom: 4px; }
+    .form-control { width: 100%; padding: 9px 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 13px; outline: none; }
+    .form-control:focus { border-color: var(--primary); }
 
-    /* Animations */
-    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-    @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+    /* Toast */
+    .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: var(--slate-dark); color: var(--white); padding: 10px 22px; border-radius: 30px; font-size: 13px; font-weight: 600; display: none; z-index: 2000; box-shadow: 0 4px 14px rgba(0,0,0,0.3); }
+    .toast.show { display: block; animation: toastAnim 0.25s; }
+    @keyframes toastAnim { from { opacity: 0; bottom: 10px; } to { opacity: 1; bottom: 20px; } }
   </style>
 </head>
 <body>
 
   <!-- Header -->
   <header>
-    <div class="header-container">
-      <div class="brand" onclick="switchView('shop')">
-        <div class="brand-logo">BA</div>
-        <div class="brand-text">
-          <h1>Buy Asthetic</h1>
-          <p>Pakistani Store</p>
+    <div class="header-content">
+      <div class="logo-container" onclick="showView('home')">
+        <div class="logo-icon"><i class="fa-solid fa-gem"></i></div>
+        <div>
+          <div class="store-title">Buy Asthetic</div>
+          <div class="store-subtitle">Pakistani Store</div>
         </div>
       </div>
       <div class="nav-actions">
-        <button class="nav-btn" onclick="switchView('shop')">Store</button>
-        <button class="nav-btn" onclick="switchView('cart')">
-          Cart <span class="badge" id="cart-badge">0</span>
+        <button class="btn-icon" onclick="showView('cart')" title="Shopping Cart">
+          <i class="fa-solid fa-cart-shopping"></i>
+          <span class="cart-badge" id="cartBadge">0</span>
         </button>
-        <button class="nav-btn" onclick="switchView('me')">Me & Orders</button>
+        <button class="btn-icon" onclick="showView('me')" title="My Profile & Orders">
+          <i class="fa-solid fa-user"></i>
+        </button>
       </div>
     </div>
   </header>
 
+  <!-- Top Navigation -->
+  <div class="top-nav">
+    <div class="top-nav-container">
+      <span class="nav-link active" id="tabHome" onclick="showView('home')"><i class="fa-solid fa-store"></i> Store Home</span>
+      <span class="nav-link" id="tabCart" onclick="showView('cart')"><i class="fa-solid fa-bag-shopping"></i> Cart</span>
+      <span class="nav-link" id="tabMe" onclick="showView('me')"><i class="fa-solid fa-clock-rotate-left"></i> My Orders & Admin</span>
+    </div>
+  </div>
+
   <!-- Main View Area -->
   <main>
-    <!-- View: Shop -->
-    <section id="view-shop">
-      <div class="promo-banner">
+    <!-- 1. HOME VIEW -->
+    <div id="viewHome">
+      <div class="hero-banner">
+        <span class="hero-tag">GENUINE PAKISTANI STORE</span>
+        <h1>Watches, Perfumes & Dresses</h1>
+        <p>Curated luxury aesthetic fashion for distinguished men and elegant women across Pakistan. Free delivery with Cash on Delivery & mobile wallets.</p>
+        <button class="btn-hero" onclick="setCategory('All')">Explore All Collections</button>
+      </div>
+
+      <div class="controls-bar">
+        <div class="search-box">
+          <i class="fa-solid fa-magnifying-glass" style="color: var(--primary);"></i>
+          <input type="text" id="searchInput" placeholder="Search watches, perfumes, dresses..." oninput="filterProducts()">
+        </div>
+        <div class="chips-group" id="categoryChips"></div>
+        <div class="chips-group">
+          <span class="chip active" onclick="setGender('All', this)">All</span>
+          <span class="chip" onclick="setGender('Men', this)">Men</span>
+          <span class="chip" onclick="setGender('Women', this)">Women</span>
+        </div>
+      </div>
+
+      <div class="product-grid" id="productsGrid"></div>
+    </div>
+
+    <!-- 2. CART VIEW -->
+    <div id="viewCart" style="display: none;">
+      <h2 style="font-size: 20px; font-weight: 800; margin-bottom: 16px;">Your Shopping Cart</h2>
+      <div id="cartContent"></div>
+    </div>
+
+    <!-- 3. ME (ORDERS & ADMIN) VIEW -->
+    <div id="viewMe" style="display: none;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <h2 style="font-size: 20px; font-weight: 800;">My Account & Orders</h2>
+        <button onclick="openAdminLoginModal()" style="background: var(--primary-dark); color: var(--white); border: none; padding: 8px 16px; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 13px;">
+          <i class="fa-solid fa-lock"></i> Admin Portal
+        </button>
+      </div>
+      <div id="ordersList"></div>
+    </div>
+
+    <!-- 4. ADMIN PORTAL VIEW -->
+    <div id="viewAdmin" style="display: none;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; background: var(--primary-dark); color: var(--white); padding: 16px; border-radius: var(--radius);">
         <div>
-          <span class="promo-tag">★ NEW AESTHETIC FOOTWEAR</span>
-          <h2>Premium Footwear in Pakistan</h2>
-          <p>Cash on Delivery (+Rs 100) or 0 Fee via Easypaisa, Jazzcash, and UBL Bank</p>
+          <h2 style="font-size: 18px; font-weight: 800;">Administrator Portal</h2>
+          <p style="font-size: 12px; color: var(--soft-azure);">Buy Asthetic Catalog & Order Management</p>
+        </div>
+        <button onclick="adminLogout()" style="background: var(--white); color: var(--primary-dark); border: none; padding: 7px 14px; border-radius: 6px; font-weight: 700; cursor: pointer; font-size: 12px;">
+          <i class="fa-solid fa-right-from-bracket"></i> Logout
+        </button>
+      </div>
+
+      <!-- Stats row -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 18px;">
+        <div style="background: var(--white); padding: 16px; border-radius: var(--radius); border: 1px solid var(--border);">
+          <div style="font-size: 11px; color: var(--slate-medium); font-weight: 700;">SALES THIS MONTH</div>
+          <div style="font-size: 22px; font-weight: 800; color: var(--primary); margin-top: 4px;" id="adminSalesVal">Rs. 0</div>
+        </div>
+        <div style="background: var(--white); padding: 16px; border-radius: var(--radius); border: 1px solid var(--border);">
+          <div style="font-size: 11px; color: var(--slate-medium); font-weight: 700;">ORDERS THIS MONTH</div>
+          <div style="font-size: 22px; font-weight: 800; color: var(--primary); margin-top: 4px;" id="adminOrdersCount">0</div>
+        </div>
+        <div style="background: var(--white); padding: 16px; border-radius: var(--radius); border: 1px solid var(--border);">
+          <div style="font-size: 11px; color: var(--slate-medium); font-weight: 700;">CATALOG PRODUCTS</div>
+          <div style="font-size: 22px; font-weight: 800; color: var(--primary); margin-top: 4px;" id="adminProdCount">0</div>
         </div>
       </div>
 
-      <div class="filter-bar">
-        <input type="text" class="search-input" id="search-input" placeholder="Search shoes, sneakers, loafers..." oninput="renderProducts()" />
-        <div class="category-scroll" id="category-chips"></div>
+      <!-- Admin Tabs -->
+      <div class="chips-group" style="margin-bottom: 18px;">
+        <span class="chip active" onclick="setAdminTab('products', this)">Products</span>
+        <span class="chip" onclick="setAdminTab('categories', this)">Categories</span>
+        <span class="chip" onclick="setAdminTab('orders', this)">Orders</span>
+        <span class="chip" onclick="setAdminTab('settings', this)">Settings</span>
       </div>
 
-      <div class="product-grid" id="product-grid"></div>
-    </section>
-
-    <!-- View: Cart -->
-    <section id="view-cart" style="display:none;">
-      <h2 style="font-size:20px; font-weight:800; margin-bottom:16px; color:var(--grass-dark);">Shopping Cart</h2>
-      <div id="cart-items-container"></div>
-      <div id="cart-summary" style="margin-top:20px; background:var(--white); padding:20px; border-radius:14px; border:1px solid var(--border);"></div>
-    </section>
-
-    <!-- View: Checkout -->
-    <section id="view-checkout" style="display:none;">
-      <h2 style="font-size:20px; font-weight:800; margin-bottom:16px; color:var(--grass-dark);">Checkout & Payment</h2>
-      <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px;">
-        <div style="background:var(--white); padding:20px; border-radius:14px; border:1px solid var(--border);">
-          <h3 style="font-size:16px; font-weight:700; margin-bottom:14px;">1. Shipping Information</h3>
-          <div class="form-group">
-            <label class="form-label">Full Name *</label>
-            <input type="text" id="chk-name" class="form-input" placeholder="e.g. Asad Nadeem" />
-          </div>
-          <div class="form-group">
-            <label class="form-label">WhatsApp / Phone Number *</label>
-            <input type="text" id="chk-phone" class="form-input" placeholder="03054272499" />
-          </div>
-          <div class="form-group">
-            <label class="form-label">Delivery Street Address *</label>
-            <input type="text" id="chk-address" class="form-input" placeholder="House #, Street, Area" />
-          </div>
-          <div class="form-group">
-            <label class="form-label">City *</label>
-            <input type="text" id="chk-city" class="form-input" value="Lahore" />
-          </div>
-          <div class="form-group">
-            <label class="form-label">Order Notes</label>
-            <textarea id="chk-notes" class="form-textarea" placeholder="Special delivery instructions"></textarea>
-          </div>
-        </div>
-
-        <div style="background:var(--white); padding:20px; border-radius:14px; border:1px solid var(--border);">
-          <h3 style="font-size:16px; font-weight:700; margin-bottom:14px;">2. Payment Method</h3>
-          
-          <div class="payment-option active" id="opt-cod" onclick="selectPayment('COD')">
-            <div>
-              <strong>Cash on Delivery (COD)</strong>
-              <div style="font-size:12px; color:var(--text-muted);">Pay rider upon arrival</div>
-            </div>
-            <span style="font-weight:700; color:var(--amber);">+ Rs 100 Charges</span>
-          </div>
-
-          <div class="payment-option" id="opt-easypaisa" onclick="selectPayment('Easypaisa')">
-            <div>
-              <strong>Easypaisa</strong>
-              <div style="font-size:12px; color:var(--text-muted);">03054272499 (Asad Nadeem)</div>
-            </div>
-            <span style="font-weight:700; color:var(--grass-primary);">Rs 0 Fee</span>
-          </div>
-
-          <div class="payment-option" id="opt-jazzcash" onclick="selectPayment('Jazzcash')">
-            <div>
-              <strong>Jazzcash</strong>
-              <div style="font-size:12px; color:var(--text-muted);">03054272499 (Abdullah)</div>
-            </div>
-            <span style="font-weight:700; color:var(--grass-primary);">Rs 0 Fee</span>
-          </div>
-
-          <div class="payment-option" id="opt-ubl" onclick="selectPayment('UBL')">
-            <div>
-              <strong>UBL Bank Transfer</strong>
-              <div style="font-size:12px; color:var(--text-muted);">IBAN: PK77 UNIL 0109 0003 8310 4492 (Asad Nadeem)</div>
-            </div>
-            <span style="font-weight:700; color:var(--grass-primary);">Rs 0 Fee</span>
-          </div>
-
-          <!-- Online Details Box -->
-          <div id="online-details-box" style="display:none;" class="bank-box">
-            <p id="bank-info-text"></p>
-            <div style="margin-top:10px;">
-              <label class="form-label">Till ID / Transaction ID * (Compulsory)</label>
-              <input type="text" id="chk-tillid" class="form-input" placeholder="e.g. 10928374920" />
-            </div>
-            <div style="margin-top:10px;">
-              <label class="form-label">Transaction Screenshot * (Compulsory)</label>
-              <input type="file" id="chk-screenshot" class="form-input" accept="image/*" />
-            </div>
-          </div>
-
-          <div style="margin-top:16px; border-top:1px solid var(--border); padding-top:12px;">
-            <div style="display:flex; justify-content:space-between; margin-bottom:6px;">
-              <span>Subtotal:</span>
-              <span id="chk-subtotal">Rs 0</span>
-            </div>
-            <div style="display:flex; justify-content:space-between; margin-bottom:6px;">
-              <span>Extra Charges:</span>
-              <span id="chk-extra" style="color:var(--amber);">+ Rs 100</span>
-            </div>
-            <div style="display:flex; justify-content:space-between; font-size:18px; font-weight:800; color:var(--grass-dark);">
-              <span>Grand Total:</span>
-              <span id="chk-total">Rs 0</span>
-            </div>
-          </div>
-
-          <button class="btn-primary" style="margin-top:16px;" onclick="placeOrder()">Place Order</button>
-        </div>
-      </div>
-    </section>
-
-    <!-- View: Me & Orders -->
-    <section id="view-me" style="display:none;">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-        <h2 style="font-size:20px; font-weight:800; color:var(--grass-dark);">My Orders & Timeline</h2>
-        <button class="btn-secondary" onclick="openAdminLoginModal()">Administrator Panel</button>
-      </div>
-      <div id="orders-list"></div>
-    </section>
-
-    <!-- View: Admin Panel -->
-    <section id="view-admin" style="display:none;">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-        <div>
-          <h2 style="font-size:20px; font-weight:800; color:var(--grass-dark);">Admin Control Panel</h2>
-          <p style="font-size:12px; color:var(--grass-primary);">Buy Asthetic Management</p>
-        </div>
-        <div>
-          <button class="btn-secondary" onclick="openAddProductModal()">+ Add New Product</button>
-          <button class="btn-secondary" onclick="openAdminSettingsModal()">Change Login Credentials</button>
-          <button class="btn-secondary" style="color:var(--red);" onclick="switchView('shop')">Exit Admin</button>
-        </div>
-      </div>
-
-      <!-- Dashboard Stats -->
-      <div class="admin-grid">
-        <div class="stat-card">
-          <div class="stat-val" id="adm-sales">Rs 0</div>
-          <div class="stat-lbl">Sales This Month</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-val" id="adm-orders">0</div>
-          <div class="stat-lbl">Total Orders</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-val" id="adm-delivered">0</div>
-          <div class="stat-lbl">Delivered</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-val" id="adm-pending">0</div>
-          <div class="stat-lbl">Pending / In Transit</div>
-        </div>
-      </div>
-
-      <!-- Admin Tabs: Manage Products & Manage Orders -->
-      <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px;">
-        <div style="background:var(--white); padding:20px; border-radius:14px; border:1px solid var(--border);">
-          <h3 style="font-size:16px; font-weight:700; margin-bottom:14px;">Store Products (<span id="adm-prod-count">0</span>)</h3>
-          <div id="adm-products-list"></div>
-        </div>
-        <div style="background:var(--white); padding:20px; border-radius:14px; border:1px solid var(--border);">
-          <h3 style="font-size:16px; font-weight:700; margin-bottom:14px;">Received Orders (<span id="adm-order-count">0</span>)</h3>
-          <div id="adm-orders-list"></div>
-        </div>
-      </div>
-    </section>
+      <div id="adminTabContent"></div>
+    </div>
   </main>
 
-  <!-- Product Detail Modal -->
-  <div class="modal-overlay" id="product-modal">
-    <div class="modal-box">
-      <div class="modal-header">
-        <h3 id="modal-product-title" style="font-size:16px; font-weight:700;"></h3>
-        <button class="modal-close" onclick="closeModal('product-modal')">&times;</button>
+  <!-- PRODUCT DETAIL MODAL (Opens with all details & buying options) -->
+  <div class="modal-overlay" id="productDetailModal">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeModal('productDetailModal')">&times;</button>
+      <div class="detail-gallery">
+        <img id="detailHeroImg" src="" alt="Product Image">
       </div>
-      <div class="modal-body">
-        <img id="modal-main-img" class="gallery-main" src="" alt="Shoe" />
-        <div class="gallery-thumbs" id="modal-thumbs"></div>
-        <div style="display:flex; justify-content:space-between; align-items:baseline;">
-          <div style="font-size:22px; font-weight:800; color:var(--grass-dark);" id="modal-price"></div>
-          <span style="font-size:12px; background:var(--grass-container); color:var(--grass-dark); padding:3px 8px; border-radius:6px; font-weight:700;" id="modal-category"></span>
-        </div>
-        <p style="font-size:13px; color:var(--text-muted); margin:10px 0;" id="modal-desc"></p>
-        <div style="margin-top:10px;">
-          <label class="form-label">Select Euro/Pakistan Shoe Size</label>
-          <div class="size-picker" id="modal-sizes"></div>
-        </div>
-        <div style="display:flex; gap:10px; margin-top:20px;">
-          <button class="btn-secondary" style="flex:1;" onclick="addCurrentModalToCart()">Add to Cart</button>
-          <button class="btn-primary" style="flex:1;" onclick="buyNowFromModal()">Buy Now</button>
-        </div>
+      <div class="detail-thumbs" id="detailThumbs"></div>
+      
+      <div style="display: flex; gap: 8px; margin-bottom: 8px;">
+        <span class="card-badge" id="detailCatBadge" style="position: static;">Category</span>
+        <span class="card-gender" id="detailGenderBadge" style="position: static; border: 1px solid var(--border);">Gender</span>
+      </div>
+
+      <h2 id="detailTitle" style="font-size: 18px; font-weight: 800; margin-bottom: 6px;">Product Title</h2>
+      <div style="display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--warning); margin-bottom: 10px;">
+        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i>
+        <span style="color: var(--slate-medium); font-weight: 600;">(4.9 • 38 Reviews)</span>
+      </div>
+
+      <div style="display: flex; align-items: baseline; gap: 8px; margin-bottom: 12px;">
+        <span id="detailPrice" style="font-size: 22px; font-weight: 800; color: var(--primary);">Rs. 0</span>
+        <span id="detailOrigPrice" style="font-size: 13px; color: var(--slate-light); text-decoration: line-through;"></span>
+      </div>
+
+      <p id="detailDesc" style="font-size: 13px; color: var(--slate-medium); line-height: 1.5; margin-bottom: 16px;"></p>
+
+      <div class="qty-stepper">
+        <span style="font-size: 13px; font-weight: 700;">Quantity:</span>
+        <button class="btn-step" onclick="changeDetailQty(-1)">-</button>
+        <span id="detailQtyVal" style="font-weight: 800; min-width: 20px; text-align: center;">1</span>
+        <button class="btn-step" onclick="changeDetailQty(1)">+</button>
+      </div>
+
+      <div style="display: flex; gap: 10px; margin-top: 18px;">
+        <button class="btn-cart" id="detailAddToCartBtn" style="flex: 1; padding: 12px; justify-content: center; font-size: 13px;">
+          <i class="fa-solid fa-cart-plus"></i> Add to Cart
+        </button>
+        <button class="btn-buy" id="detailBuyNowBtn" style="flex: 1; padding: 12px; font-size: 13px;">
+          Buy Now
+        </button>
       </div>
     </div>
   </div>
 
-  <!-- Admin Login Modal (Fields Start Completely Blank) -->
-  <div class="modal-overlay" id="admin-login-modal">
-    <div class="modal-box" style="max-width:400px;">
-      <div class="modal-header">
-        <h3 style="font-size:16px; font-weight:700;">Admin Login</h3>
-        <button class="modal-close" onclick="closeModal('admin-login-modal')">&times;</button>
+  <!-- CHECKOUT MODAL -->
+  <div class="modal-overlay" id="checkoutModal">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeModal('checkoutModal')">&times;</button>
+      <h2 style="font-size: 18px; font-weight: 800; margin-bottom: 14px;">Complete Your Order</h2>
+      
+      <div class="form-group">
+        <label>Full Name *</label>
+        <input type="text" class="form-control" id="custName" placeholder="e.g. Asad Ali">
       </div>
-      <div class="modal-body">
-        <div class="form-group">
-          <label class="form-label">Username</label>
-          <input type="text" id="adm-user-input" class="form-input" placeholder="Enter admin username" value="" />
+      <div class="form-group">
+        <label>Phone Number *</label>
+        <input type="text" class="form-control" id="custPhone" placeholder="03051234567">
+      </div>
+      <div class="form-group">
+        <label>Delivery Address *</label>
+        <input type="text" class="form-control" id="custAddress" placeholder="House/Flat #, Street, Area">
+      </div>
+      <div class="form-group">
+        <label>City *</label>
+        <input type="text" class="form-control" id="custCity" value="Lahore">
+      </div>
+
+      <h3 style="font-size: 14px; font-weight: 800; margin: 16px 0 10px;">Select Payment Method</h3>
+
+      <!-- 1. COD -->
+      <div class="pay-card selected" id="optCOD" onclick="selectPayMethod('COD')">
+        <div>
+          <strong>Cash on Delivery (COD)</strong>
+          <div style="font-size: 11px; color: var(--slate-medium);">+Rs. 100 extra delivery handling charge</div>
+        </div>
+        <span style="font-weight: 800; color: var(--warning); font-size: 12px;">+100 PKR</span>
+      </div>
+
+      <!-- 2. Easypaisa -->
+      <div class="pay-card" id="optEP" onclick="selectPayMethod('Easypaisa')">
+        <div>
+          <strong>Easypaisa Mobile Account</strong>
+          <div style="font-size: 11px; color: var(--slate-medium);">03054272499 • Asad Nadeem</div>
+        </div>
+        <button class="copy-badge" onclick="event.stopPropagation(); copyText('03054272499')">Copy</button>
+      </div>
+
+      <!-- 3. Jazzcash -->
+      <div class="pay-card" id="optJC" onclick="selectPayMethod('Jazzcash')">
+        <div>
+          <strong>Jazzcash Mobile Account</strong>
+          <div style="font-size: 11px; color: var(--slate-medium);">03054272499 • Abdullah</div>
+        </div>
+        <button class="copy-badge" onclick="event.stopPropagation(); copyText('03054272499')">Copy</button>
+      </div>
+
+      <!-- 4. UBL -->
+      <div class="pay-card" id="optUBL" onclick="selectPayMethod('UBL')">
+        <div>
+          <strong>UBL Bank Account</strong>
+          <div style="font-size: 11px; color: var(--slate-medium);">A/C: 0463383104492 • Asad Nadeem</div>
+          <div style="font-size: 10px; color: var(--primary);">IBAN: PK77 UNIL 0109 0003 8310 4492</div>
+        </div>
+        <button class="copy-badge" onclick="event.stopPropagation(); copyText('PK77 UNIL 0109 0003 8310 4492')">Copy IBAN</button>
+      </div>
+
+      <!-- Online fields -->
+      <div id="onlinePaymentFields" style="display: none; background: #fff8e1; border: 1px solid var(--warning); padding: 12px; border-radius: 8px; margin-bottom: 12px;">
+        <div class="form-group" style="margin-bottom: 8px;">
+          <label style="color: var(--error);">Transaction / Till ID * (COMPULSORY)</label>
+          <input type="text" class="form-control" id="custTillId" placeholder="Enter Transaction/Till ID from payment SMS or receipt">
         </div>
         <div class="form-group">
-          <label class="form-label">Password</label>
-          <input type="password" id="adm-pass-input" class="form-input" placeholder="Enter admin password" value="" />
+          <label>Screenshot / Note (Optional)</label>
+          <input type="text" class="form-control" id="custScreenshotNote" placeholder="Receipt Image URL or Sender Account Title">
         </div>
-        <button class="btn-primary" onclick="verifyAdminLogin()">Login as Administrator</button>
       </div>
+
+      <div style="background: var(--bg-ice); padding: 12px; border-radius: 8px; margin: 14px 0;">
+        <div style="display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 5px;">
+          <span>Subtotal:</span><span id="checkoutSubtotal">Rs. 0</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 5px;">
+          <span>COD Charges:</span><span id="checkoutExtra">Rs. 100</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 16px; font-weight: 800; color: var(--primary);">
+          <span>Grand Total:</span><span id="checkoutTotal">Rs. 0</span>
+        </div>
+      </div>
+
+      <button onclick="placeOrderFinal()" style="width: 100%; background: var(--primary); color: var(--white); padding: 12px; border-radius: 8px; border: none; font-weight: 800; font-size: 14px; cursor: pointer;">
+        Confirm & Place Order
+      </button>
     </div>
   </div>
 
-  <!-- Add Product Modal (Max 6 Images) -->
-  <div class="modal-overlay" id="add-product-modal">
-    <div class="modal-box" style="max-width:560px;">
-      <div class="modal-header">
-        <h3 style="font-size:16px; font-weight:700;">Add New Shoe Product</h3>
-        <button class="modal-close" onclick="closeModal('add-product-modal')">&times;</button>
+  <!-- ADMIN LOGIN MODAL -->
+  <div class="modal-overlay" id="adminLoginModal">
+    <div class="modal-content" style="max-width: 400px;">
+      <button class="modal-close" onclick="closeModal('adminLoginModal')">&times;</button>
+      <div style="text-align: center; margin-bottom: 18px;">
+        <div style="width: 46px; height: 46px; background: var(--primary-dark); color: var(--white); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 8px; font-size: 20px;">
+          <i class="fa-solid fa-user-shield"></i>
+        </div>
+        <h2 style="font-size: 18px; font-weight: 800;">Admin Sign In</h2>
+        <p style="font-size: 12px; color: var(--slate-medium);">Enter credentials to access Buy Asthetic portal</p>
       </div>
-      <div class="modal-body">
-        <div class="form-group">
-          <label class="form-label">Shoe Name *</label>
-          <input type="text" id="new-prod-name" class="form-input" placeholder="e.g. Asthetic Green Runner" />
-        </div>
-        <div class="form-group">
-          <label class="form-label">Category</label>
-          <select id="new-prod-cat" class="form-select"></select>
-        </div>
-        <div style="display:flex; gap:10px;">
-          <div class="form-group" style="flex:1;">
-            <label class="form-label">Price (PKR) *</label>
-            <input type="number" id="new-prod-price" class="form-input" placeholder="4500" />
-          </div>
-          <div class="form-group" style="flex:1;">
-            <label class="form-label">Original Price (Cut)</label>
-            <input type="number" id="new-prod-orig" class="form-input" placeholder="6000" />
-          </div>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Description</label>
-          <textarea id="new-prod-desc" class="form-textarea" placeholder="Premium sole, foam cushion, breathable mesh..."></textarea>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Product Images (Add Max 6 Images) *</label>
-          <input type="file" id="new-prod-files" class="form-input" multiple accept="image/*" onchange="handleImageSelection(event)" />
-          <small style="color:var(--text-muted); font-size:11px;">You can select up to 6 image files.</small>
-          <div id="new-prod-img-previews" style="display:flex; gap:8px; margin-top:8px; flex-wrap:wrap;"></div>
-        </div>
-        <button class="btn-primary" onclick="saveNewProduct()">Publish Shoe</button>
+
+      <div class="form-group">
+        <label>Username</label>
+        <input type="text" class="form-control" id="adminUserInput" placeholder="Enter username">
       </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" class="form-control" id="adminPassInput" placeholder="Enter password">
+      </div>
+      <div id="adminLoginErr" style="color: var(--error); font-size: 12px; margin-bottom: 10px; display: none;"></div>
+
+      <button onclick="submitAdminLogin()" style="width: 100%; background: var(--primary-dark); color: var(--white); padding: 11px; border-radius: 8px; border: none; font-weight: 700; cursor: pointer;">
+        Access Administrator Portal
+      </button>
     </div>
   </div>
 
-  <!-- Admin Change Credentials Modal -->
-  <div class="modal-overlay" id="admin-settings-modal">
-    <div class="modal-box" style="max-width:420px;">
-      <div class="modal-header">
-        <h3 style="font-size:16px; font-weight:700;">Change Admin Credentials</h3>
-        <button class="modal-close" onclick="closeModal('admin-settings-modal')">&times;</button>
-      </div>
-      <div class="modal-body">
-        <div class="form-group">
-          <label class="form-label">New Username</label>
-          <input type="text" id="set-user" class="form-input" />
-        </div>
-        <div class="form-group">
-          <label class="form-label">New Password</label>
-          <input type="password" id="set-pass" class="form-input" />
-        </div>
-        <button class="btn-primary" onclick="updateAdminCredentials()">Save Changes</button>
-      </div>
-    </div>
-  </div>
+  <!-- Toast Notification -->
+  <div class="toast" id="toast"></div>
+
+  <!-- Hidden File Input for Gallery Photo Selection -->
+  <input type="file" id="adminGalleryInput" accept="image/*" multiple style="display: none;" onchange="handleGalleryImagesSelected(event)">
 
   <script>
-    // State Store (Default credentials: abdullahasad / 124211212ah)
-    let adminCredentials = { username: "abdullahasad", password: "124211212ah" };
-    let categories = ["All", "Sneakers", "Retro Casual", "Loafers & Slides", "Formal", "Sports"];
-    let currentCategory = "All";
-    let selectedPaymentMethod = "COD";
-    let selectedSize = 42;
-    let modalProduct = null;
-    let uploadedProductImageURLs = [];
-
-    let products = [
-      {
-        id: "p1",
-        name: "Aesthetic Green Pace Runners",
-        category: "Sneakers",
-        price: 4850,
-        originalPrice: 6200,
-        description: "Signature Asthetic high-performance sneakers featuring dual-cushion foam, grass-green accents, and ultra-flexible soles made for everyday streetwear.",
-        images: [
-          "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600&auto=format&fit=crop",
-          "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?w=600&auto=format&fit=crop"
-        ],
-        sizes: [40, 41, 42, 43, 44, 45],
-        rating: 4.9
-      },
-      {
-        id: "p2",
-        name: "Classic Retro Vintage Lows",
-        category: "Retro Casual",
-        price: 3999,
-        originalPrice: 5200,
-        description: "Timeless minimalist white leather silhouette with deep forest accents. Handcrafted stitching, soft padded collar, and durable rubber vulcanized sole.",
-        images: [
-          "https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?w=600&auto=format&fit=crop"
-        ],
-        sizes: [39, 40, 41, 42, 43, 44],
-        rating: 4.8
-      },
-      {
-        id: "p3",
-        name: "Aesthetic Velvet Comfort Loafers",
-        category: "Loafers & Slides",
-        price: 3450,
-        originalPrice: 4500,
-        description: "Casual slip-on loafers engineered for effortless elegance and all-day comfort. Premium soft upper, memory-foam insoles, and water-resistant finish.",
-        images: [
-          "https://images.unsplash.com/photo-1533867617858-e7b97e060509?w=600&auto=format&fit=crop"
-        ],
-        sizes: [40, 41, 42, 43, 44],
-        rating: 4.7
-      }
+    // Initial Catalog Data
+    const INITIAL_PRODUCTS = [
+      { id: 1, title: "Royal Chronograph Sapphire Timepiece", category: "Watches", gender: "Men", price: 5999, origPrice: 8500, desc: "Solid surgical stainless steel with Japanese quartz chronograph movement, scratch-resistant sapphire crystal lens, and royal blue sunray dial.", images: ["https://images.unsplash.com/photo-1524805444758-089113d48a6d?auto=format&fit=crop&w=600&q=80"] },
+      { id: 2, title: "Starlight Rose Gold Diamond Watch", category: "Watches", gender: "Women", price: 4499, origPrice: 6999, desc: "Mother-of-pearl dial framed with Austrian crystals and delicate rose gold bracelet for weddings and festive occasions.", images: ["https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=600&q=80"] },
+      { id: 3, title: "Royal Oud Exclusive Extrait", category: "Perfumes", gender: "Men", price: 4999, origPrice: 7500, desc: "Aged Cambodian agarwood, Damascus rose, and amber notes with 24+ hour longevity, formulated for the Pakistani climate.", images: ["https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&w=600&q=80"] },
+      { id: 4, title: "Velvet Jasmine & White Musk", category: "Perfumes", gender: "Women", price: 3899, origPrice: 5400, desc: "Blooming night jasmine and warm vanilla notes for modern Pakistani women seeking subtle elegance.", images: ["https://images.unsplash.com/photo-1547887537-6158d64c35b3?auto=format&fit=crop&w=600&q=80"] },
+      { id: 5, title: "Zari Embroidered Chiffon 3-Piece", category: "Dresses", gender: "Women", price: 7999, origPrice: 11500, desc: "Complete stitched formal 3-piece ensemble featuring heavy resham and tilla hand embroidery with pure organza dupatta.", images: ["https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?auto=format&fit=crop&w=600&q=80"] },
+      { id: 6, title: "Raw Silk Festive Kurta & Pajama", category: "Dresses", gender: "Men", price: 6499, origPrice: 8999, desc: "Lustrous Korean raw silk kurta with ban collar embroidery and churidar pajama designed for Eid and Nikkah celebrations.", images: ["https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?auto=format&fit=crop&w=600&q=80"] }
     ];
 
+    let products = JSON.parse(localStorage.getItem('ba_products')) || INITIAL_PRODUCTS;
+    let categories = JSON.parse(localStorage.getItem('ba_categories')) || ["Watches", "Perfumes", "Dresses"];
+    let orders = JSON.parse(localStorage.getItem('ba_orders')) || [];
     let cart = [];
-    let orders = [];
+    let selectedCat = 'All';
+    let selectedGender = 'All';
+    let selectedPayMethod = 'COD';
+    let currentAdminTab = 'products';
+    let adminCreds = JSON.parse(localStorage.getItem('ba_creds')) || { user: 'abdullahasad', pass: '124211212ah' };
+    let directCheckoutItem = null;
+    let currentDetailProduct = null;
+    let detailQty = 1;
+    let adminStagedImages = [];
 
-    // Switch Screens
-    function switchView(viewName) {
-      document.querySelectorAll('main > section').forEach(sec => sec.style.display = 'none');
-      document.getElementById('view-' + viewName).style.display = 'block';
-      if (viewName === 'shop') renderProducts();
-      if (viewName === 'cart') renderCart();
-      if (viewName === 'me') renderOrders();
-      if (viewName === 'admin') renderAdminDashboard();
+    function saveState() {
+      localStorage.setItem('ba_products', JSON.stringify(products));
+      localStorage.setItem('ba_categories', JSON.stringify(categories));
+      localStorage.setItem('ba_orders', JSON.stringify(orders));
+      localStorage.setItem('ba_creds', JSON.stringify(adminCreds));
     }
 
-    // Render Categories & Products
+    // Navigation
+    function showView(viewId) {
+      document.getElementById('viewHome').style.display = viewId === 'home' ? 'block' : 'none';
+      document.getElementById('viewCart').style.display = viewId === 'cart' ? 'block' : 'none';
+      document.getElementById('viewMe').style.display = viewId === 'me' ? 'block' : 'none';
+      document.getElementById('viewAdmin').style.display = viewId === 'admin' ? 'block' : 'none';
+
+      document.getElementById('tabHome').classList.toggle('active', viewId === 'home');
+      document.getElementById('tabCart').classList.toggle('active', viewId === 'cart');
+      document.getElementById('tabMe').classList.toggle('active', viewId === 'me');
+
+      if (viewId === 'home') renderProducts();
+      if (viewId === 'cart') renderCart();
+      if (viewId === 'me') renderOrders();
+    }
+
+    // Categories & Filters
     function renderCategoryChips() {
-      const el = document.getElementById('category-chips');
-      el.innerHTML = categories.map(cat => `
-        <div class="chip ${cat === currentCategory ? 'active' : ''}" onclick="setCategory('${cat}')">${cat}</div>
+      const container = document.getElementById('categoryChips');
+      const allCats = ['All', ...categories];
+      container.innerHTML = allCats.map(cat => `
+        <span class="chip ${selectedCat === cat ? 'active' : ''}" onclick="setCategory('${cat}')">${cat}</span>
       `).join('');
     }
 
     function setCategory(cat) {
-      currentCategory = cat;
+      selectedCat = cat;
       renderCategoryChips();
-      renderProducts();
+      filterProducts();
+    }
+
+    function setGender(g, el) {
+      selectedGender = g;
+      el.parentElement.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+      el.classList.add('active');
+      filterProducts();
+    }
+
+    function filterProducts() {
+      const query = document.getElementById('searchInput').value.toLowerCase().trim();
+      const filtered = products.filter(p => {
+        const matchCat = selectedCat === 'All' || p.category.toLowerCase() === selectedCat.toLowerCase();
+        const matchGen = selectedGender === 'All' || p.gender.toLowerCase() === selectedGender.toLowerCase() || p.gender.toLowerCase() === 'unisex';
+        const matchQuery = !query || p.title.toLowerCase().includes(query) || p.desc.toLowerCase().includes(query);
+        return matchCat && matchGen && matchQuery;
+      });
+      renderProductCards(filtered);
     }
 
     function renderProducts() {
       renderCategoryChips();
-      const q = document.getElementById('search-input').value.toLowerCase();
-      const grid = document.getElementById('product-grid');
-      const filtered = products.filter(p => {
-        const matchesCat = currentCategory === 'All' || p.category === currentCategory;
-        const matchesQ = p.name.toLowerCase().includes(q) || p.description.toLowerCase().includes(q);
-        return matchesCat && matchesQ;
-      });
+      filterProducts();
+    }
 
-      if (!filtered.length) {
-        grid.innerHTML = `<p style="grid-column:1/-1; text-align:center; padding:40px; color:var(--text-muted);">No shoes found.</p>`;
+    function renderProductCards(list) {
+      const grid = document.getElementById('productsGrid');
+      if (list.length === 0) {
+        grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--slate-medium);">No products found matching your filters.</div>';
         return;
       }
-
-      grid.innerHTML = filtered.map(p => `
-        <div class="product-card" onclick="openProductModal('${p.id}')">
-          <div class="card-img-wrap">
-            <img class="card-img" src="${p.images[0]}" alt="${p.name}" />
-            <div class="card-category">${p.category}</div>
-            <div class="card-rating">★ ${p.rating}</div>
+      grid.innerHTML = list.map(p => `
+        <div class="product-card" onclick="openProductDetail(${p.id})">
+          <div class="product-img-wrap">
+            <img src="${p.images[0]}" alt="${p.title}" loading="lazy">
+            <span class="card-badge">${p.category}</span>
+            <span class="card-gender">${p.gender}</span>
           </div>
-          <div class="card-info">
-            <h3 class="card-title">${p.name}</h3>
-            <div class="card-price-row">
-              <span class="card-price">Rs ${p.price.toLocaleString()}</span>
-              <span class="card-cut-price">Rs ${p.originalPrice.toLocaleString()}</span>
+          <div class="product-info">
+            <div class="product-title">${p.title}</div>
+            <div class="product-desc">${p.desc}</div>
+            <div class="price-row">
+              <div>
+                <span class="current-price">Rs. ${p.price}</span>
+                ${p.origPrice ? `<span class="orig-price">Rs. ${p.origPrice}</span>` : ''}
+              </div>
             </div>
-            <button class="card-btn" onclick="event.stopPropagation(); quickAddToCart('${p.id}')">Add to Cart</button>
+            <div class="card-buttons" onclick="event.stopPropagation()">
+              <button class="btn-cart" onclick="addToCart(${p.id}, 1, event)">
+                <i class="fa-solid fa-cart-plus"></i> Add to Cart
+              </button>
+              <button class="btn-buy" onclick="buyDirect(${p.id})">Buy Now</button>
+            </div>
           </div>
         </div>
       `).join('');
     }
 
-    // Modal Details
-    function openProductModal(id) {
-      modalProduct = products.find(p => p.id === id);
-      if (!modalProduct) return;
-      selectedSize = modalProduct.sizes[0] || 42;
-      document.getElementById('modal-product-title').innerText = modalProduct.name;
-      document.getElementById('modal-main-img').src = modalProduct.images[0];
-      document.getElementById('modal-price').innerText = `Rs ${modalProduct.price.toLocaleString()}`;
-      document.getElementById('modal-category').innerText = modalProduct.category;
-      document.getElementById('modal-desc').innerText = modalProduct.description;
+    // Product Detail View
+    function openProductDetail(prodId) {
+      const p = products.find(x => x.id === prodId);
+      if (!p) return;
+      currentDetailProduct = p;
+      detailQty = 1;
 
-      const thumbsEl = document.getElementById('modal-thumbs');
-      thumbsEl.innerHTML = modalProduct.images.map((img, i) => `
-        <img class="thumb-item ${i === 0 ? 'active' : ''}" src="${img}" onclick="changeMainImage('${img}', this)" />
-      `).join('');
+      document.getElementById('detailHeroImg').src = p.images[0];
+      document.getElementById('detailCatBadge').innerText = p.category;
+      document.getElementById('detailGenderBadge').innerText = p.gender;
+      document.getElementById('detailTitle').innerText = p.title;
+      document.getElementById('detailPrice').innerText = `Rs. ${p.price}`;
+      document.getElementById('detailOrigPrice').innerText = p.origPrice ? `Rs. ${p.origPrice}` : '';
+      document.getElementById('detailDesc').innerText = p.desc;
+      document.getElementById('detailQtyVal').innerText = '1';
 
-      const sizeEl = document.getElementById('modal-sizes');
-      sizeEl.innerHTML = modalProduct.sizes.map(s => `
-        <button class="size-btn ${s === selectedSize ? 'active' : ''}" onclick="selectSize(${s}, this)">${s}</button>
-      `).join('');
+      // Render thumbnail images
+      const thumbsContainer = document.getElementById('detailThumbs');
+      if (p.images.length > 1) {
+        thumbsContainer.style.display = 'flex';
+        thumbsContainer.innerHTML = p.images.map((img, i) => `
+          <img src="${img}" class="detail-thumb ${i === 0 ? 'active' : ''}" onclick="selectDetailHero('${img}', this)">
+        `).join('');
+      } else {
+        thumbsContainer.style.display = 'none';
+      }
 
-      document.getElementById('product-modal').classList.add('open');
+      // Hook up modal action buttons
+      document.getElementById('detailAddToCartBtn').onclick = () => {
+        addToCart(p.id, detailQty);
+        closeModal('productDetailModal');
+      };
+      document.getElementById('detailBuyNowBtn').onclick = () => {
+        closeModal('productDetailModal');
+        directCheckoutItem = [{ ...p, qty: detailQty }];
+        openCheckoutModal();
+      };
+
+      document.getElementById('productDetailModal').classList.add('active');
     }
 
-    function changeMainImage(src, el) {
-      document.getElementById('modal-main-img').src = src;
-      document.querySelectorAll('.thumb-item').forEach(t => t.classList.remove('active'));
+    function selectDetailHero(src, el) {
+      document.getElementById('detailHeroImg').src = src;
+      document.querySelectorAll('.detail-thumb').forEach(t => t.classList.remove('active'));
       el.classList.add('active');
     }
 
-    function selectSize(s, el) {
-      selectedSize = s;
-      document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('active'));
-      el.classList.add('active');
+    function changeDetailQty(delta) {
+      detailQty += delta;
+      if (detailQty < 1) detailQty = 1;
+      document.getElementById('detailQtyVal').innerText = detailQty;
     }
-
-    function closeModal(id) { document.getElementById(id).classList.remove('open'); }
 
     // Cart Operations
-    function quickAddToCart(id) {
-      const p = products.find(prod => prod.id === id);
-      addToCart(p, 42);
-    }
-
-    function addCurrentModalToCart() {
-      if (modalProduct) {
-        addToCart(modalProduct, selectedSize);
-        closeModal('product-modal');
-      }
-    }
-
-    function buyNowFromModal() {
-      if (modalProduct) {
-        addToCart(modalProduct, selectedSize);
-        closeModal('product-modal');
-        switchView('checkout');
-        updateCheckoutBreakdown();
-      }
-    }
-
-    function addToCart(p, size) {
-      const exist = cart.find(item => item.productId === p.id && item.size === size);
-      if (exist) {
-        exist.qty += 1;
+    function addToCart(prodId, qty = 1, event = null) {
+      if (event) event.stopPropagation();
+      const prod = products.find(p => p.id === prodId);
+      if (!prod) return;
+      const existing = cart.find(item => item.id === prodId);
+      if (existing) {
+        existing.qty += qty;
       } else {
-        cart.push({ productId: p.id, name: p.name, price: p.price, image: p.images[0], size: size, qty: 1 });
+        cart.push({ ...prod, qty: qty });
       }
       updateCartBadge();
-      alert(`Added ${p.name} (Size ${size}) to cart!`);
+      showToast(`Added '${prod.title}' to Cart!`);
     }
 
     function updateCartBadge() {
-      const count = cart.reduce((acc, c) => acc + c.qty, 0);
-      document.getElementById('cart-badge').innerText = count;
+      const count = cart.reduce((acc, item) => acc + item.qty, 0);
+      document.getElementById('cartBadge').innerText = count;
     }
 
     function renderCart() {
-      const c = document.getElementById('cart-items-container');
-      const sum = document.getElementById('cart-summary');
-      if (!cart.length) {
-        c.innerHTML = `<p style="padding:40px; text-align:center; color:var(--text-muted);">Your cart is empty.</p>`;
-        sum.innerHTML = '';
+      const container = document.getElementById('cartContent');
+      if (cart.length === 0) {
+        container.innerHTML = `
+          <div style="text-align: center; padding: 50px 20px;">
+            <i class="fa-solid fa-cart-shopping" style="font-size: 44px; color: var(--slate-light); margin-bottom: 14px;"></i>
+            <h3>Your Cart is Empty</h3>
+            <p style="color: var(--slate-medium); margin: 6px 0 18px; font-size: 13px;">Explore our Pakistani watches, perfumes, and dresses collection.</p>
+            <button class="btn-buy" style="max-width: 180px; margin: 0 auto;" onclick="showView('home')">Start Shopping</button>
+          </div>
+        `;
         return;
       }
-      c.innerHTML = cart.map((item, idx) => `
-        <div style="background:var(--white); border:1px solid var(--border); border-radius:12px; padding:12px; display:flex; align-items:center; gap:14px; margin-bottom:10px;">
-          <img src="${item.image}" style="width:70px; height:70px; border-radius:8px; object-fit:cover;" />
-          <div style="flex:1;">
-            <strong style="font-size:15px;">${item.name}</strong>
-            <div style="font-size:12px; color:var(--text-muted);">Size: ${item.size} • Rs ${item.price.toLocaleString()} each</div>
-          </div>
-          <div style="display:flex; align-items:center; gap:8px;">
-            <button class="btn-secondary" style="padding:4px 10px;" onclick="changeQty(${idx}, -1)">-</button>
-            <span style="font-weight:700;">${item.qty}</span>
-            <button class="btn-secondary" style="padding:4px 10px;" onclick="changeQty(${idx}, 1)">+</button>
-          </div>
-          <div style="font-weight:800; color:var(--grass-dark);">Rs ${(item.price * item.qty).toLocaleString()}</div>
-          <button style="border:none; background:none; color:var(--red); font-size:18px; cursor:pointer;" onclick="removeItem(${idx})">&times;</button>
-        </div>
-      `).join('');
 
-      const subtotal = cart.reduce((acc, c) => acc + c.price * c.qty, 0);
-      sum.innerHTML = `
-        <div style="display:flex; justify-content:space-between; margin-bottom:12px; font-size:16px;">
-          <span>Subtotal:</span>
-          <strong>Rs ${subtotal.toLocaleString()}</strong>
+      const subtotal = cart.reduce((acc, item) => acc + (item.price * item.qty), 0);
+      container.innerHTML = `
+        <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 20px;">
+          <div>
+            ${cart.map((item, idx) => `
+              <div style="background: var(--white); border: 1px solid var(--border); border-radius: 12px; padding: 12px; margin-bottom: 10px; display: flex; align-items: center; gap: 12px;">
+                <img src="${item.images[0]}" style="width: 65px; height: 65px; object-fit: cover; border-radius: 8px;">
+                <div style="flex: 1;">
+                  <h4 style="font-size: 13px; font-weight: 700;">${item.title}</h4>
+                  <p style="color: var(--primary); font-weight: 800; margin-top: 3px; font-size: 13px;">Rs. ${item.price}</p>
+                </div>
+                <div style="display: flex; align-items: center; gap: 6px;">
+                  <button onclick="changeCartQty(${idx}, -1)" style="padding: 3px 8px; border-radius: 4px; border: 1px solid var(--border); cursor: pointer;">-</button>
+                  <span style="font-weight: 700; font-size: 13px;">${item.qty}</span>
+                  <button onclick="changeCartQty(${idx}, 1)" style="padding: 3px 8px; border-radius: 4px; border: 1px solid var(--border); cursor: pointer;">+</button>
+                  <button onclick="removeFromCart(${idx})" style="color: var(--error); background: none; border: none; cursor: pointer; margin-left: 8px;"><i class="fa-solid fa-trash"></i></button>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+          <div>
+            <div style="background: var(--white); border: 1px solid var(--border); border-radius: 12px; padding: 18px;">
+              <h3 style="font-size: 15px; margin-bottom: 14px;">Order Summary</h3>
+              <div style="display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 13px;">
+                <span>Subtotal</span><span>Rs. ${subtotal}</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 13px;">
+                <span>Delivery</span><span style="color: var(--success); font-weight: 700;">FREE</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; margin-bottom: 14px; color: var(--slate-medium); font-size: 12px;">
+                <span>COD Fee</span><span>+Rs. 100 (if COD selected)</span>
+              </div>
+              <button onclick="startCartCheckout()" class="btn-buy" style="width: 100%; padding: 11px; font-size: 14px;">Proceed to Checkout</button>
+            </div>
+          </div>
         </div>
-        <p style="font-size:12px; color:var(--grass-dark); background:var(--grass-container); padding:8px 12px; border-radius:8px; margin-bottom:14px;">
-          Notice: COD adds Rs 100 extra charges. Pay via Easypaisa, Jazzcash, or UBL to save Rs 100!
-        </p>
-        <button class="btn-primary" onclick="switchView('checkout'); updateCheckoutBreakdown();">Proceed to Checkout All Items</button>
       `;
     }
 
-    function changeQty(idx, delta) {
+    function changeCartQty(idx, delta) {
       cart[idx].qty += delta;
       if (cart[idx].qty <= 0) cart.splice(idx, 1);
       updateCartBadge();
       renderCart();
     }
-    function removeItem(idx) {
+
+    function removeFromCart(idx) {
       cart.splice(idx, 1);
       updateCartBadge();
       renderCart();
     }
 
     // Checkout Flow
-    function selectPayment(method) {
-      selectedPaymentMethod = method;
-      document.querySelectorAll('.payment-option').forEach(el => el.classList.remove('active'));
-      const box = document.getElementById('online-details-box');
-      const text = document.getElementById('bank-info-text');
-
-      if (method === 'COD') {
-        document.getElementById('opt-cod').classList.add('active');
-        box.style.display = 'none';
-      } else if (method === 'Easypaisa') {
-        document.getElementById('opt-easypaisa').classList.add('active');
-        box.style.display = 'block';
-        text.innerHTML = `<strong>Easypaisa Transfer:</strong> Send to <b>03054272499</b> (Title: Asad Nadeem) <button class="copy-pill" onclick="navigator.clipboard.writeText('03054272499')">Copy No</button>`;
-      } else if (method === 'Jazzcash') {
-        document.getElementById('opt-jazzcash').classList.add('active');
-        box.style.display = 'block';
-        text.innerHTML = `<strong>Jazzcash Transfer:</strong> Send to <b>03054272499</b> (Title: Abdullah) <button class="copy-pill" onclick="navigator.clipboard.writeText('03054272499')">Copy No</button>`;
-      } else if (method === 'UBL') {
-        document.getElementById('opt-ubl').classList.add('active');
-        box.style.display = 'block';
-        text.innerHTML = `<strong>UBL Bank Account:</strong> IBAN: <b>PK77 UNIL 0109 0003 8310 4492</b> (Title: Asad Nadeem) <button class="copy-pill" onclick="navigator.clipboard.writeText('PK77 UNIL 0109 0003 8310 4492')">Copy IBAN</button>`;
-      }
-      updateCheckoutBreakdown();
+    function buyDirect(prodId) {
+      const prod = products.find(p => p.id === prodId);
+      directCheckoutItem = [{ ...prod, qty: 1 }];
+      openCheckoutModal();
     }
 
-    function updateCheckoutBreakdown() {
-      const subtotal = cart.reduce((acc, c) => acc + c.price * c.qty, 0);
-      const extra = selectedPaymentMethod === 'COD' ? 100 : 0;
-      document.getElementById('chk-subtotal').innerText = `Rs ${subtotal.toLocaleString()}`;
-      document.getElementById('chk-extra').innerText = selectedPaymentMethod === 'COD' ? '+ Rs 100' : 'Rs 0 (Free)';
-      document.getElementById('chk-total').innerText = `Rs ${(subtotal + extra).toLocaleString()}`;
+    function startCartCheckout() {
+      if (cart.length === 0) return;
+      directCheckoutItem = null;
+      openCheckoutModal();
     }
 
-    function placeOrder() {
-      const name = document.getElementById('chk-name').value.trim();
-      const phone = document.getElementById('chk-phone').value.trim();
-      const addr = document.getElementById('chk-address').value.trim();
-      const city = document.getElementById('chk-city').value.trim();
-      const notes = document.getElementById('chk-notes').value.trim();
-      const tillId = document.getElementById('chk-tillid').value.trim();
-      const fileInput = document.getElementById('chk-screenshot');
+    function openCheckoutModal() {
+      const items = directCheckoutItem || cart;
+      const subtotal = items.reduce((acc, item) => acc + (item.price * item.qty), 0);
+      document.getElementById('checkoutSubtotal').innerText = `Rs. ${subtotal}`;
+      selectPayMethod(selectedPayMethod);
+      document.getElementById('checkoutModal').classList.add('active');
+    }
 
-      if (!name || !phone || !addr || !city) {
-        alert('Please fill out all required shipping details.');
+    function selectPayMethod(method) {
+      selectedPayMethod = method;
+      document.getElementById('optCOD').classList.toggle('selected', method === 'COD');
+      document.getElementById('optEP').classList.toggle('selected', method === 'Easypaisa');
+      document.getElementById('optJC').classList.toggle('selected', method === 'Jazzcash');
+      document.getElementById('optUBL').classList.toggle('selected', method === 'UBL');
+
+      const isCOD = method === 'COD';
+      document.getElementById('onlinePaymentFields').style.display = isCOD ? 'none' : 'block';
+
+      const items = directCheckoutItem || cart;
+      const subtotal = items.reduce((acc, item) => acc + (item.price * item.qty), 0);
+      const extra = isCOD ? 100 : 0;
+      document.getElementById('checkoutExtra').innerText = `Rs. ${extra}`;
+      document.getElementById('checkoutTotal').innerText = `Rs. ${subtotal + extra}`;
+    }
+
+    function placeOrderFinal() {
+      const name = document.getElementById('custName').value.trim();
+      const phone = document.getElementById('custPhone').value.trim();
+      const address = document.getElementById('custAddress').value.trim();
+      const city = document.getElementById('custCity').value.trim();
+      const tillId = document.getElementById('custTillId').value.trim();
+      const screenshot = document.getElementById('custScreenshotNote').value.trim();
+
+      if (!name || !phone || !address || !city) {
+        showToast("Please fill all required customer info!");
         return;
       }
-      if (selectedPaymentMethod !== 'COD') {
-        if (!tillId) {
-          alert('Compulsory requirement: Please enter the Till ID / Transaction ID.');
-          return;
-        }
-        if (!fileInput.files.length) {
-          alert('Compulsory requirement: Please attach the transaction receipt screenshot.');
-          return;
-        }
+
+      if (selectedPayMethod !== 'COD' && !tillId) {
+        showToast("Adding the Till ID is COMPULSORY for online payments!");
+        return;
       }
 
-      const subtotal = cart.reduce((acc, c) => acc + c.price * c.qty, 0);
-      const extra = selectedPaymentMethod === 'COD' ? 100 : 0;
-      const orderId = 'BA-' + Math.floor(10000 + Math.random() * 90000);
+      const items = directCheckoutItem || cart;
+      const subtotal = items.reduce((acc, item) => acc + (item.price * item.qty), 0);
+      const extra = selectedPayMethod === 'COD' ? 100 : 0;
+      const total = subtotal + extra;
 
       const newOrder = {
-        orderId: orderId,
-        date: new Date().toLocaleDateString(),
-        customer: { name, phone, addr, city, notes },
-        items: [...cart],
-        subtotal: subtotal,
-        extraCharges: extra,
-        total: subtotal + extra,
-        paymentMethod: selectedPaymentMethod,
-        tillId: tillId,
+        id: Date.now(),
+        orderNumber: 'BA-' + Math.floor(1000 + Math.random() * 9000),
+        name, phone, address, city,
+        itemsSummary: items.map(i => `${i.title} (x${i.qty})`).join(', '),
+        paymentMethod: selectedPayMethod === 'COD' ? 'Cash on Delivery (+Rs. 100)' : selectedPayMethod,
+        tillId: tillId || 'N/A',
+        screenshot: screenshot || 'None',
+        total: total,
         status: 'Pending',
-        timeline: [
-          { title: 'Order Placed', desc: 'Received at Buy Asthetic store', status: 'completed' },
-          { title: 'Payment Verification', desc: selectedPaymentMethod === 'COD' ? 'Cash on Delivery confirmed' : `Till ID ${tillId} verified`, status: 'current' },
-          { title: 'Packaging & Inspection', desc: 'Quality checked and boxed', status: 'pending' },
-          { title: 'Handed to Courier', desc: 'Dispatched with partner courier', status: 'pending' },
-          { title: 'Delivered', desc: 'Arrived at your doorstep', status: 'pending' }
-        ]
+        createdAt: new Date().toLocaleDateString()
       };
 
       orders.unshift(newOrder);
-      cart = [];
+      if (!directCheckoutItem) cart = [];
       updateCartBadge();
-      alert(`Order #${orderId} placed successfully!`);
-      switchView('me');
+      saveState();
+
+      closeModal('checkoutModal');
+      showToast(`Order #${newOrder.orderNumber} placed successfully!`);
+      showView('me');
     }
 
-    // Render Orders in Me View
+    // Orders & Live Timeline View
     function renderOrders() {
-      const container = document.getElementById('orders-list');
-      if (!orders.length) {
-        container.innerHTML = `<p style="padding:40px; text-align:center; color:var(--text-muted);">No orders placed yet.</p>`;
+      const container = document.getElementById('ordersList');
+      if (orders.length === 0) {
+        container.innerHTML = `
+          <div style="background: var(--white); border-radius: 12px; padding: 36px; text-align: center; border: 1px solid var(--border);">
+            <i class="fa-solid fa-box-open" style="font-size: 38px; color: var(--slate-light); margin-bottom: 10px;"></i>
+            <h3>No Orders Placed Yet</h3>
+            <p style="color: var(--slate-medium); margin-top: 4px; font-size: 13px;">Your parcel tracking timeline will appear here when you place an order.</p>
+          </div>
+        `;
         return;
       }
-      container.innerHTML = orders.map(ord => `
-        <div style="background:var(--white); border:1px solid var(--border); border-radius:14px; padding:18px; margin-bottom:16px;">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-            <strong style="color:var(--grass-dark); font-size:16px;">Order #${ord.orderId}</strong>
-            <span style="background:var(--grass-container); color:var(--grass-dark); padding:3px 10px; border-radius:12px; font-size:12px; font-weight:700;">${ord.status}</span>
+
+      container.innerHTML = orders.map(order => `
+        <div style="background: var(--white); border-radius: 14px; border: 1px solid var(--border); padding: 18px; margin-bottom: 14px; box-shadow: var(--shadow);">
+          <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 10px; margin-bottom: 12px;">
+            <div>
+              <span style="font-size: 15px; font-weight: 800; color: var(--primary);">Order #${order.orderNumber}</span>
+              <span style="font-size: 11px; color: var(--slate-light); margin-left: 6px;">${order.createdAt}</span>
+            </div>
+            <span style="background: var(--soft-azure); color: var(--primary); padding: 3px 8px; border-radius: 20px; font-size: 11px; font-weight: 700;">${order.status}</span>
           </div>
-          <div style="font-size:13px; color:var(--text-muted); margin-bottom:12px;">
-            Payment: <b>${ord.paymentMethod}</b> • Total: <b>Rs ${ord.total.toLocaleString()}</b>
+
+          <div style="font-size: 12px; margin-bottom: 12px; line-height: 1.5;">
+            <p><strong>Items:</strong> ${order.itemsSummary}</p>
+            <p><strong>Delivery:</strong> ${order.address}, ${order.city} (${order.phone})</p>
+            <p><strong>Payment:</strong> ${order.paymentMethod} ${order.tillId !== 'N/A' ? `• Till ID: ${order.tillId}` : ''}</p>
+            <p style="font-size: 14px; font-weight: 800; color: var(--slate-dark); margin-top: 4px;">Total Amount: Rs. ${order.total}</p>
           </div>
+
+          <!-- Live 6-Stage Timeline -->
+          <h4 style="font-size: 12px; font-weight: 800; margin-bottom: 6px;">Order Timeline</h4>
           <div class="timeline">
-            ${ord.timeline.map(st => `
-              <div class="timeline-step ${st.status}">
-                <div class="timeline-dot"></div>
-                <div style="font-size:13px; font-weight:700;">${st.title}</div>
-                <div style="font-size:11px; color:var(--text-muted);">${st.desc}</div>
+            <div class="timeline-item done">
+              <div class="timeline-dot"></div>
+              <div class="timeline-title">Order Placed</div>
+            </div>
+            <div class="timeline-item ${order.status !== 'Pending' ? 'done' : ''}">
+              <div class="timeline-dot"></div>
+              <div class="timeline-title">Payment / Verification Confirmed</div>
+            </div>
+            <div class="timeline-item ${['Processing', 'Dispatched', 'Delivered'].includes(order.status) ? 'done' : ''}">
+              <div class="timeline-dot"></div>
+              <div class="timeline-title">Processing & Packaging</div>
+            </div>
+            <div class="timeline-item ${['Dispatched', 'Delivered'].includes(order.status) ? 'done' : ''}">
+              <div class="timeline-dot"></div>
+              <div class="timeline-title">Dispatched with Courier</div>
+            </div>
+            <div class="timeline-item ${order.status === 'Delivered' ? 'done' : ''}">
+              <div class="timeline-dot"></div>
+              <div class="timeline-title">Delivered</div>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // Admin Operations (Credentials Compulsory Every Time)
+    function openAdminLoginModal() {
+      document.getElementById('adminUserInput').value = '';
+      document.getElementById('adminPassInput').value = '';
+      document.getElementById('adminLoginErr').style.display = 'none';
+      document.getElementById('adminLoginModal').classList.add('active');
+    }
+
+    function submitAdminLogin() {
+      const u = document.getElementById('adminUserInput').value.trim();
+      const p = document.getElementById('adminPassInput').value.trim();
+
+      if (u === adminCreds.user && p === adminCreds.pass) {
+        closeModal('adminLoginModal');
+        showView('admin');
+        renderAdmin();
+        showToast("Authenticated as Administrator");
+      } else {
+        const err = document.getElementById('adminLoginErr');
+        err.innerText = "Invalid administrator username or password!";
+        err.style.display = 'block';
+      }
+    }
+
+    function adminLogout() {
+      showView('me');
+      showToast("Logged out from admin portal");
+    }
+
+    function renderAdmin() {
+      const sales = orders.filter(o => o.status !== 'Cancelled').reduce((acc, o) => acc + o.total, 0);
+      document.getElementById('adminSalesVal').innerText = `Rs. ${sales}`;
+      document.getElementById('adminOrdersCount').innerText = orders.length;
+      document.getElementById('adminProdCount').innerText = products.length;
+      renderAdminTabContent();
+    }
+
+    function setAdminTab(tab, el) {
+      currentAdminTab = tab;
+      el.parentElement.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+      el.classList.add('active');
+      renderAdminTabContent();
+    }
+
+    // Gallery Photo Picker (Android Gallery / Windows / Microsoft Gallery)
+    function triggerGalleryPicker() {
+      document.getElementById('adminGalleryInput').click();
+    }
+
+    function handleGalleryImagesSelected(event) {
+      const files = event.target.files;
+      if (!files || files.length === 0) return;
+
+      Array.from(files).forEach(file => {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          adminStagedImages.push(e.target.result);
+          renderStagedThumbnails();
+        };
+        reader.readAsDataURL(file);
+      });
+      showToast(`Selected ${files.length} image(s) from gallery`);
+      event.target.value = ''; // Reset input
+    }
+
+    function removeStagedImage(idx) {
+      adminStagedImages.splice(idx, 1);
+      renderStagedThumbnails();
+    }
+
+    function renderStagedThumbnails() {
+      const container = document.getElementById('stagedImagesGrid');
+      if (!container) return;
+      container.innerHTML = adminStagedImages.map((src, i) => `
+        <div class="preview-thumb-box">
+          <img src="${src}">
+          <button class="preview-del-btn" onclick="removeStagedImage(${i})">&times;</button>
+        </div>
+      `).join('');
+    }
+
+    function renderAdminTabContent() {
+      const container = document.getElementById('adminTabContent');
+      if (currentAdminTab === 'products') {
+        adminStagedImages = [];
+        container.innerHTML = `
+          <div style="background: var(--white); padding: 18px; border-radius: var(--radius); margin-bottom: 18px; border: 1px solid var(--border);">
+            <h3 style="font-size: 15px; margin-bottom: 12px;">Add New Product (Direct Gallery Picker)</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px;">
+              <input type="text" class="form-control" id="newProdTitle" placeholder="Product Title *">
+              <select class="form-control" id="newProdCat">
+                ${categories.map(c => `<option value="${c}">${c}</option>`).join('')}
+              </select>
+              <select class="form-control" id="newProdGen">
+                <option value="Men">Men</option>
+                <option value="Women">Women</option>
+                <option value="Unisex">Unisex</option>
+              </select>
+              <input type="number" class="form-control" id="newProdPrice" placeholder="Price in PKR *">
+            </div>
+            <textarea class="form-control" id="newProdDesc" placeholder="Product Description..." rows="2" style="margin-bottom: 10px;"></textarea>
+            
+            <!-- DIRECT GALLERY PICKER BUTTON -->
+            <button type="button" class="btn-gallery" onclick="triggerGalleryPicker()">
+              <i class="fa-solid fa-images"></i> Choose Images from Android / Microsoft Gallery
+            </button>
+            <div class="preview-thumbs-grid" id="stagedImagesGrid"></div>
+
+            <button onclick="adminAddProduct()" class="btn-buy" style="margin-top: 14px; width: 100%; padding: 10px;">Save Product to Store</button>
+          </div>
+
+          <h3 style="font-size: 15px; margin-bottom: 10px;">Manage Existing Products</h3>
+          <div>
+            ${products.map(p => `
+              <div style="background: var(--white); border: 1px solid var(--border); border-radius: 10px; padding: 10px 14px; margin-bottom: 8px; display: flex; align-items: center; justify-content: space-between;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                  <img src="${p.images[0]}" style="width: 45px; height: 45px; object-fit: cover; border-radius: 6px;">
+                  <div>
+                    <strong style="font-size: 13px;">${p.title}</strong>
+                    <div style="font-size: 11px; color: var(--slate-medium);">${p.category} • ${p.gender} • Rs. ${p.price}</div>
+                  </div>
+                </div>
+                <div>
+                  <button onclick="adminAdjustPrice(${p.id})" style="background: var(--soft-azure); color: var(--primary); border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer; font-weight: 700; font-size: 11px; margin-right: 4px;">Adjust Price</button>
+                  <button onclick="adminDeleteProduct(${p.id})" style="background: #fee2e2; color: var(--error); border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer; font-weight: 700; font-size: 11px;">Delete</button>
+                </div>
               </div>
             `).join('')}
           </div>
-        </div>
-      `).join('');
-    }
+        `;
+      } else if (currentAdminTab === 'categories') {
+        container.innerHTML = `
+          <div style="background: var(--white); padding: 18px; border-radius: var(--radius); margin-bottom: 18px; border: 1px solid var(--border);">
+            <h3 style="font-size: 15px; margin-bottom: 10px;">Add New Category</h3>
+            <div style="display: flex; gap: 8px;">
+              <input type="text" class="form-control" id="newCatInput" placeholder="Category Name (e.g. Footwear, Shawls)">
+              <button onclick="adminAddCategory()" class="btn-buy" style="max-width: 140px;">Add</button>
+            </div>
+          </div>
 
-    // Admin Authentication & Operations
-    function openAdminLoginModal() {
-      // Inputs remain completely empty on open
-      document.getElementById('adm-user-input').value = '';
-      document.getElementById('adm-pass-input').value = '';
-      document.getElementById('admin-login-modal').classList.add('open');
-    }
-
-    function verifyAdminLogin() {
-      const u = document.getElementById('adm-user-input').value.trim();
-      const p = document.getElementById('adm-pass-input').value.trim();
-      if (u === adminCredentials.username && p === adminCredentials.password) {
-        closeModal('admin-login-modal');
-        document.getElementById('adm-user-input').value = '';
-        document.getElementById('adm-pass-input').value = '';
-        switchView('admin');
-      } else {
-        alert('Invalid admin username or password!');
-      }
-    }
-
-    function renderAdminDashboard() {
-      const totalSales = orders.reduce((acc, o) => acc + o.total, 0);
-      document.getElementById('adm-sales').innerText = `Rs ${totalSales.toLocaleString()}`;
-      document.getElementById('adm-orders').innerText = orders.length;
-      document.getElementById('adm-delivered').innerText = orders.filter(o => o.status === 'Delivered').length;
-      document.getElementById('adm-pending').innerText = orders.filter(o => o.status !== 'Delivered').length;
-      document.getElementById('adm-prod-count').innerText = products.length;
-      document.getElementById('adm-order-count').innerText = orders.length;
-
-      // Products List
-      const pList = document.getElementById('adm-products-list');
-      pList.innerHTML = products.map(p => `
-        <div style="display:flex; justify-content:space-between; align-items:center; padding:10px 0; border-bottom:1px solid var(--border);">
+          <h3 style="font-size: 15px; margin-bottom: 10px;">Existing Categories</h3>
           <div>
-            <strong>${p.name}</strong>
-            <div style="font-size:12px; color:var(--text-muted);">${p.category} • Rs ${p.price.toLocaleString()}</div>
+            ${categories.map(c => `
+              <div style="background: var(--white); border: 1px solid var(--border); border-radius: 8px; padding: 10px 14px; margin-bottom: 6px; display: flex; justify-content: space-between; align-items: center;">
+                <strong style="font-size: 13px;">${c}</strong>
+                <button onclick="adminDeleteCategory('${c}')" style="background: #fee2e2; color: var(--error); border: none; padding: 4px 10px; border-radius: 4px; cursor: pointer; font-size: 11px; font-weight: 700;">Remove</button>
+              </div>
+            `).join('')}
           </div>
-          <div style="display:flex; gap:6px;">
-            <button class="btn-secondary" style="padding:4px 8px; font-size:11px;" onclick="adjustProductPricePrompt('${p.id}')">Adjust Price</button>
-            <button class="btn-secondary" style="padding:4px 8px; font-size:11px; color:var(--red);" onclick="removeProduct('${p.id}')">Delete</button>
+        `;
+      } else if (currentAdminTab === 'orders') {
+        container.innerHTML = `
+          <h3 style="font-size: 15px; margin-bottom: 12px;">Customer Orders</h3>
+          ${orders.map(o => `
+            <div style="background: var(--white); border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 10px;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                <strong style="font-size: 13px;">#${o.orderNumber} - ${o.name} (${o.phone})</strong>
+                <select onchange="adminUpdateOrderStatus(${o.id}, this.value)" class="form-control" style="width: auto; padding: 3px 8px; font-size: 12px;">
+                  <option value="Pending" ${o.status === 'Pending' ? 'selected' : ''}>Pending</option>
+                  <option value="Payment Verified" ${o.status === 'Payment Verified' ? 'selected' : ''}>Payment Verified</option>
+                  <option value="Processing" ${o.status === 'Processing' ? 'selected' : ''}>Processing</option>
+                  <option value="Dispatched" ${o.status === 'Dispatched' ? 'selected' : ''}>Dispatched</option>
+                  <option value="Delivered" ${o.status === 'Delivered' ? 'selected' : ''}>Delivered</option>
+                  <option value="Cancelled" ${o.status === 'Cancelled' ? 'selected' : ''}>Cancelled</option>
+                </select>
+              </div>
+              <p style="font-size: 12px; color: var(--slate-dark);">${o.address}, ${o.city}</p>
+              <p style="font-size: 12px; color: var(--slate-dark);"><strong>Items:</strong> ${o.itemsSummary}</p>
+              <p style="font-size: 12px; color: var(--primary);"><strong>Method:</strong> ${o.paymentMethod} • <strong>Till ID:</strong> ${o.tillId}</p>
+              <p style="font-size: 13px; font-weight: 800; color: var(--slate-dark); margin-top: 4px;">Total: Rs. ${o.total}</p>
+            </div>
+          `).join('')}
+        `;
+      } else if (currentAdminTab === 'settings') {
+        container.innerHTML = `
+          <div style="background: var(--white); padding: 20px; border-radius: var(--radius); border: 1px solid var(--border); max-width: 440px;">
+            <h3 style="font-size: 15px; margin-bottom: 12px;">Change Admin Credentials</h3>
+            <div class="form-group">
+              <label>New Username</label>
+              <input type="text" class="form-control" id="changeUser" value="${adminCreds.user}">
+            </div>
+            <div class="form-group">
+              <label>New Password</label>
+              <input type="password" class="form-control" id="changePass" placeholder="Enter new password">
+            </div>
+            <button onclick="adminSaveCreds()" class="btn-buy" style="width: 100%; padding: 10px;">Save New Login Credentials</button>
           </div>
-        </div>
-      `).join('');
-
-      // Orders List
-      const oList = document.getElementById('adm-orders-list');
-      oList.innerHTML = orders.map(o => `
-        <div style="padding:10px 0; border-bottom:1px solid var(--border);">
-          <div style="display:flex; justify-content:space-between;">
-            <strong>#${o.orderId} - ${o.customer.name}</strong>
-            <span style="font-weight:700; color:var(--grass-dark);">${o.status}</span>
-          </div>
-          <div style="font-size:12px; color:var(--text-muted); margin:4px 0;">
-            ${o.paymentMethod} • Rs ${o.total.toLocaleString()} ${o.tillId ? '(Till ID: ' + o.tillId + ')' : ''}
-          </div>
-          <div style="display:flex; gap:6px; margin-top:6px;">
-            <button class="btn-secondary" style="padding:4px 8px; font-size:11px;" onclick="setOrderStatus('${o.orderId}', 'Processing')">Mark Processing</button>
-            <button class="btn-secondary" style="padding:4px 8px; font-size:11px;" onclick="setOrderStatus('${o.orderId}', 'Shipped')">Mark Shipped</button>
-            <button class="btn-primary" style="padding:4px 8px; font-size:11px; width:auto;" onclick="setOrderStatus('${o.orderId}', 'Delivered')">Mark Delivered</button>
-          </div>
-        </div>
-      `).join('');
-    }
-
-    function adjustProductPricePrompt(id) {
-      const p = products.find(prod => prod.id === id);
-      const newP = prompt(`Enter new price in PKR for ${p.name}:`, p.price);
-      if (newP && !isNaN(newP)) {
-        p.price = parseFloat(newP);
-        renderAdminDashboard();
-        renderProducts();
-        alert('Price updated!');
+        `;
       }
     }
 
-    function removeProduct(id) {
-      if (confirm('Are you sure you want to remove this shoe?')) {
-        products = products.filter(p => p.id !== id);
-        renderAdminDashboard();
-        renderProducts();
-      }
-    }
+    function adminAddProduct() {
+      const title = document.getElementById('newProdTitle').value.trim();
+      const cat = document.getElementById('newProdCat').value;
+      const gen = document.getElementById('newProdGen').value;
+      const price = parseFloat(document.getElementById('newProdPrice').value);
+      const desc = document.getElementById('newProdDesc').value.trim();
 
-    function setOrderStatus(orderId, status) {
-      const o = orders.find(ord => ord.orderId === orderId);
-      if (o) {
-        o.status = status;
-        if (status === 'Delivered') {
-          o.timeline.forEach(st => st.status = 'completed');
-        } else if (status === 'Shipped') {
-          o.timeline[0].status = 'completed';
-          o.timeline[1].status = 'completed';
-          o.timeline[2].status = 'completed';
-          o.timeline[3].status = 'completed';
-        }
-        renderAdminDashboard();
-      }
-    }
-
-    // Add Product Modal & 6 Images
-    function openAddProductModal() {
-      const sel = document.getElementById('new-prod-cat');
-      sel.innerHTML = categories.filter(c => c !== 'All').map(c => `<option value="${c}">${c}</option>`).join('');
-      uploadedProductImageURLs = [];
-      document.getElementById('new-prod-img-previews').innerHTML = '';
-      document.getElementById('add-product-modal').classList.add('open');
-    }
-
-    function handleImageSelection(e) {
-      const files = Array.from(e.target.files).slice(0, 6);
-      uploadedProductImageURLs = [];
-      const prev = document.getElementById('new-prod-img-previews');
-      prev.innerHTML = '';
-      files.forEach(file => {
-        const url = URL.createObjectURL(file);
-        uploadedProductImageURLs.push(url);
-        prev.innerHTML += `<img src="${url}" style="width:50px; height:50px; border-radius:6px; object-fit:cover; border:1px solid var(--border);" />`;
-      });
-    }
-
-    function saveNewProduct() {
-      const name = document.getElementById('new-prod-name').value.trim();
-      const cat = document.getElementById('new-prod-cat').value;
-      const price = parseFloat(document.getElementById('new-prod-price').value);
-      const orig = parseFloat(document.getElementById('new-prod-orig').value) || (price * 1.25);
-      const desc = document.getElementById('new-prod-desc').value.trim();
-
-      if (!name || isNaN(price)) {
-        alert('Please provide shoe name and valid price.');
+      if (!title || isNaN(price)) {
+        showToast("Please provide product title and price");
         return;
       }
 
-      const images = uploadedProductImageURLs.length ? uploadedProductImageURLs : [
-        "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600&auto=format&fit=crop"
-      ];
+      const imgList = adminStagedImages.length > 0 
+        ? [...adminStagedImages] 
+        : ["https://images.unsplash.com/photo-1524805444758-089113d48a6d?auto=format&fit=crop&w=600&q=80"];
 
       products.unshift({
-        id: 'p_' + Date.now(),
-        name,
-        category: cat,
-        price,
-        originalPrice: orig,
-        description: desc || "Aesthetic footwear crafted with comfort and durability.",
-        images: images.slice(0, 6),
-        sizes: [40, 41, 42, 43, 44, 45],
-        rating: 4.8
+        id: Date.now(),
+        title, category: cat, gender: gen, price, desc, images: imgList
       });
-
-      closeModal('add-product-modal');
-      renderAdminDashboard();
-      renderProducts();
-      alert('Product published successfully!');
+      adminStagedImages = [];
+      saveState();
+      renderAdmin();
+      showToast("New product added with gallery images!");
     }
 
-    // Change Credentials
-    function openAdminSettingsModal() {
-      document.getElementById('set-user').value = '';
-      document.getElementById('set-pass').value = '';
-      document.getElementById('admin-settings-modal').classList.add('open');
-    }
-
-    function updateAdminCredentials() {
-      const u = document.getElementById('set-user').value.trim();
-      const p = document.getElementById('set-pass').value.trim();
-      if (u && p) {
-        adminCredentials.username = u;
-        adminCredentials.password = p;
-        closeModal('admin-settings-modal');
-        alert('Admin credentials updated successfully!');
-      } else {
-        alert('Username and password cannot be empty.');
+    function adminAdjustPrice(id) {
+      const p = products.find(x => x.id === id);
+      const newP = prompt(`Enter new price for '${p.title}':`, p.price);
+      if (newP && !isNaN(newP)) {
+        p.price = parseFloat(newP);
+        saveState();
+        renderAdmin();
+        showToast("Price adjusted!");
       }
     }
 
-    // Init
-    renderProducts();
+    function adminDeleteProduct(id) {
+      if (confirm("Are you sure you want to delete this product?")) {
+        products = products.filter(p => p.id !== id);
+        saveState();
+        renderAdmin();
+        showToast("Product deleted");
+      }
+    }
+
+    function adminAddCategory() {
+      const val = document.getElementById('newCatInput').value.trim();
+      if (val && !categories.includes(val)) {
+        categories.push(val);
+        saveState();
+        renderAdmin();
+        showToast(`Category '${val}' added`);
+      }
+    }
+
+    function adminDeleteCategory(cat) {
+      if (confirm(`Remove category '${cat}'?`)) {
+        categories = categories.filter(c => c !== cat);
+        saveState();
+        renderAdmin();
+        showToast("Category removed");
+      }
+    }
+
+    function adminUpdateOrderStatus(orderId, newStatus) {
+      const o = orders.find(x => x.id === orderId);
+      if (o) {
+        o.status = newStatus;
+        saveState();
+        renderAdmin();
+        showToast(`Order status updated to ${newStatus}`);
+      }
+    }
+
+    function adminSaveCreds() {
+      const u = document.getElementById('changeUser').value.trim();
+      const p = document.getElementById('changePass').value.trim();
+      if (!u || !p) {
+        showToast("Username and password cannot be empty");
+        return;
+      }
+      adminCreds = { user: u, pass: p };
+      saveState();
+      showToast("Credentials updated successfully!");
+    }
+
+    // Utilities
+    function copyText(txt) {
+      navigator.clipboard.writeText(txt);
+      showToast(`Copied to clipboard: ${txt}`);
+    }
+
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.innerText = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 2600);
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).classList.remove('active');
+    }
+
+    // Initialize App
+    showView('home');
     updateCartBadge();
   </script>
 </body>
