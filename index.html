@@ -439,7 +439,7 @@
     const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
     let products = [];
-    let categories = JSON.parse(localStorage.getItem('ba_categories')) || ["Watches", "Perfumes", "Dresses"];
+    let categories = JSON.parse(localStorage.getItem('ba_categories')) || [];
     let orders = JSON.parse(localStorage.getItem('ba_orders')) || [];
     let cart = [];
     let selectedCat = 'All';
@@ -488,11 +488,16 @@
         const { data, error } = await supabaseClient.from('products').select('*').order('id', { ascending: false });
         if (error) throw error;
 
-        // FIRST RUN: move the products currently stored in this browser into Supabase.
+        // If the online table is empty, only migrate real products that still exist
+        // in this browser. Never recreate the demo products automatically.
         if (!data || data.length === 0) {
-          const localProducts = JSON.parse(localStorage.getItem('ba_products')) || INITIAL_PRODUCTS;
-          products = localProducts;
-          await saveState();
+          const localProducts = JSON.parse(localStorage.getItem('ba_products')) || [];
+          products = Array.isArray(localProducts) ? localProducts : [];
+          if (products.length > 0) {
+            await saveState();
+          }
+          categories = [...new Set(products.map(p => p.category).filter(Boolean))];
+          localStorage.setItem('ba_categories', JSON.stringify(categories));
           return;
         }
 
@@ -513,8 +518,8 @@
         localStorage.setItem('ba_categories', JSON.stringify(categories));
       } catch (err) {
         console.error('Supabase load error:', err);
-        products = JSON.parse(localStorage.getItem('ba_products')) || INITIAL_PRODUCTS;
-        showToast('Could not load online products.');
+        products = JSON.parse(localStorage.getItem('ba_products')) || [];
+        showToast('Could not load online products. Check your Supabase settings.');
       }
     }
 
