@@ -132,6 +132,7 @@
     .toast.show { display: block; animation: toastAnim 0.25s; }
     @keyframes toastAnim { from { opacity: 0; bottom: 10px; } to { opacity: 1; bottom: 20px; } }
   </style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 
@@ -421,21 +422,7 @@
   <!-- Hidden File Input for Gallery Photo Selection -->
   <input type="file" id="adminGalleryInput" accept="image/*" multiple style="display: none;" onchange="handleGalleryImagesSelected(event)">
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
-    // ============================================================
-    // BUY ASTHETIC - ONLINE PRODUCT DATABASE
-    // ============================================================
-    // Paste your Supabase Project URL and ANON/PUBLISHABLE KEY here.
-    // NEVER use a Supabase service_role/secret key in this HTML.
-    const SUPABASE_URL = "https://djlpyeqgqcffmuzvgaud.supabase.co";
-    const SUPABASE_ANON_KEY = "sb_publishable_C_uofQU959MdQKSQDdq1wQ_L4T1dG2p";
-
-    const supabaseClient = window.supabase.createClient(
-      SUPABASE_URL,
-      SUPABASE_ANON_KEY
-    );
-
     // Initial Catalog Data
     const INITIAL_PRODUCTS = [
       { id: 1, title: "Royal Chronograph Sapphire Timepiece", category: "Watches", gender: "Men", price: 5999, origPrice: 8500, desc: "Solid surgical stainless steel with Japanese quartz chronograph movement, scratch-resistant sapphire crystal lens, and royal blue sunray dial.", images: ["https://images.unsplash.com/photo-1524805444758-089113d48a6d?auto=format&fit=crop&w=600&q=80"] },
@@ -446,7 +433,11 @@
       { id: 6, title: "Raw Silk Festive Kurta & Pajama", category: "Dresses", gender: "Men", price: 6499, origPrice: 8999, desc: "Lustrous Korean raw silk kurta with ban collar embroidery and churidar pajama designed for Eid and Nikkah celebrations.", images: ["https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?auto=format&fit=crop&w=600&q=80"] }
     ];
 
-    // Products are loaded from Supabase so every visitor sees the same catalog.
+    // ===== ONLINE PRODUCT DATABASE (SUPABASE) =====
+    const SUPABASE_URL = "https://djlpyeqgqcffmuzvgaud.supabase.co";
+    const SUPABASE_ANON_KEY = "sb_publishable_C_uofQU959MdQKSQDdq1wQ_L4T1dG2p";
+    const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
     let products = [];
     let categories = JSON.parse(localStorage.getItem('ba_categories')) || ["Watches", "Perfumes", "Dresses"];
     let orders = JSON.parse(localStorage.getItem('ba_orders')) || [];
@@ -461,104 +452,69 @@
     let detailQty = 1;
     let adminStagedImages = [];
 
-    // Save local-only settings and synchronize products to the online database.
-    async function saveState() {
-      localStorage.setItem('ba_orders', JSON.stringify(orders));
+    // Keep orders/categories/login locally for now, but products are online.
+    function saveLocalState() {
       localStorage.setItem('ba_categories', JSON.stringify(categories));
+      localStorage.setItem('ba_orders', JSON.stringify(orders));
       localStorage.setItem('ba_creds', JSON.stringify(adminCreds));
+    }
 
-      // If Supabase has not been configured yet, keep the site usable locally.
-      if (SUPABASE_URL.includes('PASTE_YOUR_') || SUPABASE_ANON_KEY.includes('PASTE_YOUR_')) {
-        localStorage.setItem('ba_products', JSON.stringify(products));
-        return false;
-      }
-
+    async function saveState() {
+      saveLocalState();
       try {
         const rows = products.map(p => ({
+          id: Number(p.id),
+          title: p.title || '',
+          category: p.category || 'Other',
+          gender: p.gender || 'Unisex',
+          price: Number(p.price) || 0,
+          orig_price: p.orig_price == null ? null : Number(p.orig_price),
+          description: p.desc || p.description || '',
+          images: Array.isArray(p.images) ? p.images : []
+        }));
+        if (rows.length) {
+          const { error } = await supabaseClient.from('products').upsert(rows, { onConflict: 'id' });
+          if (error) throw error;
+        }
+        showToast('Products saved online');
+      } catch (err) {
+        console.error('Supabase save error:', err);
+        showToast('Online save failed. Check Supabase.');
+      }
+    }
+
+    async function loadProductsFromSupabase() {
+      try {
+        const { data, error } = await supabaseClient.from('products').select('*').order('id', { ascending: false });
+        if (error) throw error;
+
+        // FIRST RUN: move the products currently stored in this browser into Supabase.
+        if (!data || data.length === 0) {
+          const localProducts = JSON.parse(localStorage.getItem('ba_products')) || INITIAL_PRODUCTS;
+          products = localProducts;
+          await saveState();
+          return;
+        }
+
+        products = data.map(p => ({
           id: Number(p.id),
           title: p.title,
           category: p.category,
           gender: p.gender,
           price: Number(p.price),
-          orig_price: p.origPrice == null ? null : Number(p.origPrice),
-          description: p.desc || '',
+          orig_price: p.orig_price == null ? undefined : Number(p.orig_price),
+          desc: p.description || '',
           images: Array.isArray(p.images) ? p.images : []
         }));
 
-        if (rows.length) {
-          const { error } = await supabaseClient.from('products').upsert(rows);
-          if (error) throw error;
-        }
-
-        // Remove products deleted from the admin panel.
-        const { data: cloudRows, error: readError } = await supabaseClient
-          .from('products').select('id');
-        if (readError) throw readError;
-
-        const currentIds = new Set(products.map(p => Number(p.id)));
-        const deletedIds = (cloudRows || [])
-          .map(r => Number(r.id))
-          .filter(id => !currentIds.has(id));
-
-        if (deletedIds.length) {
-          const { error: deleteError } = await supabaseClient
-            .from('products').delete().in('id', deletedIds);
-          if (deleteError) throw deleteError;
-        }
-
-        return true;
-      } catch (error) {
-        console.error('Supabase product sync failed:', error);
-        showToast('Could not sync products online');
-        return false;
-      }
-    }
-
-    // Load the shared catalog. On the first run, migrate this browser's
-    // existing ba_products (your current products) into Supabase.
-    async function loadCloudProducts() {
-      if (SUPABASE_URL.includes('PASTE_YOUR_') || SUPABASE_ANON_KEY.includes('PASTE_YOUR_')) {
+        // Keep local copy as a backup, but the online database is now the source of truth.
+        localStorage.setItem('ba_products', JSON.stringify(products));
+        categories = [...new Set(products.map(p => p.category).filter(Boolean))];
+        localStorage.setItem('ba_categories', JSON.stringify(categories));
+      } catch (err) {
+        console.error('Supabase load error:', err);
         products = JSON.parse(localStorage.getItem('ba_products')) || INITIAL_PRODUCTS;
-        categories = [...new Set(products.map(p => p.category))];
-        return;
-      }
-
-      try {
-        const { data, error } = await supabaseClient
-          .from('products')
-          .select('*')
-          .order('id', { ascending: false });
-
-        if (error) throw error;
-
-        if (data && data.length > 0) {
-          products = data.map(p => ({
-            id: Number(p.id),
-            title: p.title,
-            category: p.category,
-            gender: p.gender,
-            price: Number(p.price),
-            origPrice: p.orig_price == null ? null : Number(p.orig_price),
-            desc: p.description || '',
-            images: Array.isArray(p.images) ? p.images : []
-          }));
-
-          categories = [...new Set(products.map(p => p.category))];
-          localStorage.setItem('ba_products', JSON.stringify(products));
-          return;
-        }
-
-        // Empty cloud database: migrate the products already saved in this browser.
-        const existing = JSON.parse(localStorage.getItem('ba_products')) || INITIAL_PRODUCTS;
-        products = existing;
-        categories = [...new Set(products.map(p => p.category))];
-        await saveState();
-        console.log('Existing Buy Asthetic products migrated to Supabase.');
-      } catch (error) {
-        console.error('Supabase load failed:', error);
-        products = JSON.parse(localStorage.getItem('ba_products')) || INITIAL_PRODUCTS;
-        categories = [...new Set(products.map(p => p.category))];
-        showToast('Online catalog unavailable - showing saved products');
+        showToast('Could not load online products.');
       }
     }
 
@@ -1226,22 +1182,16 @@
       document.getElementById(id).classList.remove('active');
     }
 
-    // Initialize App
+    // Initialize App: load the SAME products for every device/browser.
     async function initializeApp() {
       const grid = document.getElementById('productsGrid');
       if (grid) {
-        grid.innerHTML = `
-          <div style="grid-column:1/-1;text-align:center;padding:50px 20px;color:var(--slate-medium);">
-            <i class="fa-solid fa-spinner fa-spin" style="font-size:30px;margin-bottom:12px;"></i>
-            <div>Loading products...</div>
-          </div>`;
+        grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:50px 20px;">Loading products...</div>';
       }
-
-      await loadCloudProducts();
+      await loadProductsFromSupabase();
       showView('home');
       updateCartBadge();
     }
-
     initializeApp();
   </script>
 </body>
