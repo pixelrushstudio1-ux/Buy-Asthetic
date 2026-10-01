@@ -1,0 +1,1589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Buy Asthetic - Pakistani Store</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Supabase JS Client v2 -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    :root {
+      --primary: #0D47A1;
+      --primary-dark: #0A2540;
+      --primary-light: #1976D2;
+      --soft-azure: #E3F2FD;
+      --bg-ice: #F4F8FC;
+      --white: #FFFFFF;
+      --slate-dark: #1E293B;
+      --slate-medium: #475569;
+      --slate-light: #94A3B8;
+      --border: #E2E8F0;
+      --success: #10B981;
+      --warning: #F59E0B;
+      --error: #EF4444;
+      --radius: 12px;
+      --shadow: 0 4px 16px rgba(13, 71, 161, 0.07);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; -webkit-tap-highlight-color: transparent; }
+    body { background-color: var(--bg-ice); color: var(--slate-dark); min-height: 100vh; display: flex; flex-direction: column; transform: translateZ(0); }
+    
+    /* Header */
+    header { background: linear-gradient(135deg, var(--primary-dark), var(--primary)); color: var(--white); padding: 14px 20px; position: sticky; top: 0; z-index: 100; box-shadow: 0 4px 12px rgba(10,37,64,0.14); }
+    .header-content { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+    .logo-container { display: flex; align-items: center; gap: 12px; cursor: pointer; }
+    .logo-icon { background: rgba(255,255,255,0.18); width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 19px; flex-shrink: 0; }
+    .store-title { font-size: 22px; font-weight: 800; letter-spacing: 0.5px; line-height: 1.1; }
+    .store-subtitle { font-size: 12px; font-weight: 400; color: var(--soft-azure); letter-spacing: 0.2px; }
+    
+    /* Contact Section under Site Name */
+    .header-contact { display: flex; align-items: center; gap: 6px; margin-top: 4px; font-size: 11px; color: var(--soft-azure); flex-wrap: wrap; }
+    .whatsapp-btn { display: inline-flex; align-items: center; gap: 4px; background: #25D366; color: #FFFFFF; text-decoration: none; font-weight: 700; font-size: 11px; padding: 2px 9px; border-radius: 12px; transition: transform 0.15s, background 0.15s; box-shadow: 0 2px 6px rgba(0,0,0,0.18); }
+    .whatsapp-btn:hover { background: #1EBE5D; transform: scale(1.05); color: #FFFFFF; }
+
+    .nav-actions { display: flex; gap: 14px; align-items: center; }
+    .btn-icon { background: rgba(255,255,255,0.18); border: none; color: var(--white); width: 40px; height: 40px; border-radius: 50%; cursor: pointer; position: relative; display: flex; align-items: center; justify-content: center; font-size: 16px; transition: transform 0.15s; }
+    .btn-icon:active { transform: scale(0.92); }
+    .cart-badge { position: absolute; top: -3px; right: -3px; background: var(--error); color: var(--white); font-size: 11px; font-weight: 800; width: 19px; height: 19px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+
+    /* Top Navigation */
+    .top-nav { background: var(--white); border-bottom: 1px solid var(--border); }
+    .top-nav-container { max-width: 1200px; margin: 0 auto; display: flex; gap: 14px; padding: 8px 20px; }
+    .nav-link { color: var(--slate-medium); text-decoration: none; font-weight: 600; font-size: 13px; padding: 6px 14px; border-radius: 8px; cursor: pointer; transition: 0.15s; display: flex; align-items: center; gap: 6px; }
+    .nav-link.active, .nav-link:hover { color: var(--primary); background: var(--soft-azure); }
+
+    /* Main Container */
+    main { max-width: 1200px; margin: 0 auto; padding: 20px 16px; flex: 1; width: 100%; }
+
+    /* Hero Banner */
+    .hero-banner { background: linear-gradient(135deg, rgba(10,37,64,0.92), rgba(13,71,161,0.85)), url('https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=1200&q=80') center/cover; border-radius: 14px; padding: 36px 30px; color: var(--white); margin-bottom: 24px; box-shadow: var(--shadow); }
+    .hero-tag { background: rgba(255,255,255,0.22); display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 800; letter-spacing: 0.8px; margin-bottom: 10px; }
+    .hero-banner h1 { font-size: 28px; font-weight: 800; margin-bottom: 6px; }
+    .hero-banner p { font-size: 14px; color: var(--soft-azure); margin-bottom: 18px; max-width: 520px; line-height: 1.4; }
+    .btn-hero { background: var(--white); color: var(--primary); padding: 9px 20px; border-radius: 8px; font-weight: 700; font-size: 13px; border: none; cursor: pointer; transition: 0.15s; }
+    .btn-hero:hover { background: var(--soft-azure); }
+
+    /* Filter Controls */
+    .controls-bar { display: flex; flex-wrap: wrap; gap: 12px; justify-content: space-between; align-items: center; margin-bottom: 20px; background: var(--white); padding: 14px; border-radius: var(--radius); border: 1px solid var(--border); }
+    .search-box { display: flex; align-items: center; gap: 8px; background: var(--bg-ice); padding: 8px 12px; border-radius: 8px; border: 1px solid var(--border); flex: 1; min-width: 240px; }
+    .search-box input { border: none; background: transparent; outline: none; width: 100%; font-size: 13px; }
+    .chips-group { display: flex; gap: 6px; flex-wrap: wrap; }
+    .chip { padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; cursor: pointer; background: var(--bg-ice); border: 1px solid var(--border); color: var(--slate-dark); transition: 0.15s; user-select: none; }
+    .chip.active { background: var(--primary); color: var(--white); border-color: var(--primary); }
+
+    /* Product Grid */
+    .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 18px; }
+    .product-card { background: var(--white); border-radius: var(--radius); border: 1px solid var(--border); overflow: hidden; transition: transform 0.18s, box-shadow 0.18s; box-shadow: var(--shadow); display: flex; flex-direction: column; cursor: pointer; position: relative; }
+    .product-card:hover { transform: translateY(-3px); box-shadow: 0 8px 22px rgba(13, 71, 161, 0.12); }
+    .product-img-wrap { height: 210px; background: #eaeff5; position: relative; overflow: hidden; }
+    .product-img-wrap img { width: 100%; height: 100%; object-fit: cover; }
+    .card-badge { position: absolute; top: 8px; left: 8px; background: var(--primary); color: var(--white); font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 4px; }
+    .card-gender { position: absolute; top: 8px; right: 8px; background: rgba(255,255,255,0.92); color: var(--slate-dark); font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 4px; }
+    .product-info { padding: 14px; flex: 1; display: flex; flex-direction: column; }
+    .product-title { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+    .product-desc { font-size: 11px; color: var(--slate-medium); margin-bottom: 8px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.4; }
+    .price-row { display: flex; justify-content: space-between; align-items: baseline; margin-top: auto; padding-top: 8px; border-top: 1px solid var(--border); }
+    .current-price { font-size: 16px; font-weight: 800; color: var(--primary); }
+    .orig-price { font-size: 11px; color: var(--slate-light); text-decoration: line-through; margin-left: 5px; }
+    .card-buttons { display: flex; gap: 8px; margin-top: 10px; }
+    .btn-buy { flex: 1; background: var(--primary); color: var(--white); border: none; padding: 8px 10px; border-radius: 6px; font-weight: 700; font-size: 12px; cursor: pointer; text-align: center; }
+    .btn-buy:hover { background: var(--primary-light); }
+    .btn-cart { background: var(--soft-azure); color: var(--primary); border: 1px solid var(--primary-light); padding: 8px 10px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 700; display: flex; align-items: center; gap: 4px; }
+    .btn-cart:hover { background: #bbdefb; }
+
+    /* Loading & Error States */
+    .status-container { grid-column: 1/-1; text-align: center; padding: 60px 20px; background: var(--white); border-radius: var(--radius); border: 1px solid var(--border); }
+    .spinner-icon { font-size: 32px; color: var(--primary); margin-bottom: 14px; }
+    .btn-retry { background: var(--primary); color: var(--white); border: none; padding: 8px 20px; border-radius: 8px; font-weight: 700; font-size: 13px; cursor: pointer; margin-top: 14px; }
+
+    /* Modal / Popups */
+    .modal-overlay { position: fixed; inset: 0; background: rgba(10,37,64,0.65); display: none; align-items: center; justify-content: center; z-index: 1000; padding: 16px; backdrop-filter: blur(3px); }
+    .modal-overlay.active { display: flex; }
+    .modal-content { background: var(--white); width: 100%; max-width: 620px; border-radius: 16px; max-height: 90vh; overflow-y: auto; padding: 22px; position: relative; box-shadow: 0 10px 40px rgba(0,0,0,0.25); }
+    .modal-close { position: absolute; top: 16px; right: 16px; background: none; border: none; font-size: 22px; color: var(--slate-light); cursor: pointer; line-height: 1; }
+
+    /* Product Detail Elements */
+    .detail-gallery { width: 100%; height: 260px; border-radius: 12px; overflow: hidden; background: #eef3f8; margin-bottom: 12px; }
+    .detail-gallery img { width: 100%; height: 100%; object-fit: cover; }
+    .detail-thumbs { display: flex; gap: 8px; overflow-x: auto; margin-bottom: 14px; padding-bottom: 4px; }
+    .detail-thumb { width: 55px; height: 55px; border-radius: 8px; object-fit: cover; cursor: pointer; border: 2px solid transparent; }
+    .detail-thumb.active { border-color: var(--primary); }
+    .qty-stepper { display: flex; align-items: center; gap: 10px; margin: 14px 0; }
+    .btn-step { width: 32px; height: 32px; border-radius: 6px; border: 1px solid var(--border); background: var(--bg-ice); font-weight: 700; cursor: pointer; }
+
+    /* Gallery Upload Elements */
+    .btn-gallery { width: 100%; background: var(--primary); color: var(--white); padding: 12px; border-radius: 8px; border: none; font-weight: 700; font-size: 13px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 10px; }
+    .btn-gallery:hover { background: var(--primary-light); }
+    .preview-thumbs-grid { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+    .preview-thumb-box { width: 60px; height: 60px; border-radius: 6px; position: relative; overflow: hidden; border: 1px solid var(--border); }
+    .preview-thumb-box img { width: 100%; height: 100%; object-fit: cover; }
+    .preview-del-btn { position: absolute; top: 2px; right: 2px; background: rgba(0,0,0,0.65); color: #fff; border: none; border-radius: 50%; width: 18px; height: 18px; font-size: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+
+    /* Payment Card */
+    .pay-card { border: 2px solid var(--border); border-radius: 10px; padding: 12px; margin-bottom: 10px; cursor: pointer; transition: 0.15s; display: flex; align-items: center; justify-content: space-between; }
+    .pay-card.selected { border-color: var(--primary); background: var(--soft-azure); }
+    .copy-badge { background: var(--primary); color: var(--white); font-size: 10px; padding: 3px 8px; border-radius: 4px; cursor: pointer; border: none; font-weight: 700; }
+
+    /* Timeline */
+    .timeline { position: relative; padding-left: 22px; margin: 12px 0; border-left: 2px solid var(--border); }
+    .timeline-item { position: relative; margin-bottom: 12px; }
+    .timeline-dot { position: absolute; left: -29px; top: 2px; width: 12px; height: 12px; border-radius: 50%; background: var(--border); border: 2px solid var(--white); }
+    .timeline-item.done .timeline-dot { background: var(--success); }
+    .timeline-title { font-size: 12px; font-weight: 700; }
+
+    /* Form Controls */
+    .form-group { margin-bottom: 12px; }
+    .form-group label { display: block; font-size: 11px; font-weight: 700; color: var(--slate-medium); margin-bottom: 4px; }
+    .form-control { width: 100%; padding: 9px 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 13px; outline: none; }
+    .form-control:focus { border-color: var(--primary); }
+
+    /* Toast */
+    .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: var(--slate-dark); color: var(--white); padding: 10px 22px; border-radius: 30px; font-size: 13px; font-weight: 600; display: none; z-index: 2000; box-shadow: 0 4px 14px rgba(0,0,0,0.3); }
+    .toast.show { display: block; animation: toastAnim 0.25s; }
+    @keyframes toastAnim { from { opacity: 0; bottom: 10px; } to { opacity: 1; bottom: 20px; } }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="header-content">
+      <div class="logo-container" onclick="showView('home')">
+        <div class="logo-icon"><i class="fa-solid fa-gem"></i></div>
+        <div>
+          <div class="store-title">Buy Asthetic</div>
+          <div class="store-subtitle">Pakistani Store</div>
+          <!-- Contact WhatsApp Option below Site Name Section -->
+          <div class="header-contact">
+            <span>For getting any details contact here</span>
+            <a href="https://wa.me/923054272499" target="_blank" rel="noopener noreferrer" class="whatsapp-btn" onclick="event.stopPropagation()">
+              <i class="fa-brands fa-whatsapp"></i> WhatsApp
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="nav-actions">
+        <button class="btn-icon" onclick="showView('cart')" title="Shopping Cart">
+          <i class="fa-solid fa-cart-shopping"></i>
+          <span class="cart-badge" id="cartBadge">0</span>
+        </button>
+        <button class="btn-icon" onclick="showView('me')" title="My Profile & Orders">
+          <i class="fa-solid fa-user"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Top Navigation -->
+  <div class="top-nav">
+    <div class="top-nav-container">
+      <span class="nav-link active" id="tabHome" onclick="showView('home')"><i class="fa-solid fa-store"></i> Store Home</span>
+      <span class="nav-link" id="tabCart" onclick="showView('cart')"><i class="fa-solid fa-bag-shopping"></i> Cart</span>
+      <span class="nav-link" id="tabMe" onclick="showView('me')"><i class="fa-solid fa-clock-rotate-left"></i> My Orders & Admin</span>
+    </div>
+  </div>
+
+  <!-- Main View Area -->
+  <main>
+    <!-- 1. HOME VIEW -->
+    <div id="viewHome">
+      <div class="hero-banner">
+        <span class="hero-tag">GENUINE PAKISTANI STORE</span>
+        <h1>Watches, Perfumes & Dresses</h1>
+        <p>Curated luxury aesthetic fashion for distinguished men and elegant women across Pakistan. Free delivery with Cash on Delivery & mobile wallets.</p>
+        <button class="btn-hero" onclick="setCategory('All')">Explore All Collections</button>
+      </div>
+
+      <div class="controls-bar">
+        <div class="search-box">
+          <i class="fa-solid fa-magnifying-glass" style="color: var(--primary);"></i>
+          <input type="text" id="searchInput" placeholder="Search watches, perfumes, dresses..." oninput="filterProducts()">
+        </div>
+        <div class="chips-group" id="categoryChips"></div>
+        <div class="chips-group">
+          <span class="chip active" onclick="setGender('All', this)">All</span>
+          <span class="chip" onclick="setGender('Men', this)">Men</span>
+          <span class="chip" onclick="setGender('Women', this)">Women</span>
+        </div>
+      </div>
+
+      <!-- Real-time Supabase Products Grid -->
+      <div class="product-grid" id="productsGrid">
+        <div class="status-container">
+          <i class="fa-solid fa-circle-notch fa-spin spinner-icon"></i>
+          <h3>Connecting to Supabase...</h3>
+          <p style="color: var(--slate-medium); font-size: 13px; margin-top: 4px;">Loading store catalog from live database</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. CART VIEW -->
+    <div id="viewCart" style="display: none;">
+      <h2 style="font-size: 20px; font-weight: 800; margin-bottom: 16px;">Your Shopping Cart</h2>
+      <div id="cartContent"></div>
+    </div>
+
+    <!-- 3. ME (ORDERS & ADMIN) VIEW -->
+    <div id="viewMe" style="display: none;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <h2 style="font-size: 20px; font-weight: 800;">My Account & Orders</h2>
+        <button onclick="openAdminLoginModal()" style="background: var(--primary-dark); color: var(--white); border: none; padding: 8px 16px; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 13px;">
+          <i class="fa-solid fa-lock"></i> Admin Portal
+        </button>
+      </div>
+      <div id="ordersList"></div>
+    </div>
+
+    <!-- 4. ADMIN PORTAL VIEW -->
+    <div id="viewAdmin" style="display: none;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; background: var(--primary-dark); color: var(--white); padding: 16px; border-radius: var(--radius);">
+        <div>
+          <h2 style="font-size: 18px; font-weight: 800;">Administrator Portal</h2>
+          <p style="font-size: 12px; color: var(--soft-azure);">Buy Asthetic • Supabase Live Database Sync</p>
+        </div>
+        <button onclick="adminLogout()" style="background: var(--white); color: var(--primary-dark); border: none; padding: 7px 14px; border-radius: 6px; font-weight: 700; cursor: pointer; font-size: 12px;">
+          <i class="fa-solid fa-right-from-bracket"></i> Logout
+        </button>
+      </div>
+
+      <!-- Stats row -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 18px;">
+        <div style="background: var(--white); padding: 16px; border-radius: var(--radius); border: 1px solid var(--border);">
+          <div style="font-size: 11px; color: var(--slate-medium); font-weight: 700;">SALES THIS MONTH</div>
+          <div style="font-size: 22px; font-weight: 800; color: var(--primary); margin-top: 4px;" id="adminSalesVal">Rs. 0</div>
+        </div>
+        <div style="background: var(--white); padding: 16px; border-radius: var(--radius); border: 1px solid var(--border);">
+          <div style="font-size: 11px; color: var(--slate-medium); font-weight: 700;">ORDERS THIS MONTH</div>
+          <div style="font-size: 22px; font-weight: 800; color: var(--primary); margin-top: 4px;" id="adminOrdersCount">0</div>
+        </div>
+        <div style="background: var(--white); padding: 16px; border-radius: var(--radius); border: 1px solid var(--border);">
+          <div style="font-size: 11px; color: var(--slate-medium); font-weight: 700;">SUPABASE PRODUCTS</div>
+          <div style="font-size: 22px; font-weight: 800; color: var(--primary); margin-top: 4px;" id="adminProdCount">0</div>
+        </div>
+      </div>
+
+      <!-- Admin Tabs -->
+      <div class="chips-group" style="margin-bottom: 18px;">
+        <span class="chip active" onclick="setAdminTab('products', this)">Products</span>
+        <span class="chip" onclick="setAdminTab('categories', this)">Categories</span>
+        <span class="chip" onclick="setAdminTab('orders', this)">Orders</span>
+        <span class="chip" onclick="setAdminTab('settings', this)">Settings</span>
+      </div>
+
+      <div id="adminTabContent"></div>
+    </div>
+  </main>
+
+  <!-- PRODUCT DETAIL MODAL (Opens with all details & buying options) -->
+  <div class="modal-overlay" id="productDetailModal">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeModal('productDetailModal')">&times;</button>
+      <div class="detail-gallery">
+        <img id="detailHeroImg" src="" alt="Product Image">
+      </div>
+      <div class="detail-thumbs" id="detailThumbs"></div>
+      
+      <div style="display: flex; gap: 8px; margin-bottom: 8px;">
+        <span class="card-badge" id="detailCatBadge" style="position: static;">Category</span>
+        <span class="card-gender" id="detailGenderBadge" style="position: static; border: 1px solid var(--border);">Gender</span>
+      </div>
+
+      <h2 id="detailTitle" style="font-size: 18px; font-weight: 800; margin-bottom: 6px;">Product Title</h2>
+      <div style="display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--warning); margin-bottom: 10px;">
+        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i>
+        <span style="color: var(--slate-medium); font-weight: 600;">(4.9 • Verified Reviews)</span>
+      </div>
+
+      <div style="display: flex; align-items: baseline; gap: 8px; margin-bottom: 12px;">
+        <span id="detailPrice" style="font-size: 22px; font-weight: 800; color: var(--primary);">Rs. 0</span>
+        <span id="detailOrigPrice" style="font-size: 13px; color: var(--slate-light); text-decoration: line-through;"></span>
+      </div>
+
+      <p id="detailDesc" style="font-size: 13px; color: var(--slate-medium); line-height: 1.5; margin-bottom: 16px;"></p>
+
+      <div class="qty-stepper">
+        <span style="font-size: 13px; font-weight: 700;">Quantity:</span>
+        <button class="btn-step" onclick="changeDetailQty(-1)">-</button>
+        <span id="detailQtyVal" style="font-weight: 800; min-width: 20px; text-align: center;">1</span>
+        <button class="btn-step" onclick="changeDetailQty(1)">+</button>
+      </div>
+
+      <div style="display: flex; gap: 10px; margin-top: 18px;">
+        <button class="btn-cart" id="detailAddToCartBtn" style="flex: 1; padding: 12px; justify-content: center; font-size: 13px;">
+          <i class="fa-solid fa-cart-plus"></i> Add to Cart
+        </button>
+        <button class="btn-buy" id="detailBuyNowBtn" style="flex: 1; padding: 12px; font-size: 13px;">
+          Buy Now
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHECKOUT MODAL -->
+  <div class="modal-overlay" id="checkoutModal">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeModal('checkoutModal')">&times;</button>
+      <h2 style="font-size: 18px; font-weight: 800; margin-bottom: 14px;">Complete Your Order</h2>
+      
+      <div class="form-group">
+        <label>Full Name *</label>
+        <input type="text" class="form-control" id="custName" placeholder="e.g. Asad Ali">
+      </div>
+      <div class="form-group">
+        <label>Phone Number *</label>
+        <input type="text" class="form-control" id="custPhone" placeholder="03051234567">
+      </div>
+      <div class="form-group">
+        <label>Delivery Address *</label>
+        <input type="text" class="form-control" id="custAddress" placeholder="House/Flat #, Street, Area">
+      </div>
+      <div class="form-group">
+        <label>City *</label>
+        <input type="text" class="form-control" id="custCity" value="Lahore">
+      </div>
+
+      <h3 style="font-size: 14px; font-weight: 800; margin: 16px 0 10px;">Select Payment Method</h3>
+
+      <!-- 1. COD -->
+      <div class="pay-card selected" id="optCOD" onclick="selectPayMethod('COD')">
+        <div>
+          <strong>Cash on Delivery (COD)</strong>
+          <div style="font-size: 11px; color: var(--slate-medium);">+Rs. 100 extra delivery handling charge</div>
+        </div>
+        <span style="font-weight: 800; color: var(--warning); font-size: 12px;">+100 PKR</span>
+      </div>
+
+      <!-- 2. Easypaisa -->
+      <div class="pay-card" id="optEP" onclick="selectPayMethod('Easypaisa')">
+        <div>
+          <strong>Easypaisa Mobile Account</strong>
+          <div style="font-size: 11px; color: var(--slate-medium);">03054272499 • Asad Nadeem</div>
+        </div>
+        <button class="copy-badge" onclick="event.stopPropagation(); copyText('03054272499')">Copy</button>
+      </div>
+
+      <!-- 3. Jazzcash -->
+      <div class="pay-card" id="optJC" onclick="selectPayMethod('Jazzcash')">
+        <div>
+          <strong>Jazzcash Mobile Account</strong>
+          <div style="font-size: 11px; color: var(--slate-medium);">03054272499 • Abdullah</div>
+        </div>
+        <button class="copy-badge" onclick="event.stopPropagation(); copyText('03054272499')">Copy</button>
+      </div>
+
+      <!-- 4. UBL -->
+      <div class="pay-card" id="optUBL" onclick="selectPayMethod('UBL')">
+        <div>
+          <strong>UBL Bank Account</strong>
+          <div style="font-size: 11px; color: var(--slate-medium);">A/C: 0463383104492 • Asad Nadeem</div>
+          <div style="font-size: 10px; color: var(--primary);">IBAN: PK77 UNIL 0109 0003 8310 4492</div>
+        </div>
+        <button class="copy-badge" onclick="event.stopPropagation(); copyText('PK77 UNIL 0109 0003 8310 4492')">Copy IBAN</button>
+      </div>
+
+      <!-- Online fields -->
+      <div id="onlinePaymentFields" style="display: none; background: #fff8e1; border: 1px solid var(--warning); padding: 12px; border-radius: 8px; margin-bottom: 12px;">
+        <div class="form-group" style="margin-bottom: 8px;">
+          <label style="color: var(--error);">Transaction / Till ID * (COMPULSORY)</label>
+          <input type="text" class="form-control" id="custTillId" placeholder="Enter Transaction/Till ID from payment SMS or receipt">
+        </div>
+        <div class="form-group">
+          <label>Screenshot / Note (Optional)</label>
+          <input type="text" class="form-control" id="custScreenshotNote" placeholder="Receipt Image URL or Sender Account Title">
+        </div>
+      </div>
+
+      <div style="background: var(--bg-ice); padding: 12px; border-radius: 8px; margin: 14px 0;">
+        <div style="display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 5px;">
+          <span>Subtotal:</span><span id="checkoutSubtotal">Rs. 0</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 5px;">
+          <span>COD Charges:</span><span id="checkoutExtra">Rs. 100</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 16px; font-weight: 800; color: var(--primary);">
+          <span>Grand Total:</span><span id="checkoutTotal">Rs. 0</span>
+        </div>
+      </div>
+
+      <button id="btnConfirmPlaceOrder" onclick="placeOrderFinal()" style="width: 100%; background: var(--primary); color: var(--white); padding: 12px; border-radius: 8px; border: none; font-weight: 800; font-size: 14px; cursor: pointer;">
+        Confirm & Place Order
+      </button>
+    </div>
+  </div>
+
+  <!-- ADMIN LOGIN MODAL -->
+  <div class="modal-overlay" id="adminLoginModal">
+    <div class="modal-content" style="max-width: 400px;">
+      <button class="modal-close" onclick="closeModal('adminLoginModal')">&times;</button>
+      <div style="text-align: center; margin-bottom: 18px;">
+        <div style="width: 46px; height: 46px; background: var(--primary-dark); color: var(--white); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 8px; font-size: 20px;">
+          <i class="fa-solid fa-user-shield"></i>
+        </div>
+        <h2 style="font-size: 18px; font-weight: 800;">Admin Sign In</h2>
+        <p style="font-size: 12px; color: var(--slate-medium);">Enter credentials to access Buy Asthetic portal</p>
+      </div>
+
+      <div class="form-group">
+        <label>Username</label>
+        <input type="text" class="form-control" id="adminUserInput" placeholder="Enter username">
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" class="form-control" id="adminPassInput" placeholder="Enter password">
+      </div>
+      <div id="adminLoginErr" style="color: var(--error); font-size: 12px; margin-bottom: 10px; display: none;"></div>
+
+      <button onclick="submitAdminLogin()" style="width: 100%; background: var(--primary-dark); color: var(--white); padding: 11px; border-radius: 8px; border: none; font-weight: 700; cursor: pointer;">
+        Access Administrator Portal
+      </button>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast" id="toast"></div>
+
+  <!-- Hidden File Input for Device Photo Gallery Selection -->
+  <input type="file" id="adminGalleryInput" accept="image/*" multiple style="display: none;" onchange="handleGalleryImagesSelected(event)">
+
+  <script>
+    // ==========================================
+    // SUPABASE CONFIGURATION (LIVE DATABASE)
+    // ==========================================
+    const SUPABASE_URL = 'https://djlpyeqgqcffmuzvgaud.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_C_uofQU959MdQKSQDdq1wQ_L4T1dG2p';
+
+    // Initialize official Supabase client with graceful fallback
+    let supabaseClient = null;
+    if (window.supabase && typeof window.supabase.createClient === 'function') {
+      try {
+        supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+      } catch (err) {
+        console.warn('Supabase SDK initialization notice:', err);
+      }
+    }
+
+    // Direct REST API Helper (100% reliable across all browsers & webviews)
+    async function supabaseFetch(endpoint, method = 'GET', body = null) {
+      const headers = {
+        'apikey': SUPABASE_KEY,
+        'Authorization': `Bearer ${SUPABASE_KEY}`,
+        'Content-Type': 'application/json'
+      };
+      if (method === 'POST') {
+        headers['Prefer'] = 'return=representation';
+      }
+      const options = { method, headers };
+      if (body) {
+        options.body = JSON.stringify(body);
+      }
+      const resp = await fetch(`${SUPABASE_URL}/rest/v1/${endpoint}`, options);
+      if (!resp.ok) {
+        const errorText = await resp.text();
+        throw new Error(`Database error (${resp.status}): ${errorText}`);
+      }
+      if (resp.status === 204) return null;
+      return await resp.json();
+    }
+
+    // Map Supabase product table record to UI model
+    function mapFromSupabase(row) {
+      let imgArray = [];
+      if (Array.isArray(row.images)) {
+        imgArray = row.images;
+      } else if (typeof row.images === 'string') {
+        try {
+          const parsed = JSON.parse(row.images);
+          imgArray = Array.isArray(parsed) ? parsed : [row.images];
+        } catch (e) {
+          imgArray = [row.images];
+        }
+      }
+      if (imgArray.length === 0) {
+        imgArray = ["https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=600&q=80"];
+      }
+
+      return {
+        id: Number(row.id),
+        title: row.title || 'Untitled Item',
+        category: row.category || 'General',
+        gender: row.gender || 'Unisex',
+        price: Number(row.price) || 0,
+        origPrice: row.orig_price ? Number(row.orig_price) : null,
+        desc: row.description || '',
+        images: imgArray
+      };
+    }
+
+    // Map UI model to Supabase product table record
+    function mapToSupabase(p) {
+      return {
+        id: Number(p.id),
+        title: p.title,
+        category: p.category,
+        gender: p.gender,
+        price: Number(p.price),
+        orig_price: p.origPrice ? Number(p.origPrice) : null,
+        description: p.desc || '',
+        images: p.images || []
+      };
+    }
+
+    // ==========================================
+    // SUPABASE ORDER MAPPING
+    // ==========================================
+    function mapOrderToSupabase(o) {
+      return {
+        id: Number(o.id),
+        order_number: String(o.orderNumber),
+        name: String(o.name),
+        phone: String(o.phone),
+        address: String(o.address),
+        city: String(o.city),
+        items_summary: String(o.itemsSummary),
+        payment_method: String(o.paymentMethod),
+        till_id: String(o.tillId || 'N/A'),
+        screenshot: String(o.screenshot || 'None'),
+        total: Number(o.total),
+        status: String(o.status || 'Pending'),
+        created_at: o.createdAtISO || new Date().toISOString()
+      };
+    }
+
+    function mapOrderFromSupabase(row) {
+      let dateFormatted = '';
+      try {
+        dateFormatted = new Date(row.created_at).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+      } catch (e) {
+        dateFormatted = new Date().toLocaleDateString();
+      }
+
+      return {
+        id: Number(row.id),
+        orderNumber: row.order_number || ('BA-' + row.id),
+        name: row.name || 'Customer',
+        phone: row.phone || '',
+        address: row.address || '',
+        city: row.city || '',
+        itemsSummary: row.items_summary || '',
+        paymentMethod: row.payment_method || 'Cash on Delivery',
+        tillId: row.till_id || 'N/A',
+        screenshot: row.screenshot || 'None',
+        total: Number(row.total) || 0,
+        status: row.status || 'Pending',
+        createdAt: dateFormatted,
+        createdAtISO: row.created_at
+      };
+    }
+
+    // State Variables (Orders are NEVER loaded from localStorage; Supabase is source of truth for orders)
+    let products = JSON.parse(localStorage.getItem('ba_products')) || [];
+    let isProductsLoading = true;
+    let productsError = null;
+
+    let orders = [];
+    let isOrdersLoading = false;
+
+    let defaultCategories = ["Watches", "Perfumes", "Dresses"];
+    let extraCategories = JSON.parse(localStorage.getItem('ba_custom_categories')) || [];
+    let cart = [];
+    let selectedCat = 'All';
+    let selectedGender = 'All';
+    let selectedPayMethod = 'COD';
+    let currentAdminTab = 'products';
+    let adminCreds = JSON.parse(localStorage.getItem('ba_creds')) || { user: 'abdullahasad', pass: '124211212ah' };
+    let directCheckoutItem = null;
+    let currentDetailProduct = null;
+    let detailQty = 1;
+    let adminStagedImages = [];
+
+    function saveLocalState() {
+      // Retain existing localStorage product system so products are not lost or removed
+      localStorage.setItem('ba_custom_categories', JSON.stringify(extraCategories));
+      localStorage.setItem('ba_creds', JSON.stringify(adminCreds));
+      if (products && products.length > 0) {
+        localStorage.setItem('ba_products', JSON.stringify(products));
+      }
+      // Orders use Supabase online database as the source of truth
+      localStorage.removeItem('ba_orders');
+    }
+
+    // ==========================================
+    // SUPABASE DATA SYNCHRONIZATION
+    // ==========================================
+    async function loadProductsFromSupabase() {
+      isProductsLoading = products.length === 0;
+      productsError = null;
+      renderProducts();
+
+      try {
+        let rows = null;
+        if (supabaseClient) {
+          const { data, error } = await supabaseClient.from('products').select('*').order('id', { ascending: false });
+          if (error) throw error;
+          rows = data;
+        } else {
+          rows = await supabaseFetch('products?select=*&order=id.desc');
+        }
+
+        if (Array.isArray(rows) && rows.length > 0) {
+          products = rows.map(mapFromSupabase);
+          localStorage.setItem('ba_products', JSON.stringify(products));
+        } else if (products.length === 0) {
+          const localSaved = JSON.parse(localStorage.getItem('ba_products'));
+          if (Array.isArray(localSaved) && localSaved.length > 0) {
+            products = localSaved;
+          }
+        }
+        isProductsLoading = false;
+        productsError = null;
+      } catch (err) {
+        console.error('Error fetching products from Supabase:', err);
+        isProductsLoading = false;
+        // Fallback to local products if Supabase has network error so products are not lost
+        const localSaved = JSON.parse(localStorage.getItem('ba_products'));
+        if (Array.isArray(localSaved) && localSaved.length > 0) {
+          products = localSaved;
+          productsError = null;
+        } else {
+          productsError = err.message || 'Failed to connect to Supabase database';
+        }
+      }
+
+      renderProducts();
+      if (document.getElementById('viewAdmin').style.display === 'block') {
+        renderAdmin();
+      }
+    }
+
+    async function loadOrdersFromSupabase() {
+      isOrdersLoading = true;
+      try {
+        let rows = null;
+        if (supabaseClient) {
+          const { data, error } = await supabaseClient.from('orders').select('*').order('created_at', { ascending: false });
+          if (error) throw error;
+          rows = data;
+        } else {
+          rows = await supabaseFetch('orders?select=*&order=created_at.desc');
+        }
+
+        if (Array.isArray(rows)) {
+          orders = rows.map(mapOrderFromSupabase);
+        } else {
+          orders = [];
+        }
+      } catch (err) {
+        console.error('Failed to load orders from Supabase:', err);
+      } finally {
+        isOrdersLoading = false;
+      }
+
+      if (document.getElementById('viewMe').style.display === 'block') {
+        renderOrders();
+      }
+      if (document.getElementById('viewAdmin').style.display === 'block') {
+        renderAdmin();
+      }
+    }
+
+    // Navigation
+    function showView(viewId) {
+      document.getElementById('viewHome').style.display = viewId === 'home' ? 'block' : 'none';
+      document.getElementById('viewCart').style.display = viewId === 'cart' ? 'block' : 'none';
+      document.getElementById('viewMe').style.display = viewId === 'me' ? 'block' : 'none';
+      document.getElementById('viewAdmin').style.display = viewId === 'admin' ? 'block' : 'none';
+
+      document.getElementById('tabHome').classList.toggle('active', viewId === 'home');
+      document.getElementById('tabCart').classList.toggle('active', viewId === 'cart');
+      document.getElementById('tabMe').classList.toggle('active', viewId === 'me');
+
+      if (viewId === 'home') renderProducts();
+      if (viewId === 'cart') renderCart();
+      if (viewId === 'me') {
+        renderOrders();
+        loadOrdersFromSupabase();
+      }
+      if (viewId === 'admin') {
+        renderAdmin();
+        loadOrdersFromSupabase();
+      }
+    }
+
+    // Categories (Derived from live Supabase products + custom categories)
+    function getAllActiveCategories() {
+      const liveProductCategories = products.map(p => p.category).filter(Boolean);
+      return Array.from(new Set([...defaultCategories, ...extraCategories, ...liveProductCategories]));
+    }
+
+    function renderCategoryChips() {
+      const container = document.getElementById('categoryChips');
+      const allCats = ['All', ...getAllActiveCategories()];
+      container.innerHTML = allCats.map(cat => `
+        <span class="chip ${selectedCat.toLowerCase() === cat.toLowerCase() ? 'active' : ''}" onclick="setCategory('${cat}')">${cat}</span>
+      `).join('');
+    }
+
+    function setCategory(cat) {
+      selectedCat = cat;
+      renderCategoryChips();
+      filterProducts();
+    }
+
+    function setGender(g, el) {
+      selectedGender = g;
+      el.parentElement.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+      el.classList.add('active');
+      filterProducts();
+    }
+
+    function filterProducts() {
+      const query = document.getElementById('searchInput').value.toLowerCase().trim();
+      const filtered = products.filter(p => {
+        const matchCat = selectedCat === 'All' || p.category.toLowerCase() === selectedCat.toLowerCase();
+        const matchGen = selectedGender === 'All' || p.gender.toLowerCase() === selectedGender.toLowerCase() || p.gender.toLowerCase() === 'unisex';
+        const matchQuery = !query || p.title.toLowerCase().includes(query) || p.desc.toLowerCase().includes(query);
+        return matchCat && matchGen && matchQuery;
+      });
+      renderProductCards(filtered);
+    }
+
+    function renderProducts() {
+      renderCategoryChips();
+
+      const grid = document.getElementById('productsGrid');
+
+      // Loading state
+      if (isProductsLoading) {
+        grid.innerHTML = `
+          <div class="status-container">
+            <i class="fa-solid fa-circle-notch fa-spin spinner-icon"></i>
+            <h3>Loading Store Catalog...</h3>
+            <p style="color: var(--slate-medium); font-size: 13px; margin-top: 4px;">Syncing latest products with Supabase cloud database</p>
+          </div>
+        `;
+        return;
+      }
+
+      // Error state
+      if (productsError) {
+        grid.innerHTML = `
+          <div class="status-container" style="border-color: #fca5a5; background: #fff5f5;">
+            <i class="fa-solid fa-triangle-exclamation" style="font-size: 34px; color: var(--error); margin-bottom: 12px;"></i>
+            <h3 style="color: var(--error);">Unable to Load Catalog from Supabase</h3>
+            <p style="color: var(--slate-medium); font-size: 13px; margin: 6px auto; max-width: 480px;">${productsError}</p>
+            <button class="btn-retry" onclick="loadProductsFromSupabase()">
+              <i class="fa-solid fa-rotate-right"></i> Retry Connection
+            </button>
+          </div>
+        `;
+        return;
+      }
+
+      // Empty state (Does NOT silently recreate mock items)
+      if (products.length === 0) {
+        grid.innerHTML = `
+          <div class="status-container">
+            <i class="fa-solid fa-box-open" style="font-size: 38px; color: var(--slate-light); margin-bottom: 12px;"></i>
+            <h3>No Products in Catalog</h3>
+            <p style="color: var(--slate-medium); font-size: 13px; margin-top: 4px;">The store catalog is currently empty. Use the Admin Portal to add products to Supabase.</p>
+          </div>
+        `;
+        return;
+      }
+
+      filterProducts();
+    }
+
+    function renderProductCards(list) {
+      const grid = document.getElementById('productsGrid');
+      if (list.length === 0) {
+        grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--slate-medium); background: var(--white); border-radius: var(--radius); border: 1px solid var(--border);">No products found matching your search and filter criteria.</div>';
+        return;
+      }
+      grid.innerHTML = list.map(p => `
+        <div class="product-card" onclick="openProductDetail(${p.id})">
+          <div class="product-img-wrap">
+            <img src="${p.images[0]}" alt="${p.title}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=600&q=80'">
+            <span class="card-badge">${p.category}</span>
+            <span class="card-gender">${p.gender}</span>
+          </div>
+          <div class="product-info">
+            <div class="product-title">${p.title}</div>
+            <div class="product-desc">${p.desc}</div>
+            <div class="price-row">
+              <div>
+                <span class="current-price">Rs. ${p.price}</span>
+                ${p.origPrice ? `<span class="orig-price">Rs. ${p.origPrice}</span>` : ''}
+              </div>
+            </div>
+            <div class="card-buttons" onclick="event.stopPropagation()">
+              <button class="btn-cart" onclick="addToCart(${p.id}, 1, event)">
+                <i class="fa-solid fa-cart-plus"></i> Add to Cart
+              </button>
+              <button class="btn-buy" onclick="buyDirect(${p.id})">Buy Now</button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // Product Detail View
+    function openProductDetail(prodId) {
+      const p = products.find(x => x.id === prodId);
+      if (!p) return;
+      currentDetailProduct = p;
+      detailQty = 1;
+
+      document.getElementById('detailHeroImg').src = p.images[0];
+      document.getElementById('detailCatBadge').innerText = p.category;
+      document.getElementById('detailGenderBadge').innerText = p.gender;
+      document.getElementById('detailTitle').innerText = p.title;
+      document.getElementById('detailPrice').innerText = `Rs. ${p.price}`;
+      document.getElementById('detailOrigPrice').innerText = p.origPrice ? `Rs. ${p.origPrice}` : '';
+      document.getElementById('detailDesc').innerText = p.desc;
+      document.getElementById('detailQtyVal').innerText = '1';
+
+      // Render thumbnail images
+      const thumbsContainer = document.getElementById('detailThumbs');
+      if (p.images.length > 1) {
+        thumbsContainer.style.display = 'flex';
+        thumbsContainer.innerHTML = p.images.map((img, i) => `
+          <img src="${img}" class="detail-thumb ${i === 0 ? 'active' : ''}" onclick="selectDetailHero('${img}', this)">
+        `).join('');
+      } else {
+        thumbsContainer.style.display = 'none';
+      }
+
+      // Hook up modal action buttons
+      document.getElementById('detailAddToCartBtn').onclick = () => {
+        addToCart(p.id, detailQty);
+        closeModal('productDetailModal');
+      };
+      document.getElementById('detailBuyNowBtn').onclick = () => {
+        closeModal('productDetailModal');
+        directCheckoutItem = [{ ...p, qty: detailQty }];
+        openCheckoutModal();
+      };
+
+      document.getElementById('productDetailModal').classList.add('active');
+    }
+
+    function selectDetailHero(src, el) {
+      document.getElementById('detailHeroImg').src = src;
+      document.querySelectorAll('.detail-thumb').forEach(t => t.classList.remove('active'));
+      el.classList.add('active');
+    }
+
+    function changeDetailQty(delta) {
+      detailQty += delta;
+      if (detailQty < 1) detailQty = 1;
+      document.getElementById('detailQtyVal').innerText = detailQty;
+    }
+
+    // Cart Operations
+    function addToCart(prodId, qty = 1, event = null) {
+      if (event) event.stopPropagation();
+      const prod = products.find(p => p.id === prodId);
+      if (!prod) return;
+      const existing = cart.find(item => item.id === prodId);
+      if (existing) {
+        existing.qty += qty;
+      } else {
+        cart.push({ ...prod, qty: qty });
+      }
+      updateCartBadge();
+      showToast(`Added '${prod.title}' to Cart!`);
+    }
+
+    function updateCartBadge() {
+      const count = cart.reduce((acc, item) => acc + item.qty, 0);
+      document.getElementById('cartBadge').innerText = count;
+    }
+
+    function renderCart() {
+      const container = document.getElementById('cartContent');
+      if (cart.length === 0) {
+        container.innerHTML = `
+          <div style="text-align: center; padding: 50px 20px;">
+            <i class="fa-solid fa-cart-shopping" style="font-size: 44px; color: var(--slate-light); margin-bottom: 14px;"></i>
+            <h3>Your Cart is Empty</h3>
+            <p style="color: var(--slate-medium); margin: 6px 0 18px; font-size: 13px;">Explore our Pakistani watches, perfumes, and dresses collection.</p>
+            <button class="btn-buy" style="max-width: 180px; margin: 0 auto;" onclick="showView('home')">Start Shopping</button>
+          </div>
+        `;
+        return;
+      }
+
+      const subtotal = cart.reduce((acc, item) => acc + (item.price * item.qty), 0);
+      container.innerHTML = `
+        <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 20px;">
+          <div>
+            ${cart.map((item, idx) => `
+              <div style="background: var(--white); border: 1px solid var(--border); border-radius: 12px; padding: 12px; margin-bottom: 10px; display: flex; align-items: center; gap: 12px;">
+                <img src="${item.images[0]}" style="width: 65px; height: 65px; object-fit: cover; border-radius: 8px;">
+                <div style="flex: 1;">
+                  <h4 style="font-size: 13px; font-weight: 700;">${item.title}</h4>
+                  <p style="color: var(--primary); font-weight: 800; margin-top: 3px; font-size: 13px;">Rs. ${item.price}</p>
+                </div>
+                <div style="display: flex; align-items: center; gap: 6px;">
+                  <button onclick="changeCartQty(${idx}, -1)" style="padding: 3px 8px; border-radius: 4px; border: 1px solid var(--border); cursor: pointer;">-</button>
+                  <span style="font-weight: 700; font-size: 13px;">${item.qty}</span>
+                  <button onclick="changeCartQty(${idx}, 1)" style="padding: 3px 8px; border-radius: 4px; border: 1px solid var(--border); cursor: pointer;">+</button>
+                  <button onclick="removeFromCart(${idx})" style="color: var(--error); background: none; border: none; cursor: pointer; margin-left: 8px;"><i class="fa-solid fa-trash"></i></button>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+          <div>
+            <div style="background: var(--white); border: 1px solid var(--border); border-radius: 12px; padding: 18px;">
+              <h3 style="font-size: 15px; margin-bottom: 14px;">Order Summary</h3>
+              <div style="display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 13px;">
+                <span>Subtotal</span><span>Rs. ${subtotal}</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 13px;">
+                <span>Delivery</span><span style="color: var(--success); font-weight: 700;">FREE</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; margin-bottom: 14px; color: var(--slate-medium); font-size: 12px;">
+                <span>COD Fee</span><span>+Rs. 100 (if COD selected)</span>
+              </div>
+              <button onclick="startCartCheckout()" class="btn-buy" style="width: 100%; padding: 11px; font-size: 14px;">Proceed to Checkout</button>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function changeCartQty(idx, delta) {
+      cart[idx].qty += delta;
+      if (cart[idx].qty <= 0) cart.splice(idx, 1);
+      updateCartBadge();
+      renderCart();
+    }
+
+    function removeFromCart(idx) {
+      cart.splice(idx, 1);
+      updateCartBadge();
+      renderCart();
+    }
+
+    // Checkout Flow
+    function buyDirect(prodId) {
+      const prod = products.find(p => p.id === prodId);
+      directCheckoutItem = [{ ...prod, qty: 1 }];
+      openCheckoutModal();
+    }
+
+    function startCartCheckout() {
+      if (cart.length === 0) return;
+      directCheckoutItem = null;
+      openCheckoutModal();
+    }
+
+    function openCheckoutModal() {
+      const items = directCheckoutItem || cart;
+      const subtotal = items.reduce((acc, item) => acc + (item.price * item.qty), 0);
+      document.getElementById('checkoutSubtotal').innerText = `Rs. ${subtotal}`;
+      selectPayMethod(selectedPayMethod);
+      document.getElementById('checkoutModal').classList.add('active');
+    }
+
+    function selectPayMethod(method) {
+      selectedPayMethod = method;
+      document.getElementById('optCOD').classList.toggle('selected', method === 'COD');
+      document.getElementById('optEP').classList.toggle('selected', method === 'Easypaisa');
+      document.getElementById('optJC').classList.toggle('selected', method === 'Jazzcash');
+      document.getElementById('optUBL').classList.toggle('selected', method === 'UBL');
+
+      const isCOD = method === 'COD';
+      document.getElementById('onlinePaymentFields').style.display = isCOD ? 'none' : 'block';
+
+      const items = directCheckoutItem || cart;
+      const subtotal = items.reduce((acc, item) => acc + (item.price * item.qty), 0);
+      const extra = isCOD ? 100 : 0;
+      document.getElementById('checkoutExtra').innerText = `Rs. ${extra}`;
+      document.getElementById('checkoutTotal').innerText = `Rs. ${subtotal + extra}`;
+    }
+
+    // ==========================================
+    // PLACE ORDER DIRECTLY TO SUPABASE
+    // ==========================================
+    async function placeOrderFinal() {
+      const name = document.getElementById('custName').value.trim();
+      const phone = document.getElementById('custPhone').value.trim();
+      const address = document.getElementById('custAddress').value.trim();
+      const city = document.getElementById('custCity').value.trim();
+      const tillId = document.getElementById('custTillId').value.trim();
+      const screenshot = document.getElementById('custScreenshotNote').value.trim();
+
+      if (!name || !phone || !address || !city) {
+        showToast("Please fill all required customer info!");
+        return;
+      }
+
+      if (selectedPayMethod !== 'COD' && !tillId) {
+        showToast("Adding the Till ID is COMPULSORY for online payments!");
+        return;
+      }
+
+      const items = directCheckoutItem || cart;
+      if (!items || items.length === 0) {
+        showToast("No items found to place order!");
+        return;
+      }
+
+      const subtotal = items.reduce((acc, item) => acc + (item.price * item.qty), 0);
+      const extra = selectedPayMethod === 'COD' ? 100 : 0;
+      const total = subtotal + extra;
+
+      const orderTimestamp = new Date().toISOString();
+      const newOrder = {
+        id: Date.now(),
+        orderNumber: 'BA-' + Math.floor(1000 + Math.random() * 9000),
+        name, phone, address, city,
+        itemsSummary: items.map(i => `${i.title} (x${i.qty})`).join(', '),
+        paymentMethod: selectedPayMethod === 'COD' ? 'Cash on Delivery (+Rs. 100)' : selectedPayMethod,
+        tillId: tillId || 'N/A',
+        screenshot: screenshot || 'None',
+        total: total,
+        status: 'Pending',
+        createdAtISO: orderTimestamp
+      };
+
+      const confirmBtn = document.getElementById('btnConfirmPlaceOrder');
+      if (confirmBtn) {
+        confirmBtn.disabled = true;
+        confirmBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Saving Order to Supabase...';
+      }
+
+      const payload = mapOrderToSupabase(newOrder);
+
+      try {
+        if (supabaseClient) {
+          const { error } = await supabaseClient.from('orders').insert([payload]);
+          if (error) throw error;
+        } else {
+          await supabaseFetch('orders', 'POST', payload);
+        }
+
+        // Only after Supabase confirms the save:
+        if (!directCheckoutItem) {
+          cart = [];
+          updateCartBadge();
+        }
+        directCheckoutItem = null;
+
+        closeModal('checkoutModal');
+        await loadOrdersFromSupabase();
+        showToast(`Order #${newOrder.orderNumber} placed successfully!`);
+        showView('me');
+      } catch (err) {
+        console.error("Order placement failed in Supabase:", err);
+        showToast("Failed to place order in Supabase: " + (err.message || "Please check connection and try again."));
+      } finally {
+        if (confirmBtn) {
+          confirmBtn.disabled = false;
+          confirmBtn.innerHTML = 'Confirm & Place Order';
+        }
+      }
+    }
+
+    // Orders & Live Timeline View
+    function renderOrders() {
+      const container = document.getElementById('ordersList');
+      if (orders.length === 0) {
+        container.innerHTML = `
+          <div style="background: var(--white); border-radius: 12px; padding: 36px; text-align: center; border: 1px solid var(--border);">
+            <i class="fa-solid fa-box-open" style="font-size: 38px; color: var(--slate-light); margin-bottom: 10px;"></i>
+            <h3>No Orders Placed Yet</h3>
+            <p style="color: var(--slate-medium); margin-top: 4px; font-size: 13px;">Your parcel tracking timeline will appear here when you place an order.</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = orders.map(order => `
+        <div style="background: var(--white); border-radius: 14px; border: 1px solid var(--border); padding: 18px; margin-bottom: 14px; box-shadow: var(--shadow);">
+          <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 10px; margin-bottom: 12px;">
+            <div>
+              <span style="font-size: 15px; font-weight: 800; color: var(--primary);">Order #${order.orderNumber}</span>
+              <span style="font-size: 11px; color: var(--slate-light); margin-left: 6px;">${order.createdAt}</span>
+            </div>
+            <span style="background: var(--soft-azure); color: var(--primary); padding: 3px 8px; border-radius: 20px; font-size: 11px; font-weight: 700;">${order.status}</span>
+          </div>
+
+          <div style="font-size: 12px; margin-bottom: 12px; line-height: 1.5;">
+            <p><strong>Items:</strong> ${order.itemsSummary}</p>
+            <p><strong>Delivery:</strong> ${order.address}, ${order.city} (${order.phone})</p>
+            <p><strong>Payment:</strong> ${order.paymentMethod} ${order.tillId !== 'N/A' ? `• Till ID: ${order.tillId}` : ''}</p>
+            <p style="font-size: 14px; font-weight: 800; color: var(--slate-dark); margin-top: 4px;">Total Amount: Rs. ${order.total}</p>
+          </div>
+
+          <!-- Live 6-Stage Timeline -->
+          <h4 style="font-size: 12px; font-weight: 800; margin-bottom: 6px;">Order Timeline</h4>
+          <div class="timeline">
+            <div class="timeline-item done">
+              <div class="timeline-dot"></div>
+              <div class="timeline-title">Order Placed</div>
+            </div>
+            <div class="timeline-item ${order.status !== 'Pending' ? 'done' : ''}">
+              <div class="timeline-dot"></div>
+              <div class="timeline-title">Payment / Verification Confirmed</div>
+            </div>
+            <div class="timeline-item ${['Processing', 'Dispatched', 'Delivered'].includes(order.status) ? 'done' : ''}">
+              <div class="timeline-dot"></div>
+              <div class="timeline-title">Processing & Packaging</div>
+            </div>
+            <div class="timeline-item ${['Dispatched', 'Delivered'].includes(order.status) ? 'done' : ''}">
+              <div class="timeline-dot"></div>
+              <div class="timeline-title">Dispatched with Courier</div>
+            </div>
+            <div class="timeline-item ${order.status === 'Delivered' ? 'done' : ''}">
+              <div class="timeline-dot"></div>
+              <div class="timeline-title">Delivered</div>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // Admin Operations (Credentials Compulsory Every Time)
+    function openAdminLoginModal() {
+      document.getElementById('adminUserInput').value = '';
+      document.getElementById('adminPassInput').value = '';
+      document.getElementById('adminLoginErr').style.display = 'none';
+      document.getElementById('adminLoginModal').classList.add('active');
+    }
+
+    function submitAdminLogin() {
+      const u = document.getElementById('adminUserInput').value.trim();
+      const p = document.getElementById('adminPassInput').value.trim();
+
+      if (u === adminCreds.user && p === adminCreds.pass) {
+        closeModal('adminLoginModal');
+        showView('admin');
+        renderAdmin();
+        loadOrdersFromSupabase();
+        showToast("Authenticated as Administrator");
+      } else {
+        const err = document.getElementById('adminLoginErr');
+        err.innerText = "Invalid administrator username or password!";
+        err.style.display = 'block';
+      }
+    }
+
+    function adminLogout() {
+      showView('me');
+      showToast("Logged out from admin portal");
+    }
+
+    function renderAdmin() {
+      const sales = orders.filter(o => o.status !== 'Cancelled').reduce((acc, o) => acc + o.total, 0);
+      document.getElementById('adminSalesVal').innerText = `Rs. ${sales}`;
+      document.getElementById('adminOrdersCount').innerText = orders.length;
+      document.getElementById('adminProdCount').innerText = products.length;
+      renderAdminTabContent();
+    }
+
+    function setAdminTab(tab, el) {
+      currentAdminTab = tab;
+      el.parentElement.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+      el.classList.add('active');
+      renderAdminTabContent();
+      if (tab === 'orders') {
+        loadOrdersFromSupabase();
+      }
+    }
+
+    // Photo Gallery Selection: Converts to optimized standard data URLs so images work for EVERY user
+    function triggerGalleryPicker() {
+      document.getElementById('adminGalleryInput').click();
+    }
+
+    function handleGalleryImagesSelected(event) {
+      const files = event.target.files;
+      if (!files || files.length === 0) return;
+
+      Array.from(files).forEach(file => {
+        // Use an HTML5 Canvas to optimize & compress image for universal browser compatibility
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          const img = new Image();
+          img.onload = function() {
+            const maxDimension = 900;
+            let w = img.width;
+            let h = img.height;
+            if (w > maxDimension || h > maxDimension) {
+              if (w > h) {
+                h = Math.round((h * maxDimension) / w);
+                w = maxDimension;
+              } else {
+                w = Math.round((w * maxDimension) / h);
+                h = maxDimension;
+              }
+            }
+            const canvas = document.createElement('canvas');
+            canvas.width = w;
+            canvas.height = h;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, w, h);
+            const optimizedDataUrl = canvas.toDataURL('image/jpeg', 0.82);
+            adminStagedImages.push(optimizedDataUrl);
+            renderStagedThumbnails();
+          };
+          img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      });
+      showToast(`Added ${files.length} photo(s) from Gallery`);
+      event.target.value = '';
+    }
+
+    function removeStagedImage(idx) {
+      adminStagedImages.splice(idx, 1);
+      renderStagedThumbnails();
+    }
+
+    function renderStagedThumbnails() {
+      const container = document.getElementById('stagedImagesGrid');
+      if (!container) return;
+      container.innerHTML = adminStagedImages.map((src, i) => `
+        <div class="preview-thumb-box">
+          <img src="${src}">
+          <button class="preview-del-btn" onclick="removeStagedImage(${i})">&times;</button>
+        </div>
+      `).join('');
+    }
+
+    function renderAdminTabContent() {
+      const container = document.getElementById('adminTabContent');
+      const allAvailableCats = getAllActiveCategories();
+
+      if (currentAdminTab === 'products') {
+        adminStagedImages = [];
+        container.innerHTML = `
+          <div style="background: var(--white); padding: 18px; border-radius: var(--radius); margin-bottom: 18px; border: 1px solid var(--border);">
+            <h3 style="font-size: 15px; margin-bottom: 12px;">Add New Product (Direct to Supabase)</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px;">
+              <input type="text" class="form-control" id="newProdTitle" placeholder="Product Title *">
+              <select class="form-control" id="newProdCat">
+                ${allAvailableCats.map(c => `<option value="${c}">${c}</option>`).join('')}
+              </select>
+              <select class="form-control" id="newProdGen">
+                <option value="Men">Men</option>
+                <option value="Women">Women</option>
+                <option value="Unisex">Unisex</option>
+              </select>
+              <input type="number" class="form-control" id="newProdPrice" placeholder="Price in PKR *">
+            </div>
+            <textarea class="form-control" id="newProdDesc" placeholder="Product Description..." rows="2" style="margin-bottom: 10px;"></textarea>
+            
+            <!-- DIRECT GALLERY PICKER -->
+            <button type="button" class="btn-gallery" onclick="triggerGalleryPicker()">
+              <i class="fa-solid fa-images"></i> Choose Images from Android / Microsoft Gallery
+            </button>
+            <div class="preview-thumbs-grid" id="stagedImagesGrid"></div>
+
+            <div style="margin-top: 10px;">
+              <input type="text" class="form-control" id="newProdManualUrl" placeholder="Or paste external image URL (Optional)">
+            </div>
+
+            <button id="btnSaveProdSupabase" onclick="adminAddProduct()" class="btn-buy" style="margin-top: 14px; width: 100%; padding: 11px;">
+              <i class="fa-solid fa-cloud-arrow-up"></i> Save Product to Supabase
+            </button>
+          </div>
+
+          <h3 style="font-size: 15px; margin-bottom: 10px;">Existing Products (${products.length})</h3>
+          <div>
+            ${products.map(p => `
+              <div style="background: var(--white); border: 1px solid var(--border); border-radius: 10px; padding: 10px 14px; margin-bottom: 8px; display: flex; align-items: center; justify-content: space-between;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                  <img src="${p.images[0]}" style="width: 45px; height: 45px; object-fit: cover; border-radius: 6px;" onerror="this.src='https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=600&q=80'">
+                  <div>
+                    <strong style="font-size: 13px;">${p.title}</strong>
+                    <div style="font-size: 11px; color: var(--slate-medium);">${p.category} • ${p.gender} • Rs. ${p.price}</div>
+                  </div>
+                </div>
+                <div>
+                  <button onclick="adminAdjustPrice(${p.id})" style="background: var(--soft-azure); color: var(--primary); border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer; font-weight: 700; font-size: 11px; margin-right: 4px;">Adjust Price</button>
+                  <button onclick="adminDeleteProduct(${p.id})" style="background: #fee2e2; color: var(--error); border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer; font-weight: 700; font-size: 11px;">Delete</button>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        `;
+      } else if (currentAdminTab === 'categories') {
+        container.innerHTML = `
+          <div style="background: var(--white); padding: 18px; border-radius: var(--radius); margin-bottom: 18px; border: 1px solid var(--border);">
+            <h3 style="font-size: 15px; margin-bottom: 10px;">Add New Category</h3>
+            <p style="font-size: 12px; color: var(--slate-medium); margin-bottom: 10px;">Added categories can be immediately assigned to products so all users see them.</p>
+            <div style="display: flex; gap: 8px;">
+              <input type="text" class="form-control" id="newCatInput" placeholder="Category Name (e.g. Footwear, Shawls)">
+              <button onclick="adminAddCategory()" class="btn-buy" style="max-width: 140px;">Add Category</button>
+            </div>
+          </div>
+
+          <h3 style="font-size: 15px; margin-bottom: 10px;">Active Categories</h3>
+          <div>
+            ${allAvailableCats.map(c => `
+              <div style="background: var(--white); border: 1px solid var(--border); border-radius: 8px; padding: 10px 14px; margin-bottom: 6px; display: flex; justify-content: space-between; align-items: center;">
+                <strong style="font-size: 13px;">${c}</strong>
+                <button onclick="adminDeleteCategory('${c}')" style="background: #fee2e2; color: var(--error); border: none; padding: 4px 10px; border-radius: 4px; cursor: pointer; font-size: 11px; font-weight: 700;">Remove</button>
+              </div>
+            `).join('')}
+          </div>
+        `;
+      } else if (currentAdminTab === 'orders') {
+        container.innerHTML = `
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+            <h3 style="font-size: 15px;">Customer Orders (${orders.length})</h3>
+            <button onclick="loadOrdersFromSupabase()" style="background: var(--soft-azure); color: var(--primary); border: 1px solid var(--primary-light); padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 700; cursor: pointer;">
+              <i class="fa-solid fa-rotate"></i> Refresh Orders
+            </button>
+          </div>
+          ${orders.length === 0 ? `
+            <div style="background: var(--white); border: 1px solid var(--border); border-radius: 12px; padding: 30px; text-align: center; color: var(--slate-medium);">
+              No orders found in Supabase database.
+            </div>
+          ` : orders.map(o => `
+            <div style="background: var(--white); border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 10px;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                <strong style="font-size: 13px;">#${o.orderNumber} - ${o.name} (${o.phone})</strong>
+                <select onchange="adminUpdateOrderStatus(${o.id}, this.value)" class="form-control" style="width: auto; padding: 3px 8px; font-size: 12px;">
+                  <option value="Pending" ${o.status === 'Pending' ? 'selected' : ''}>Pending</option>
+                  <option value="Payment Verified" ${o.status === 'Payment Verified' ? 'selected' : ''}>Payment Verified</option>
+                  <option value="Processing" ${o.status === 'Processing' ? 'selected' : ''}>Processing</option>
+                  <option value="Dispatched" ${o.status === 'Dispatched' ? 'selected' : ''}>Dispatched</option>
+                  <option value="Delivered" ${o.status === 'Delivered' ? 'selected' : ''}>Delivered</option>
+                  <option value="Cancelled" ${o.status === 'Cancelled' ? 'selected' : ''}>Cancelled</option>
+                </select>
+              </div>
+              <p style="font-size: 12px; color: var(--slate-dark);">${o.address}, ${o.city}</p>
+              <p style="font-size: 12px; color: var(--slate-dark);"><strong>Items:</strong> ${o.itemsSummary}</p>
+              <p style="font-size: 12px; color: var(--primary);"><strong>Method:</strong> ${o.paymentMethod} • <strong>Till ID:</strong> ${o.tillId}</p>
+              ${o.screenshot && o.screenshot !== 'None' ? `<p style="font-size: 11px; color: var(--slate-medium);"><strong>Note/Screenshot:</strong> ${o.screenshot}</p>` : ''}
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 6px; border-top: 1px dashed var(--border); padding-top: 6px;">
+                <span style="font-size: 11px; color: var(--slate-light);">${o.createdAt}</span>
+                <span style="font-size: 13px; font-weight: 800; color: var(--slate-dark);">Total: Rs. ${o.total}</span>
+              </div>
+            </div>
+          `).join('')}
+        `;
+      } else if (currentAdminTab === 'settings') {
+        container.innerHTML = `
+          <div style="background: var(--white); padding: 20px; border-radius: var(--radius); border: 1px solid var(--border); max-width: 440px;">
+            <h3 style="font-size: 15px; margin-bottom: 12px;">Change Admin Credentials</h3>
+            <div class="form-group">
+              <label>New Username</label>
+              <input type="text" class="form-control" id="changeUser" value="${adminCreds.user}">
+            </div>
+            <div class="form-group">
+              <label>New Password</label>
+              <input type="password" class="form-control" id="changePass" placeholder="Enter new password">
+            </div>
+            <button onclick="adminSaveCreds()" class="btn-buy" style="width: 100%; padding: 10px;">Save New Login Credentials</button>
+          </div>
+        `;
+      }
+    }
+
+    // ==========================================
+    // ASYNC SUPABASE CRUD OPERATIONS
+    // ==========================================
+    async function adminAddProduct() {
+      const title = document.getElementById('newProdTitle').value.trim();
+      const cat = document.getElementById('newProdCat').value;
+      const gen = document.getElementById('newProdGen').value;
+      const price = parseFloat(document.getElementById('newProdPrice').value);
+      const desc = document.getElementById('newProdDesc').value.trim();
+      const manualUrl = document.getElementById('newProdManualUrl') ? document.getElementById('newProdManualUrl').value.trim() : '';
+
+      if (!title || isNaN(price)) {
+        showToast("Please provide product title and price");
+        return;
+      }
+
+      const imgList = [...adminStagedImages];
+      if (manualUrl) {
+        imgList.push(manualUrl);
+      }
+      if (imgList.length === 0) {
+        imgList.push("https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=600&q=80");
+      }
+
+      const saveBtn = document.getElementById('btnSaveProdSupabase');
+      if (saveBtn) {
+        saveBtn.disabled = true;
+        saveBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Saving to Supabase...';
+      }
+
+      const newRecord = {
+        id: Date.now(),
+        title: title,
+        category: cat,
+        gender: gen,
+        price: price,
+        orig_price: Math.round(price * 1.35),
+        description: desc,
+        images: imgList
+      };
+
+      try {
+        if (supabaseClient) {
+          const { error } = await supabaseClient.from('products').insert([newRecord]);
+          if (error) throw error;
+        } else {
+          await supabaseFetch('products', 'POST', newRecord);
+        }
+
+        adminStagedImages = [];
+        await loadProductsFromSupabase();
+        showToast("Product added to Supabase!");
+      } catch (err) {
+        console.error("Failed to add product to Supabase:", err);
+        showToast("Error saving product: " + err.message);
+        if (saveBtn) {
+          saveBtn.disabled = false;
+          saveBtn.innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> Save Product to Supabase';
+        }
+      }
+    }
+
+    async function adminAdjustPrice(id) {
+      const p = products.find(x => x.id === id);
+      if (!p) return;
+      const newP = prompt(`Enter new price for '${p.title}':`, p.price);
+      if (newP === null) return;
+      const parsedPrice = parseFloat(newP);
+      if (isNaN(parsedPrice) || parsedPrice <= 0) {
+        showToast("Please enter a valid price");
+        return;
+      }
+
+      showToast("Updating price in Supabase...");
+
+      try {
+        if (supabaseClient) {
+          const { error } = await supabaseClient.from('products').update({ price: parsedPrice }).eq('id', id);
+          if (error) throw error;
+        } else {
+          await supabaseFetch(`products?id=eq.${id}`, 'PATCH', { price: parsedPrice });
+        }
+
+        await loadProductsFromSupabase();
+        showToast("Product price updated!");
+      } catch (err) {
+        console.error("Failed to update price in Supabase:", err);
+        showToast("Error updating price: " + err.message);
+      }
+    }
+
+    async function adminDeleteProduct(id) {
+      if (!confirm("Are you sure you want to delete this product from Supabase?")) return;
+
+      showToast("Deleting product from Supabase...");
+
+      try {
+        if (supabaseClient) {
+          const { error } = await supabaseClient.from('products').delete().eq('id', id);
+          if (error) throw error;
+        } else {
+          await supabaseFetch(`products?id=eq.${id}`, 'DELETE');
+        }
+
+        await loadProductsFromSupabase();
+        showToast("Product deleted from Supabase!");
+      } catch (err) {
+        console.error("Failed to delete product from Supabase:", err);
+        showToast("Error deleting product: " + err.message);
+      }
+    }
+
+    function adminAddCategory() {
+      const val = document.getElementById('newCatInput').value.trim();
+      if (!val) return;
+      const current = getAllActiveCategories().map(c => c.toLowerCase());
+      if (!current.includes(val.toLowerCase())) {
+        extraCategories.push(val);
+        saveLocalState();
+        renderAdmin();
+        renderCategoryChips();
+        showToast(`Category '${val}' added! You can now assign it to products.`);
+      } else {
+        showToast(`Category '${val}' already exists.`);
+      }
+    }
+
+    function adminDeleteCategory(cat) {
+      if (confirm(`Remove category '${cat}'?`)) {
+        extraCategories = extraCategories.filter(c => c.toLowerCase() !== cat.toLowerCase());
+        defaultCategories = defaultCategories.filter(c => c.toLowerCase() !== cat.toLowerCase());
+        saveLocalState();
+        renderAdmin();
+        renderCategoryChips();
+        showToast(`Category '${cat}' removed`);
+      }
+    }
+
+    // ==========================================
+    // UPDATE ORDER STATUS IN SUPABASE
+    // ==========================================
+    async function adminUpdateOrderStatus(orderId, newStatus) {
+      showToast(`Updating order status in Supabase...`);
+      try {
+        if (supabaseClient) {
+          const { error } = await supabaseClient.from('orders').update({ status: newStatus }).eq('id', orderId);
+          if (error) throw error;
+        } else {
+          await supabaseFetch(`orders?id=eq.${orderId}`, 'PATCH', { status: newStatus });
+        }
+
+        await loadOrdersFromSupabase();
+        showToast(`Order status updated to ${newStatus}`);
+      } catch (err) {
+        console.error('Failed to update order status in Supabase:', err);
+        showToast('Failed to update status: ' + (err.message || 'Error occurred'));
+      }
+    }
+
+    function adminSaveCreds() {
+      const u = document.getElementById('changeUser').value.trim();
+      const p = document.getElementById('changePass').value.trim();
+      if (!u || !p) {
+        showToast("Username and password cannot be empty");
+        return;
+      }
+      adminCreds = { user: u, pass: p };
+      saveLocalState();
+      showToast("Credentials updated successfully!");
+    }
+
+    // Utilities
+    function copyText(txt) {
+      navigator.clipboard.writeText(txt);
+      showToast(`Copied to clipboard: ${txt}`);
+    }
+
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.innerText = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 2600);
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).classList.remove('active');
+    }
+
+    // ==========================================
+    // INITIALIZATION (Loads live from Supabase)
+    // ==========================================
+    showView('home');
+    updateCartBadge();
+    loadProductsFromSupabase();
+    loadOrdersFromSupabase();
+  </script>
+</body>
+</html>
