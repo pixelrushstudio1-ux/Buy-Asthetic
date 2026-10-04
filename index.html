@@ -35,9 +35,15 @@
     header { background: linear-gradient(135deg, var(--primary-dark), var(--primary)); color: var(--white); padding: 14px 20px; position: sticky; top: 0; z-index: 100; box-shadow: 0 4px 12px rgba(10,37,64,0.14); }
     .header-content { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
     .logo-container { display: flex; align-items: center; gap: 12px; cursor: pointer; }
-    .logo-icon { background: rgba(255,255,255,0.18); width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 19px; }
+    .logo-icon { background: rgba(255,255,255,0.18); width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 19px; flex-shrink: 0; }
     .store-title { font-size: 22px; font-weight: 800; letter-spacing: 0.5px; line-height: 1.1; }
     .store-subtitle { font-size: 12px; font-weight: 400; color: var(--soft-azure); letter-spacing: 0.2px; }
+    
+    /* Contact Section under Site Name */
+    .header-contact { display: flex; align-items: center; gap: 6px; margin-top: 4px; font-size: 11px; color: var(--soft-azure); flex-wrap: wrap; }
+    .whatsapp-btn { display: inline-flex; align-items: center; gap: 4px; background: #25D366; color: #FFFFFF; text-decoration: none; font-weight: 700; font-size: 11px; padding: 2px 9px; border-radius: 12px; transition: transform 0.15s, background 0.15s; box-shadow: 0 2px 6px rgba(0,0,0,0.18); }
+    .whatsapp-btn:hover { background: #1EBE5D; transform: scale(1.05); color: #FFFFFF; }
+
     .nav-actions { display: flex; gap: 14px; align-items: center; }
     .btn-icon { background: rgba(255,255,255,0.18); border: none; color: var(--white); width: 40px; height: 40px; border-radius: 50%; cursor: pointer; position: relative; display: flex; align-items: center; justify-content: center; font-size: 16px; transition: transform 0.15s; }
     .btn-icon:active { transform: scale(0.92); }
@@ -46,7 +52,7 @@
     /* Top Navigation */
     .top-nav { background: var(--white); border-bottom: 1px solid var(--border); }
     .top-nav-container { max-width: 1200px; margin: 0 auto; display: flex; gap: 14px; padding: 8px 20px; }
-    .nav-link { color: var(--slate-medium); text-decoration: none; font-weight: 600; font-size: 13px; padding: 6px 14px; border-radius: 8px; cursor: pointer; transition: 0.15s; display: flex; align-items: gap: 6px; }
+    .nav-link { color: var(--slate-medium); text-decoration: none; font-weight: 600; font-size: 13px; padding: 6px 14px; border-radius: 8px; cursor: pointer; transition: 0.15s; display: flex; align-items: center; gap: 6px; }
     .nav-link.active, .nav-link:hover { color: var(--primary); background: var(--soft-azure); }
 
     /* Main Container */
@@ -150,6 +156,13 @@
         <div>
           <div class="store-title">Buy Asthetic</div>
           <div class="store-subtitle">Pakistani Store</div>
+          <!-- Contact WhatsApp Option below Site Name Section -->
+          <div class="header-contact">
+            <span>For getting any details contact here</span>
+            <a href="https://wa.me/923054272499" target="_blank" rel="noopener noreferrer" class="whatsapp-btn" onclick="event.stopPropagation()">
+              <i class="fa-brands fa-whatsapp"></i> WhatsApp
+            </a>
+          </div>
         </div>
       </div>
       <div class="nav-actions">
@@ -395,7 +408,7 @@
         </div>
       </div>
 
-      <button onclick="placeOrderFinal()" style="width: 100%; background: var(--primary); color: var(--white); padding: 12px; border-radius: 8px; border: none; font-weight: 800; font-size: 14px; cursor: pointer;">
+      <button id="btnConfirmPlaceOrder" onclick="placeOrderFinal()" style="width: 100%; background: var(--primary); color: var(--white); padding: 12px; border-radius: 8px; border: none; font-weight: 800; font-size: 14px; cursor: pointer;">
         Confirm & Place Order
       </button>
     </div>
@@ -414,8 +427,8 @@
       </div>
 
       <div class="form-group">
-        <label>Username</label>
-        <input type="text" class="form-control" id="adminUserInput" placeholder="Enter username">
+        <label>Admin Email</label>
+        <input type="email" class="form-control" id="adminUserInput" placeholder="Enter Supabase admin email">
       </div>
       <div class="form-group">
         <label>Password</label>
@@ -475,7 +488,7 @@
       return await resp.json();
     }
 
-    // Map Supabase table record to UI model
+    // Map Supabase product table record to UI model
     function mapFromSupabase(row) {
       let imgArray = [];
       if (Array.isArray(row.images)) {
@@ -504,7 +517,7 @@
       };
     }
 
-    // Map UI model to Supabase table record
+    // Map UI model to Supabase product table record
     function mapToSupabase(p) {
       return {
         id: Number(p.id),
@@ -518,14 +531,63 @@
       };
     }
 
-    // State Variables (Products are NEVER loaded from localStorage)
-    let products = [];
+    // ==========================================
+    // SUPABASE ORDER MAPPING
+    // ==========================================
+    function mapOrderToSupabase(o) {
+      return {
+        id: Number(o.id),
+        order_number: String(o.orderNumber),
+        name: String(o.name),
+        phone: String(o.phone),
+        address: String(o.address),
+        city: String(o.city),
+        items_summary: String(o.itemsSummary),
+        payment_method: String(o.paymentMethod),
+        till_id: String(o.tillId || 'N/A'),
+        screenshot: String(o.screenshot || 'None'),
+        total: Number(o.total),
+        status: String(o.status || 'Pending'),
+        created_at: o.createdAtISO || new Date().toISOString()
+      };
+    }
+
+    function mapOrderFromSupabase(row) {
+      let dateFormatted = '';
+      try {
+        dateFormatted = new Date(row.created_at).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+      } catch (e) {
+        dateFormatted = new Date().toLocaleDateString();
+      }
+
+      return {
+        id: Number(row.id),
+        orderNumber: row.order_number || ('BA-' + row.id),
+        name: row.name || 'Customer',
+        phone: row.phone || '',
+        address: row.address || '',
+        city: row.city || '',
+        itemsSummary: row.items_summary || '',
+        paymentMethod: row.payment_method || 'Cash on Delivery',
+        tillId: row.till_id || 'N/A',
+        screenshot: row.screenshot || 'None',
+        total: Number(row.total) || 0,
+        status: row.status || 'Pending',
+        createdAt: dateFormatted,
+        createdAtISO: row.created_at
+      };
+    }
+
+    // State Variables (Orders are NEVER loaded from localStorage; Supabase is source of truth for orders)
+    let products = JSON.parse(localStorage.getItem('ba_products')) || [];
     let isProductsLoading = true;
     let productsError = null;
 
+    let orders = [];
+    let isOrdersLoading = false;
+
     let defaultCategories = ["Watches", "Perfumes", "Dresses"];
     let extraCategories = JSON.parse(localStorage.getItem('ba_custom_categories')) || [];
-    let orders = JSON.parse(localStorage.getItem('ba_orders')) || [];
     let cart = [];
     let selectedCat = 'All';
     let selectedGender = 'All';
@@ -538,17 +600,21 @@
     let adminStagedImages = [];
 
     function saveLocalState() {
-      // NOTE: Products are NOT stored in localStorage. Supabase is the sole source of truth.
+      // Retain existing localStorage product system so products are not lost or removed
       localStorage.setItem('ba_custom_categories', JSON.stringify(extraCategories));
-      localStorage.setItem('ba_orders', JSON.stringify(orders));
       localStorage.setItem('ba_creds', JSON.stringify(adminCreds));
+      if (products && products.length > 0) {
+        localStorage.setItem('ba_products', JSON.stringify(products));
+      }
+      // Orders use Supabase online database as the source of truth
+      localStorage.removeItem('ba_orders');
     }
 
     // ==========================================
     // SUPABASE DATA SYNCHRONIZATION
     // ==========================================
     async function loadProductsFromSupabase() {
-      isProductsLoading = true;
+      isProductsLoading = products.length === 0;
       productsError = null;
       renderProducts();
 
@@ -562,20 +628,63 @@
           rows = await supabaseFetch('products?select=*&order=id.desc');
         }
 
-        if (Array.isArray(rows)) {
+        if (Array.isArray(rows) && rows.length > 0) {
           products = rows.map(mapFromSupabase);
-        } else {
-          products = [];
+          localStorage.setItem('ba_products', JSON.stringify(products));
+        } else if (products.length === 0) {
+          const localSaved = JSON.parse(localStorage.getItem('ba_products'));
+          if (Array.isArray(localSaved) && localSaved.length > 0) {
+            products = localSaved;
+          }
         }
         isProductsLoading = false;
         productsError = null;
       } catch (err) {
         console.error('Error fetching products from Supabase:', err);
         isProductsLoading = false;
-        productsError = err.message || 'Failed to connect to Supabase database';
+        // Fallback to local products if Supabase has network error so products are not lost
+        const localSaved = JSON.parse(localStorage.getItem('ba_products'));
+        if (Array.isArray(localSaved) && localSaved.length > 0) {
+          products = localSaved;
+          productsError = null;
+        } else {
+          productsError = err.message || 'Failed to connect to Supabase database';
+        }
       }
 
       renderProducts();
+      if (document.getElementById('viewAdmin').style.display === 'block') {
+        renderAdmin();
+      }
+    }
+
+    async function loadOrdersFromSupabase() {
+      if (!(await isAdminAuthenticated())) { orders = []; isOrdersLoading = false; return; }
+      isOrdersLoading = true;
+      try {
+        let rows = null;
+        if (supabaseClient) {
+          const { data, error } = await supabaseClient.from('orders').select('*').order('created_at', { ascending: false });
+          if (error) throw error;
+          rows = data;
+        } else {
+          rows = await supabaseFetch('orders?select=*&order=created_at.desc');
+        }
+
+        if (Array.isArray(rows)) {
+          orders = rows.map(mapOrderFromSupabase);
+        } else {
+          orders = [];
+        }
+      } catch (err) {
+        console.error('Failed to load orders from Supabase:', err);
+      } finally {
+        isOrdersLoading = false;
+      }
+
+      if (document.getElementById('viewMe').style.display === 'block') {
+        renderOrders();
+      }
       if (document.getElementById('viewAdmin').style.display === 'block') {
         renderAdmin();
       }
@@ -594,8 +703,14 @@
 
       if (viewId === 'home') renderProducts();
       if (viewId === 'cart') renderCart();
-      if (viewId === 'me') renderOrders();
-      if (viewId === 'admin') renderAdmin();
+      if (viewId === 'me') {
+        renderOrders();
+        loadOrdersFromSupabase();
+      }
+      if (viewId === 'admin') {
+        renderAdmin();
+        loadOrdersFromSupabase();
+      }
     }
 
     // Categories (Derived from live Supabase products + custom categories)
@@ -893,7 +1008,10 @@
       document.getElementById('checkoutTotal').innerText = `Rs. ${subtotal + extra}`;
     }
 
-    function placeOrderFinal() {
+    // ==========================================
+    // PLACE ORDER DIRECTLY TO SUPABASE
+    // ==========================================
+    async function placeOrderFinal() {
       const name = document.getElementById('custName').value.trim();
       const phone = document.getElementById('custPhone').value.trim();
       const address = document.getElementById('custAddress').value.trim();
@@ -912,10 +1030,16 @@
       }
 
       const items = directCheckoutItem || cart;
+      if (!items || items.length === 0) {
+        showToast("No items found to place order!");
+        return;
+      }
+
       const subtotal = items.reduce((acc, item) => acc + (item.price * item.qty), 0);
       const extra = selectedPayMethod === 'COD' ? 100 : 0;
       const total = subtotal + extra;
 
+      const orderTimestamp = new Date().toISOString();
       const newOrder = {
         id: Date.now(),
         orderNumber: 'BA-' + Math.floor(1000 + Math.random() * 9000),
@@ -926,17 +1050,45 @@
         screenshot: screenshot || 'None',
         total: total,
         status: 'Pending',
-        createdAt: new Date().toLocaleDateString()
+        createdAtISO: orderTimestamp
       };
 
-      orders.unshift(newOrder);
-      if (!directCheckoutItem) cart = [];
-      updateCartBadge();
-      saveLocalState();
+      const confirmBtn = document.getElementById('btnConfirmPlaceOrder');
+      if (confirmBtn) {
+        confirmBtn.disabled = true;
+        confirmBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Saving Order to Supabase...';
+      }
 
-      closeModal('checkoutModal');
-      showToast(`Order #${newOrder.orderNumber} placed successfully!`);
-      showView('me');
+      const payload = mapOrderToSupabase(newOrder);
+
+      try {
+        if (supabaseClient) {
+          const { error } = await supabaseClient.from('orders').insert([payload]);
+          if (error) throw error;
+        } else {
+          await supabaseFetch('orders', 'POST', payload);
+        }
+
+        // Only after Supabase confirms the save:
+        if (!directCheckoutItem) {
+          cart = [];
+          updateCartBadge();
+        }
+        directCheckoutItem = null;
+
+        closeModal('checkoutModal');
+        await loadOrdersFromSupabase();
+        showToast(`Order #${newOrder.orderNumber} placed successfully!`);
+        showView('me');
+      } catch (err) {
+        console.error("Order placement failed in Supabase:", err);
+        showToast("Failed to place order in Supabase: " + (err.message || "Please check connection and try again."));
+      } finally {
+        if (confirmBtn) {
+          confirmBtn.disabled = false;
+          confirmBtn.innerHTML = 'Confirm & Place Order';
+        }
+      }
     }
 
     // Orders & Live Timeline View
@@ -998,7 +1150,7 @@
       `).join('');
     }
 
-    // Admin Operations (Credentials Compulsory Every Time)
+    // Admin Operations - Supabase Auth
     function openAdminLoginModal() {
       document.getElementById('adminUserInput').value = '';
       document.getElementById('adminPassInput').value = '';
@@ -1006,25 +1158,41 @@
       document.getElementById('adminLoginModal').classList.add('active');
     }
 
-    function submitAdminLogin() {
-      const u = document.getElementById('adminUserInput').value.trim();
-      const p = document.getElementById('adminPassInput').value.trim();
-
-      if (u === adminCreds.user && p === adminCreds.pass) {
+    async function submitAdminLogin() {
+      const email = document.getElementById('adminUserInput').value.trim();
+      const password = document.getElementById('adminPassInput').value;
+      const err = document.getElementById('adminLoginErr');
+      if (!supabaseClient) { err.innerText = 'Supabase is not available.'; err.style.display = 'block'; return; }
+      if (!email || !password) { err.innerText = 'Enter your admin email and password.'; err.style.display = 'block'; return; }
+      const btn = document.querySelector('#adminLoginModal button[onclick="submitAdminLogin()"]');
+      if (btn) { btn.disabled = true; btn.innerText = 'Signing in...'; }
+      try {
+        const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
+        if (error) throw error;
+        if (!data.session) throw new Error('No Supabase session was created.');
         closeModal('adminLoginModal');
         showView('admin');
+        await loadOrdersFromSupabase();
         renderAdmin();
-        showToast("Authenticated as Administrator");
-      } else {
-        const err = document.getElementById('adminLoginErr');
-        err.innerText = "Invalid administrator username or password!";
+        showToast('Authenticated as Administrator');
+      } catch (e) {
+        err.innerText = e.message || 'Invalid admin email or password.';
         err.style.display = 'block';
+      } finally {
+        if (btn) { btn.disabled = false; btn.innerText = 'Access Administrator Portal'; }
       }
     }
 
-    function adminLogout() {
+    async function adminLogout() {
+      if (supabaseClient) await supabaseClient.auth.signOut();
       showView('me');
-      showToast("Logged out from admin portal");
+      showToast('Logged out from admin portal');
+    }
+
+    async function isAdminAuthenticated() {
+      if (!supabaseClient) return false;
+      const { data: { session } } = await supabaseClient.auth.getSession();
+      return !!session;
     }
 
     function renderAdmin() {
@@ -1040,6 +1208,9 @@
       el.parentElement.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
       el.classList.add('active');
       renderAdminTabContent();
+      if (tab === 'orders') {
+        loadOrdersFromSupabase();
+      }
     }
 
     // Photo Gallery Selection: Converts to optimized standard data URLs so images work for EVERY user
@@ -1182,8 +1353,17 @@
         `;
       } else if (currentAdminTab === 'orders') {
         container.innerHTML = `
-          <h3 style="font-size: 15px; margin-bottom: 12px;">Customer Orders</h3>
-          ${orders.map(o => `
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+            <h3 style="font-size: 15px;">Customer Orders (${orders.length})</h3>
+            <button onclick="loadOrdersFromSupabase()" style="background: var(--soft-azure); color: var(--primary); border: 1px solid var(--primary-light); padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 700; cursor: pointer;">
+              <i class="fa-solid fa-rotate"></i> Refresh Orders
+            </button>
+          </div>
+          ${orders.length === 0 ? `
+            <div style="background: var(--white); border: 1px solid var(--border); border-radius: 12px; padding: 30px; text-align: center; color: var(--slate-medium);">
+              No orders found in Supabase database.
+            </div>
+          ` : orders.map(o => `
             <div style="background: var(--white); border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 10px;">
               <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
                 <strong style="font-size: 13px;">#${o.orderNumber} - ${o.name} (${o.phone})</strong>
@@ -1199,7 +1379,11 @@
               <p style="font-size: 12px; color: var(--slate-dark);">${o.address}, ${o.city}</p>
               <p style="font-size: 12px; color: var(--slate-dark);"><strong>Items:</strong> ${o.itemsSummary}</p>
               <p style="font-size: 12px; color: var(--primary);"><strong>Method:</strong> ${o.paymentMethod} • <strong>Till ID:</strong> ${o.tillId}</p>
-              <p style="font-size: 13px; font-weight: 800; color: var(--slate-dark); margin-top: 4px;">Total: Rs. ${o.total}</p>
+              ${o.screenshot && o.screenshot !== 'None' ? `<p style="font-size: 11px; color: var(--slate-medium);"><strong>Note/Screenshot:</strong> ${o.screenshot}</p>` : ''}
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 6px; border-top: 1px dashed var(--border); padding-top: 6px;">
+                <span style="font-size: 11px; color: var(--slate-light);">${o.createdAt}</span>
+                <span style="font-size: 13px; font-weight: 800; color: var(--slate-dark);">Total: Rs. ${o.total}</span>
+              </div>
             </div>
           `).join('')}
         `;
@@ -1359,13 +1543,25 @@
       }
     }
 
-    function adminUpdateOrderStatus(orderId, newStatus) {
-      const o = orders.find(x => x.id === orderId);
-      if (o) {
-        o.status = newStatus;
-        saveLocalState();
-        renderAdmin();
+    // ==========================================
+    // UPDATE ORDER STATUS IN SUPABASE
+    // ==========================================
+    async function adminUpdateOrderStatus(orderId, newStatus) {
+      if (!(await isAdminAuthenticated())) { showToast('Admin sign-in required.'); openAdminLoginModal(); return; }
+      showToast(`Updating order status in Supabase...`);
+      try {
+        if (supabaseClient) {
+          const { error } = await supabaseClient.from('orders').update({ status: newStatus }).eq('id', orderId);
+          if (error) throw error;
+        } else {
+          await supabaseFetch(`orders?id=eq.${orderId}`, 'PATCH', { status: newStatus });
+        }
+
+        await loadOrdersFromSupabase();
         showToast(`Order status updated to ${newStatus}`);
+      } catch (err) {
+        console.error('Failed to update order status in Supabase:', err);
+        showToast('Failed to update status: ' + (err.message || 'Error occurred'));
       }
     }
 
@@ -1404,6 +1600,7 @@
     showView('home');
     updateCartBadge();
     loadProductsFromSupabase();
+    loadOrdersFromSupabase();
   </script>
 </body>
 </html>
