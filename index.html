@@ -29,7 +29,7 @@
       --shadow: 0 4px 16px rgba(13, 71, 161, 0.07);
     }
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; -webkit-tap-highlight-color: transparent; }
-    body { background-color: var(--bg-ice); color: var(--slate-dark); min-height: 100vh; display: flex; flex-direction: column; transform: translateZ(0); }
+    body { background-color: var(--bg-ice); color: var(--slate-dark); min-height: 100vh; display: flex; flex-direction: column; }
     
     /* Header */
     header { background: linear-gradient(135deg, var(--primary-dark), var(--primary)); color: var(--white); padding: 14px 20px; position: sticky; top: 0; z-index: 100; box-shadow: 0 4px 12px rgba(10,37,64,0.14); }
@@ -103,16 +103,46 @@
     .modal-overlay { position: fixed; inset: 0; background: rgba(10,37,64,0.65); display: none; align-items: center; justify-content: center; z-index: 1000; padding: 16px; backdrop-filter: blur(3px); }
     .modal-overlay.active { display: flex; }
     .modal-content { background: var(--white); width: 100%; max-width: 620px; border-radius: 16px; max-height: 90vh; overflow-y: auto; padding: 22px; position: relative; box-shadow: 0 10px 40px rgba(0,0,0,0.25); }
-    .modal-close { position: absolute; top: 16px; right: 16px; background: none; border: none; font-size: 22px; color: var(--slate-light); cursor: pointer; line-height: 1; }
+    .modal-close { position: absolute; top: 16px; right: 16px; background: none; border: none; font-size: 22px; color: var(--slate-light); cursor: pointer; line-height: 1; z-index: 10; }
 
-    /* Product Detail Elements */
-    .detail-gallery { width: 100%; height: 260px; border-radius: 12px; overflow: hidden; background: #eef3f8; margin-bottom: 12px; }
+    /* Product Detail Elements (Details in front without scrolling) */
+    .product-detail-dialog { max-width: 680px; width: 100%; max-height: 92vh; overflow-y: auto; }
+    .detail-grid-layout { display: grid; grid-template-columns: 260px 1fr; gap: 18px; align-items: start; }
+    .detail-gallery-box { display: flex; flex-direction: column; }
+    .detail-gallery { width: 100%; height: 230px; border-radius: 12px; overflow: hidden; background: #eef3f8; margin-bottom: 8px; }
     .detail-gallery img { width: 100%; height: 100%; object-fit: cover; }
-    .detail-thumbs { display: flex; gap: 8px; overflow-x: auto; margin-bottom: 14px; padding-bottom: 4px; }
-    .detail-thumb { width: 55px; height: 55px; border-radius: 8px; object-fit: cover; cursor: pointer; border: 2px solid transparent; }
+    .detail-thumbs { display: flex; gap: 6px; overflow-x: auto; margin-bottom: 4px; padding-bottom: 2px; }
+    .detail-thumb { width: 48px; height: 48px; border-radius: 6px; object-fit: cover; cursor: pointer; border: 2px solid transparent; flex-shrink: 0; }
     .detail-thumb.active { border-color: var(--primary); }
-    .qty-stepper { display: flex; align-items: center; gap: 10px; margin: 14px 0; }
-    .btn-step { width: 32px; height: 32px; border-radius: 6px; border: 1px solid var(--border); background: var(--bg-ice); font-weight: 700; cursor: pointer; }
+    .detail-info-box { display: flex; flex-direction: column; }
+    .qty-stepper { display: flex; align-items: center; gap: 8px; margin: 10px 0; }
+    .btn-step { width: 30px; height: 30px; border-radius: 6px; border: 1px solid var(--border); background: var(--bg-ice); font-weight: 700; cursor: pointer; }
+
+    @media (max-width: 580px) {
+      .product-detail-dialog { padding: 16px; max-height: 94vh; }
+      .detail-grid-layout { grid-template-columns: 130px 1fr; gap: 12px; }
+      .detail-gallery { height: 140px; margin-bottom: 6px; }
+      .detail-thumb { width: 38px; height: 38px; }
+      .detail-info-box h2 { font-size: 15px !important; }
+      .detail-info-box #detailDesc { font-size: 11px !important; max-height: 80px; overflow-y: auto; }
+      .modal-close { top: 10px; right: 12px; }
+    }
+
+    /* Product Detail View (Full View in Front without scrolling) */
+    .view-detail-grid { display: grid; grid-template-columns: 340px 1fr; gap: 24px; align-items: start; }
+    .view-detail-gallery { width: 100%; height: 320px; border-radius: 12px; overflow: hidden; background: #eef3f8; margin-bottom: 10px; }
+    .view-detail-gallery img { width: 100%; height: 100%; object-fit: cover; }
+    .view-detail-desc-box { grid-column: 1 / -1; margin-top: 18px; padding-top: 18px; border-top: 1px solid var(--border); }
+    @media (max-width: 768px) {
+      .view-detail-grid { grid-template-columns: 140px 1fr; gap: 14px; }
+      .view-detail-gallery { height: 155px; margin-bottom: 6px; }
+      .view-detail-desc-box { margin-top: 14px; padding-top: 14px; }
+      .view-detail-card { padding: 14px !important; }
+    }
+    @media (max-width: 480px) {
+      .view-detail-grid { grid-template-columns: 125px 1fr; gap: 10px; }
+      .view-detail-gallery { height: 140px; }
+    }
 
     /* Gallery Upload Elements */
     .btn-gallery { width: 100%; background: var(--primary); color: var(--white); padding: 12px; border-radius: 8px; border: none; font-weight: 700; font-size: 13px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 10px; }
@@ -220,6 +250,76 @@
       </div>
     </div>
 
+    <!-- 1.5 PRODUCT DETAIL VIEW (Opens directly in front in complete form) -->
+    <div id="viewProductDetail" style="display: none;">
+      <div style="margin-bottom: 16px;">
+        <button onclick="showView('home')" style="background: var(--white); border: 1px solid var(--border); color: var(--primary); padding: 8px 16px; border-radius: 8px; font-weight: 700; font-size: 13px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; box-shadow: var(--shadow);">
+          <i class="fa-solid fa-arrow-left"></i> Back to All Products
+        </button>
+      </div>
+
+      <div class="view-detail-card" style="background: var(--white); border-radius: var(--radius); border: 1px solid var(--border); padding: 22px; box-shadow: var(--shadow); margin-bottom: 24px;">
+        <div class="view-detail-grid">
+          <!-- Left Column: Gallery & Thumbnails -->
+          <div>
+            <div class="view-detail-gallery">
+              <img id="viewDetailHeroImg" src="" alt="Product Image">
+            </div>
+            <div class="detail-thumbs" id="viewDetailThumbs"></div>
+          </div>
+
+          <!-- Right Column: Product Details & Buying Options Directly in Front -->
+          <div style="display: flex; flex-direction: column;">
+            <div style="display: flex; gap: 8px; margin-bottom: 8px;">
+              <span class="card-badge" id="viewDetailCatBadge" style="position: static;">Category</span>
+              <span class="card-gender" id="viewDetailGenderBadge" style="position: static; border: 1px solid var(--border);">Gender</span>
+            </div>
+
+            <h1 id="viewDetailTitle" style="font-size: 20px; font-weight: 800; margin-bottom: 6px; color: var(--slate-dark); line-height: 1.25;">Product Title</h1>
+            
+            <div style="display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--warning); margin-bottom: 10px;">
+              <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i>
+              <span style="color: var(--slate-medium); font-weight: 600;">(4.9 • Verified Reviews)</span>
+            </div>
+
+            <div style="display: flex; align-items: baseline; gap: 8px; margin-bottom: 12px; padding: 10px 14px; background: var(--bg-ice); border-radius: 8px; border: 1px solid var(--border); flex-wrap: wrap;">
+              <span id="viewDetailPrice" style="font-size: 22px; font-weight: 800; color: var(--primary);">Rs. 0</span>
+              <span id="viewDetailOrigPrice" style="font-size: 13px; color: var(--slate-light); text-decoration: line-through;"></span>
+              <span style="background: #ecfdf5; color: var(--success); font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 4px; margin-left: auto;">IN STOCK • FREE DELIVERY</span>
+            </div>
+
+            <div class="qty-stepper" style="margin: 0 0 12px 0;">
+              <span style="font-size: 12px; font-weight: 700; margin-right: 6px;">Quantity:</span>
+              <button class="btn-step" onclick="changeDetailQty(-1)">-</button>
+              <span id="viewDetailQtyVal" style="font-weight: 800; min-width: 22px; text-align: center; font-size: 13px;">1</span>
+              <button class="btn-step" onclick="changeDetailQty(1)">+</button>
+            </div>
+
+            <div style="display: flex; gap: 8px; max-width: 440px; margin-bottom: 10px;">
+              <button class="btn-cart" id="viewDetailAddToCartBtn" style="flex: 1; padding: 10px 8px; justify-content: center; font-size: 13px;">
+                <i class="fa-solid fa-cart-plus"></i> Add to Cart
+              </button>
+              <button class="btn-buy" id="viewDetailBuyNowBtn" style="flex: 1; padding: 10px 8px; font-size: 13px;">
+                Buy Now
+              </button>
+            </div>
+
+            <a id="viewDetailWhatsAppBtn" href="https://wa.me/923054272499" target="_blank" style="display: inline-flex; align-items: center; justify-content: center; gap: 8px; background: #25D366; color: white; padding: 10px 14px; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 13px; max-width: 440px;">
+              <i class="fa-brands fa-whatsapp" style="font-size: 16px;"></i> Inquire on WhatsApp
+            </a>
+          </div>
+
+          <!-- Description Section (In Complete Form Directly Below) -->
+          <div class="view-detail-desc-box">
+            <h3 style="font-size: 14px; font-weight: 800; color: var(--slate-dark); margin-bottom: 8px; display: flex; align-items: center; gap: 8px;">
+              <i class="fa-solid fa-circle-info" style="color: var(--primary);"></i> Product Description & Details:
+            </h3>
+            <p id="viewDetailDesc" style="font-size: 13px; color: var(--slate-medium); line-height: 1.6; white-space: pre-line;"></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- 2. CART VIEW -->
     <div id="viewCart" style="display: none;">
       <h2 style="font-size: 20px; font-weight: 800; margin-bottom: 16px;">Your Shopping Cart</h2>
@@ -277,47 +377,55 @@
     </div>
   </main>
 
-  <!-- PRODUCT DETAIL MODAL (Opens with all details & buying options) -->
+  <!-- PRODUCT DETAIL MODAL (Fallback Cross-Compatibility) -->
   <div class="modal-overlay" id="productDetailModal">
-    <div class="modal-content">
+    <div class="modal-content product-detail-dialog">
       <button class="modal-close" onclick="closeModal('productDetailModal')">&times;</button>
-      <div class="detail-gallery">
-        <img id="detailHeroImg" src="" alt="Product Image">
-      </div>
-      <div class="detail-thumbs" id="detailThumbs"></div>
-      
-      <div style="display: flex; gap: 8px; margin-bottom: 8px;">
-        <span class="card-badge" id="detailCatBadge" style="position: static;">Category</span>
-        <span class="card-gender" id="detailGenderBadge" style="position: static; border: 1px solid var(--border);">Gender</span>
-      </div>
+      <div class="detail-grid-layout">
+        <!-- Left Column: Gallery & Thumbnails -->
+        <div class="detail-gallery-box">
+          <div class="detail-gallery">
+            <img id="detailHeroImg" src="" alt="Product Image">
+          </div>
+          <div class="detail-thumbs" id="detailThumbs"></div>
+        </div>
 
-      <h2 id="detailTitle" style="font-size: 18px; font-weight: 800; margin-bottom: 6px;">Product Title</h2>
-      <div style="display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--warning); margin-bottom: 10px;">
-        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i>
-        <span style="color: var(--slate-medium); font-weight: 600;">(4.9 • Verified Reviews)</span>
-      </div>
+        <!-- Right Column: Product Details & Buying Options Directly in Front -->
+        <div class="detail-info-box">
+          <div style="display: flex; gap: 8px; margin-bottom: 6px;">
+            <span class="card-badge" id="detailCatBadge" style="position: static;">Category</span>
+            <span class="card-gender" id="detailGenderBadge" style="position: static; border: 1px solid var(--border);">Gender</span>
+          </div>
 
-      <div style="display: flex; align-items: baseline; gap: 8px; margin-bottom: 12px;">
-        <span id="detailPrice" style="font-size: 22px; font-weight: 800; color: var(--primary);">Rs. 0</span>
-        <span id="detailOrigPrice" style="font-size: 13px; color: var(--slate-light); text-decoration: line-through;"></span>
-      </div>
+          <h2 id="detailTitle" style="font-size: 17px; font-weight: 800; margin-bottom: 4px; line-height: 1.25;">Product Title</h2>
+          <div style="display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--warning); margin-bottom: 8px;">
+            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i>
+            <span style="color: var(--slate-medium); font-weight: 600;">(4.9 • Verified Reviews)</span>
+          </div>
 
-      <p id="detailDesc" style="font-size: 13px; color: var(--slate-medium); line-height: 1.5; margin-bottom: 16px;"></p>
+          <div style="display: flex; align-items: baseline; gap: 8px; margin-bottom: 8px;">
+            <span id="detailPrice" style="font-size: 20px; font-weight: 800; color: var(--primary);">Rs. 0</span>
+            <span id="detailOrigPrice" style="font-size: 12px; color: var(--slate-light); text-decoration: line-through;"></span>
+          </div>
 
-      <div class="qty-stepper">
-        <span style="font-size: 13px; font-weight: 700;">Quantity:</span>
-        <button class="btn-step" onclick="changeDetailQty(-1)">-</button>
-        <span id="detailQtyVal" style="font-weight: 800; min-width: 20px; text-align: center;">1</span>
-        <button class="btn-step" onclick="changeDetailQty(1)">+</button>
-      </div>
+          <p id="detailDesc" style="font-size: 12px; color: var(--slate-medium); line-height: 1.4; margin-bottom: 10px;"></p>
 
-      <div style="display: flex; gap: 10px; margin-top: 18px;">
-        <button class="btn-cart" id="detailAddToCartBtn" style="flex: 1; padding: 12px; justify-content: center; font-size: 13px;">
-          <i class="fa-solid fa-cart-plus"></i> Add to Cart
-        </button>
-        <button class="btn-buy" id="detailBuyNowBtn" style="flex: 1; padding: 12px; font-size: 13px;">
-          Buy Now
-        </button>
+          <div class="qty-stepper" style="margin: 8px 0;">
+            <span style="font-size: 12px; font-weight: 700;">Quantity:</span>
+            <button class="btn-step" onclick="changeDetailQty(-1)">-</button>
+            <span id="detailQtyVal" style="font-weight: 800; min-width: 20px; text-align: center;">1</span>
+            <button class="btn-step" onclick="changeDetailQty(1)">+</button>
+          </div>
+
+          <div style="display: flex; gap: 8px; margin-top: 10px;">
+            <button class="btn-cart" id="detailAddToCartBtn" style="flex: 1; padding: 10px; justify-content: center; font-size: 12px;">
+              <i class="fa-solid fa-cart-plus"></i> Add to Cart
+            </button>
+            <button class="btn-buy" id="detailBuyNowBtn" style="flex: 1; padding: 10px; font-size: 12px;">
+              Buy Now
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -427,8 +535,8 @@
       </div>
 
       <div class="form-group">
-        <label>Admin Email</label>
-        <input type="email" class="form-control" id="adminUserInput" placeholder="Enter Supabase admin email">
+        <label>Username</label>
+        <input type="text" class="form-control" id="adminUserInput" placeholder="Enter username">
       </div>
       <div class="form-group">
         <label>Password</label>
@@ -659,7 +767,6 @@
     }
 
     async function loadOrdersFromSupabase() {
-      if (!(await isAdminAuthenticated())) { orders = []; isOrdersLoading = false; return; }
       isOrdersLoading = true;
       try {
         let rows = null;
@@ -693,13 +800,18 @@
     // Navigation
     function showView(viewId) {
       document.getElementById('viewHome').style.display = viewId === 'home' ? 'block' : 'none';
+      if (document.getElementById('viewProductDetail')) {
+        document.getElementById('viewProductDetail').style.display = viewId === 'productDetail' ? 'block' : 'none';
+      }
       document.getElementById('viewCart').style.display = viewId === 'cart' ? 'block' : 'none';
       document.getElementById('viewMe').style.display = viewId === 'me' ? 'block' : 'none';
       document.getElementById('viewAdmin').style.display = viewId === 'admin' ? 'block' : 'none';
 
-      document.getElementById('tabHome').classList.toggle('active', viewId === 'home');
+      document.getElementById('tabHome').classList.toggle('active', viewId === 'home' || viewId === 'productDetail');
       document.getElementById('tabCart').classList.toggle('active', viewId === 'cart');
       document.getElementById('tabMe').classList.toggle('active', viewId === 'me');
+
+      window.scrollTo(0, 0);
 
       if (viewId === 'home') renderProducts();
       if (viewId === 'cart') renderCart();
@@ -831,13 +943,49 @@
       `).join('');
     }
 
-    // Product Detail View
+    // Product Detail View (Opens directly in front in complete form)
     function openProductDetail(prodId) {
       const p = products.find(x => x.id === prodId);
       if (!p) return;
       currentDetailProduct = p;
       detailQty = 1;
 
+      // 1. Populate Full Product Detail View
+      if (document.getElementById('viewDetailHeroImg')) {
+        document.getElementById('viewDetailHeroImg').src = p.images[0];
+        document.getElementById('viewDetailCatBadge').innerText = p.category;
+        document.getElementById('viewDetailGenderBadge').innerText = p.gender;
+        document.getElementById('viewDetailTitle').innerText = p.title;
+        document.getElementById('viewDetailPrice').innerText = `Rs. ${p.price}`;
+        document.getElementById('viewDetailOrigPrice').innerText = p.origPrice ? `Rs. ${p.origPrice}` : '';
+        document.getElementById('viewDetailDesc').innerText = p.desc;
+        document.getElementById('viewDetailQtyVal').innerText = '1';
+
+        const viewThumbs = document.getElementById('viewDetailThumbs');
+        if (p.images.length > 1) {
+          viewThumbs.style.display = 'flex';
+          viewThumbs.innerHTML = p.images.map((img, i) => `
+            <img src="${img}" class="detail-thumb ${i === 0 ? 'active' : ''}" onclick="selectDetailHero('${img}', this)">
+          `).join('');
+        } else {
+          viewThumbs.style.display = 'none';
+        }
+
+        const waBtn = document.getElementById('viewDetailWhatsAppBtn');
+        if (waBtn) {
+          waBtn.href = `https://wa.me/923054272499?text=Hello%20Buy%20Asthetic,%20I%20want%20details%20about%20${encodeURIComponent(p.title)}%20(Price:%20Rs.%20${p.price})`;
+        }
+
+        document.getElementById('viewDetailAddToCartBtn').onclick = () => {
+          addToCart(p.id, detailQty);
+        };
+        document.getElementById('viewDetailBuyNowBtn').onclick = () => {
+          directCheckoutItem = [{ ...p, qty: detailQty }];
+          openCheckoutModal();
+        };
+      }
+
+      // 2. Also populate Modal for cross-compatibility
       document.getElementById('detailHeroImg').src = p.images[0];
       document.getElementById('detailCatBadge').innerText = p.category;
       document.getElementById('detailGenderBadge').innerText = p.gender;
@@ -847,7 +995,6 @@
       document.getElementById('detailDesc').innerText = p.desc;
       document.getElementById('detailQtyVal').innerText = '1';
 
-      // Render thumbnail images
       const thumbsContainer = document.getElementById('detailThumbs');
       if (p.images.length > 1) {
         thumbsContainer.style.display = 'flex';
@@ -858,7 +1005,6 @@
         thumbsContainer.style.display = 'none';
       }
 
-      // Hook up modal action buttons
       document.getElementById('detailAddToCartBtn').onclick = () => {
         addToCart(p.id, detailQty);
         closeModal('productDetailModal');
@@ -869,11 +1015,13 @@
         openCheckoutModal();
       };
 
-      document.getElementById('productDetailModal').classList.add('active');
+      // Display directly in front without scrolling down!
+      showView('productDetail');
     }
 
     function selectDetailHero(src, el) {
-      document.getElementById('detailHeroImg').src = src;
+      if (document.getElementById('detailHeroImg')) document.getElementById('detailHeroImg').src = src;
+      if (document.getElementById('viewDetailHeroImg')) document.getElementById('viewDetailHeroImg').src = src;
       document.querySelectorAll('.detail-thumb').forEach(t => t.classList.remove('active'));
       el.classList.add('active');
     }
@@ -881,7 +1029,8 @@
     function changeDetailQty(delta) {
       detailQty += delta;
       if (detailQty < 1) detailQty = 1;
-      document.getElementById('detailQtyVal').innerText = detailQty;
+      if (document.getElementById('detailQtyVal')) document.getElementById('detailQtyVal').innerText = detailQty;
+      if (document.getElementById('viewDetailQtyVal')) document.getElementById('viewDetailQtyVal').innerText = detailQty;
     }
 
     // Cart Operations
@@ -1150,7 +1299,7 @@
       `).join('');
     }
 
-    // Admin Operations - Supabase Auth
+    // Admin Operations (Credentials Compulsory Every Time)
     function openAdminLoginModal() {
       document.getElementById('adminUserInput').value = '';
       document.getElementById('adminPassInput').value = '';
@@ -1158,41 +1307,26 @@
       document.getElementById('adminLoginModal').classList.add('active');
     }
 
-    async function submitAdminLogin() {
-      const email = document.getElementById('adminUserInput').value.trim();
-      const password = document.getElementById('adminPassInput').value;
-      const err = document.getElementById('adminLoginErr');
-      if (!supabaseClient) { err.innerText = 'Supabase is not available.'; err.style.display = 'block'; return; }
-      if (!email || !password) { err.innerText = 'Enter your admin email and password.'; err.style.display = 'block'; return; }
-      const btn = document.querySelector('#adminLoginModal button[onclick="submitAdminLogin()"]');
-      if (btn) { btn.disabled = true; btn.innerText = 'Signing in...'; }
-      try {
-        const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
-        if (error) throw error;
-        if (!data.session) throw new Error('No Supabase session was created.');
+    function submitAdminLogin() {
+      const u = document.getElementById('adminUserInput').value.trim();
+      const p = document.getElementById('adminPassInput').value.trim();
+
+      if (u === adminCreds.user && p === adminCreds.pass) {
         closeModal('adminLoginModal');
         showView('admin');
-        await loadOrdersFromSupabase();
         renderAdmin();
-        showToast('Authenticated as Administrator');
-      } catch (e) {
-        err.innerText = e.message || 'Invalid admin email or password.';
+        loadOrdersFromSupabase();
+        showToast("Authenticated as Administrator");
+      } else {
+        const err = document.getElementById('adminLoginErr');
+        err.innerText = "Invalid administrator username or password!";
         err.style.display = 'block';
-      } finally {
-        if (btn) { btn.disabled = false; btn.innerText = 'Access Administrator Portal'; }
       }
     }
 
-    async function adminLogout() {
-      if (supabaseClient) await supabaseClient.auth.signOut();
+    function adminLogout() {
       showView('me');
-      showToast('Logged out from admin portal');
-    }
-
-    async function isAdminAuthenticated() {
-      if (!supabaseClient) return false;
-      const { data: { session } } = await supabaseClient.auth.getSession();
-      return !!session;
+      showToast("Logged out from admin portal");
     }
 
     function renderAdmin() {
@@ -1344,7 +1478,7 @@
           <h3 style="font-size: 15px; margin-bottom: 10px;">Active Categories</h3>
           <div>
             ${allAvailableCats.map(c => `
-              <div style="background: var(--white); border: 1px solid var(--border); border-radius: 8px; padding: 10px 14px; margin-bottom: 6px; display: flex; justify-content: space-between; align-items: center;">
+              <div style="background: var(--white); border: 1px solid var(--border); border-radius: 8px; padding: 10px 14px; margin-bottom: 6px; display: justify-content: space-between; align-items: center;">
                 <strong style="font-size: 13px;">${c}</strong>
                 <button onclick="adminDeleteCategory('${c}')" style="background: #fee2e2; color: var(--error); border: none; padding: 4px 10px; border-radius: 4px; cursor: pointer; font-size: 11px; font-weight: 700;">Remove</button>
               </div>
@@ -1547,7 +1681,6 @@
     // UPDATE ORDER STATUS IN SUPABASE
     // ==========================================
     async function adminUpdateOrderStatus(orderId, newStatus) {
-      if (!(await isAdminAuthenticated())) { showToast('Admin sign-in required.'); openAdminLoginModal(); return; }
       showToast(`Updating order status in Supabase...`);
       try {
         if (supabaseClient) {
