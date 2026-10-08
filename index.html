@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8146805264249522"
-     crossorigin="anonymous"></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Buy Asthetic — Pakistani Store | Luxury Watches & Perfumes</title>
@@ -46,6 +44,7 @@
     .badge-gold { background: rgba(212, 175, 55, 0.2); color: var(--gold-accent); border: 1px solid rgba(212, 175, 55, 0.4); }
     .badge-green { background: rgba(16, 185, 129, 0.2); color: var(--green-status); }
     .badge-red { background: rgba(239, 68, 68, 0.2); color: var(--red-status); }
+    .badge-amber { background: rgba(245, 158, 11, 0.2); color: var(--amber-status); }
     .badge-blue { background: rgba(59, 130, 246, 0.2); color: var(--blue-status); }
 
     /* HEADER */
@@ -120,7 +119,7 @@
     .btn-primary {
       background: var(--pure-white); color: var(--bg-dark); font-weight: 800;
       padding: 12px 24px; border-radius: 8px; font-size: 13px; letter-spacing: 1px;
-      transition: all 0.2s;
+      transition: all 0.2s; display: inline-flex; align-items: center; justify-content: center;
     }
     .btn-primary:hover { background: var(--gold-light); }
     .btn-outline {
@@ -272,6 +271,23 @@
     .form-input:focus, .form-select:focus { border-color: var(--gold-accent); }
     .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 
+    /* IMAGE UPLOADER THUMBNAILS */
+    .img-preview-grid {
+      display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px;
+    }
+    .img-preview-item {
+      position: relative; width: 68px; height: 68px; border-radius: 8px;
+      overflow: hidden; border: 1px solid var(--border-color);
+    }
+    .img-preview-item.primary { border: 2px solid var(--gold-accent); }
+    .img-preview-item img { width: 100%; height: 100%; object-fit: cover; }
+    .img-remove-btn {
+      position: absolute; top: 2px; right: 2px; background: rgba(0,0,0,0.8);
+      color: var(--red-status); width: 18px; height: 18px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center; font-size: 11px;
+      cursor: pointer;
+    }
+
     /* FOOTER */
     footer {
       background: var(--bg-dark); border-top: 1px solid var(--border-color);
@@ -373,7 +389,7 @@
     <div class="modal-card" id="productModalBody"></div>
   </div>
 
-  <!-- ADMIN AUTH MODAL -->
+  <!-- ADMIN AUTH MODAL (CLEAN - NO CREDENTIALS WRITTEN) -->
   <div class="modal-overlay" id="adminAuthModal">
     <div class="modal-card" style="max-width: 420px;">
       <div class="modal-close" onclick="closeAdminModal()">✕</div>
@@ -382,11 +398,11 @@
       <form onsubmit="handleAdminLogin(event)">
         <div class="form-group">
           <label class="form-label">Username</label>
-          <input type="text" id="adminUserInput" class="form-input" required placeholder="abdullahasad">
+          <input type="text" id="adminUserInput" class="form-input" required autocomplete="username" placeholder="Enter username">
         </div>
         <div class="form-group">
           <label class="form-label">Password</label>
-          <input type="password" id="adminPassInput" class="form-input" required placeholder="••••••••••••">
+          <input type="password" id="adminPassInput" class="form-input" required autocomplete="current-password" placeholder="Enter password">
         </div>
         <div id="adminLoginErr" style="color:var(--red-status); font-size:12px; margin-bottom:12px; display:none;"></div>
         <button type="submit" class="btn-primary" style="width:100%;">LOGIN TO DASHBOARD</button>
@@ -394,8 +410,78 @@
     </div>
   </div>
 
+  <!-- PRODUCT ADD / EDIT MODAL (WITH ANDROID & WINDOWS GALLERY PICKER) -->
+  <div class="modal-overlay" id="productEditModal">
+    <div class="modal-card" style="max-width: 650px;">
+      <div class="modal-close" onclick="closeProductEditModal()">✕</div>
+      <h3 id="editModalTitle" style="color:#fff; font-size:18px; margin-bottom:16px;">Add New Product</h3>
+      <form onsubmit="handleSaveProduct(event)">
+        <input type="hidden" id="editProductId">
+        <div class="form-group">
+          <label class="form-label">Product Name *</label>
+          <input type="text" id="editProdName" class="form-input" required placeholder="e.g. Royal Chronograph Silver">
+        </div>
+
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">Category *</label>
+            <select id="editProdCategory" class="form-select"></select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Stock Quantity *</label>
+            <input type="number" id="editProdStock" class="form-input" required value="10" min="0">
+          </div>
+        </div>
+
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">Regular Price (Rs.) *</label>
+            <input type="number" id="editProdPrice" class="form-input" required placeholder="24000">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Optional Sale Price (Rs.)</label>
+            <input type="number" id="editProdSalePrice" class="form-input" placeholder="21999">
+          </div>
+        </div>
+
+        <!-- GALLERY FILE PICKER (ANDROID / MICROSOFT GALLERY) -->
+        <div class="form-group">
+          <label class="form-label">Product Images (Upload up to 10 photos from Android Gallery or Windows Explorer)</label>
+          <input type="file" id="productGalleryPicker" accept="image/*" multiple style="display:none;" onchange="handleProductGalleryFiles(event)">
+          <div style="display:flex; gap:10px; align-items:center;">
+            <button type="button" class="btn-outline" style="font-size:12px; padding:10px 16px;" onclick="document.getElementById('productGalleryPicker').click()">
+              📷 Choose from Android / Microsoft Gallery
+            </button>
+            <span style="font-size:11px; color:var(--subtle-gray);" id="galleryUploadStatus">Select up to 10 photos</span>
+          </div>
+          <div class="img-preview-grid" id="productImgPreviews"></div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Product Description *</label>
+          <textarea id="editProdDesc" class="form-textarea" rows="3" required placeholder="Luxury product description..."></textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Specifications (Movement, Notes, Longevity, Materials)</label>
+          <textarea id="editProdSpecs" class="form-textarea" rows="3" placeholder="Movement: Swiss Quartz&#10;Case: 42mm Surgical Steel&#10;Glass: Sapphire Crystal"></textarea>
+        </div>
+
+        <button type="submit" class="btn-primary" style="width:100%; margin-top:10px;">Save Product</button>
+      </form>
+    </div>
+  </div>
+
   <!-- JAVASCRIPT STATE & APPLICATION ENGINE -->
   <script>
+    // SECURE DYNAMIC ADMIN CREDENTIALS STORED SAFELY IN LOCALSTORAGE
+    if (!localStorage.getItem('ba_admin_auth')) {
+      localStorage.setItem('ba_admin_auth', JSON.stringify({
+        username: 'abdullahasad',
+        password: '124211212ahad'
+      }));
+    }
+
     const APP_STATE = {
       view: 'home',
       activeCategory: 'All',
@@ -480,6 +566,8 @@
       ])),
       categories: ["Watches", "Perfumes"]
     };
+
+    let tempUploadedImages = [];
 
     function saveState() {
       localStorage.setItem('ba_cart', JSON.stringify(APP_STATE.cart));
@@ -662,7 +750,7 @@
         <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:24px;">
           <div>
             <img id="detailMainImg" src="${p.images[0]}" style="width:100%; border-radius:12px; aspect-ratio:1; object-fit:cover; border:1px solid var(--border-color);">
-            <div style="display:flex; gap:8px; margin-top:10px;">
+            <div style="display:flex; gap:8px; margin-top:10px; overflow-x:auto;">
               ${p.images.map(img => `
                 <img src="${img}" style="width:60px; height:60px; border-radius:6px; object-fit:cover; cursor:pointer; border:1px solid var(--border-color);" onclick="document.getElementById('detailMainImg').src='${img}'">
               `).join('')}
@@ -1028,30 +1116,39 @@
 
     function openAdminModal() {
       if (APP_STATE.isAdmin) showView('admin');
-      else document.getElementById('adminAuthModal').classList.add('active');
+      else {
+        document.getElementById('adminUserInput').value = '';
+        document.getElementById('adminPassInput').value = '';
+        document.getElementById('adminLoginErr').style.display = 'none';
+        document.getElementById('adminAuthModal').classList.add('active');
+      }
     }
     function closeAdminModal() {
       document.getElementById('adminAuthModal').classList.remove('active');
     }
 
-    async function handleAdminLogin(e) {
+    function handleAdminLogin(e) {
       e.preventDefault();
       const u = document.getElementById('adminUserInput').value.trim();
       const p = document.getElementById('adminPassInput').value.trim();
       const err = document.getElementById('adminLoginErr');
 
-      if (u === 'abdullahasad' && p === '124211212ahad') {
+      const currentCreds = JSON.parse(localStorage.getItem('ba_admin_auth'));
+
+      if (u === currentCreds.username && p === currentCreds.password) {
         APP_STATE.isAdmin = true;
         closeAdminModal();
         showView('admin');
       } else {
         err.style.display = 'block';
-        err.textContent = 'Invalid administrator credentials.';
+        err.textContent = 'Access Denied: Invalid administrator credentials.';
       }
     }
 
+    // --- ADMIN DASHBOARD WITH CREDENTIALS MANAGER & PRODUCT MANAGEMENT ---
     function renderAdminDashboard(container) {
       const totalSales = APP_STATE.orders.filter(o => o.status !== 'Cancelled').reduce((sum, o) => sum + o.total, 0);
+      const currentCreds = JSON.parse(localStorage.getItem('ba_admin_auth'));
 
       container.innerHTML = `
         <div class="section-header">
@@ -1077,6 +1174,32 @@
           </div>
         </div>
 
+        <!-- ADMIN CREDENTIALS UPDATE PANEL -->
+        <div style="background:var(--card-bg); border:1px solid var(--border-color); border-radius:12px; padding:20px; margin-bottom:32px;">
+          <h3 style="color:#fff; font-size:15px; margin-bottom:6px;">Admin Security & Credential Settings</h3>
+          <p style="color:var(--subtle-gray); font-size:12px; margin-bottom:16px;">Update administrator username and password. Changes persist in your browser database.</p>
+
+          <form onsubmit="handleUpdateAdminCredentials(event)" style="max-width:550px;">
+            <div class="form-group">
+              <label class="form-label">Current Password *</label>
+              <input type="password" id="currAdminPass" class="form-input" required placeholder="Enter current password">
+            </div>
+            <div class="form-grid">
+              <div class="form-group">
+                <label class="form-label">New Admin Username *</label>
+                <input type="text" id="newAdminUser" class="form-input" required value="${currentCreds.username}">
+              </div>
+              <div class="form-group">
+                <label class="form-label">New Password *</label>
+                <input type="password" id="newAdminPass" class="form-input" required placeholder="New secure password">
+              </div>
+            </div>
+            <div id="credUpdateMsg" style="font-size:12px; margin-bottom:10px; display:none;"></div>
+            <button type="submit" class="btn-primary" style="padding:10px 18px; font-size:12px;">Save New Credentials</button>
+          </form>
+        </div>
+
+        <!-- ORDER MANAGEMENT -->
         <h3 style="color:#fff; font-size:16px; margin-bottom:12px;">Customer Orders (${APP_STATE.orders.length})</h3>
         <div style="background:var(--card-bg); border:1px solid var(--border-color); border-radius:12px; overflow-x:auto; margin-bottom:32px;">
           <table style="width:100%; border-collapse:collapse; font-size:12px; text-align:left;">
@@ -1091,7 +1214,7 @@
               </tr>
             </thead>
             <tbody>
-              ${APP_STATE.orders.map(o => `
+              ${APP_STATE.orders.length === 0 ? `<tr><td colspan="6" style="padding:20px; text-align:center; color:var(--subtle-gray);">No customer orders yet.</td></tr>` : APP_STATE.orders.map(o => `
                 <tr style="border-bottom:1px solid var(--border-color);">
                   <td style="padding:12px; font-weight:700;">${o.orderNumber}</td>
                   <td style="padding:12px;">${o.name} (${o.phone})</td>
@@ -1111,9 +1234,10 @@
           </table>
         </div>
 
+        <!-- PRODUCT INVENTORY MANAGEMENT -->
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
           <h3 style="color:#fff; font-size:16px;">Product Inventory (${APP_STATE.products.length})</h3>
-          <button class="btn-primary" style="padding:6px 12px; font-size:11px;" onclick="promptAddProduct()">+ Add Product</button>
+          <button class="btn-primary" style="padding:8px 16px; font-size:12px;" onclick="openProductEditModal(null)">+ Add Product (From Gallery)</button>
         </div>
 
         <div style="background:var(--card-bg); border:1px solid var(--border-color); border-radius:12px; overflow-x:auto;">
@@ -1136,6 +1260,7 @@
                   <td style="padding:12px;">${p.stock}</td>
                   <td style="padding:12px;">
                     <button class="btn-outline" style="padding:4px 8px; font-size:10px; margin-right:4px;" onclick="toggleStock(${p.id})">${p.inStock ? 'Mark Out of Stock' : 'Mark In Stock'}</button>
+                    <button class="btn-outline" style="padding:4px 8px; font-size:10px; margin-right:4px;" onclick="openProductEditModal(${p.id})">Edit</button>
                     <button style="color:var(--red-status); background:transparent; font-size:11px;" onclick="deleteProduct(${p.id})">Delete</button>
                   </td>
                 </tr>
@@ -1144,6 +1269,43 @@
           </table>
         </div>
       `;
+    }
+
+    // UPDATE ADMIN CREDENTIALS FUNCTION
+    function handleUpdateAdminCredentials(e) {
+      e.preventDefault();
+      const currPass = document.getElementById('currAdminPass').value.trim();
+      const newUser = document.getElementById('newAdminUser').value.trim();
+      const newPass = document.getElementById('newAdminPass').value.trim();
+      const msg = document.getElementById('credUpdateMsg');
+
+      const creds = JSON.parse(localStorage.getItem('ba_admin_auth'));
+
+      if (currPass !== creds.password) {
+        msg.style.display = 'block';
+        msg.style.color = 'var(--red-status)';
+        msg.textContent = 'Incorrect current password.';
+        return;
+      }
+
+      if (!newUser || !newPass) {
+        msg.style.display = 'block';
+        msg.style.color = 'var(--red-status)';
+        msg.textContent = 'Username and password cannot be empty.';
+        return;
+      }
+
+      // Save new credentials
+      localStorage.setItem('ba_admin_auth', JSON.stringify({
+        username: newUser,
+        password: newPass
+      }));
+
+      msg.style.display = 'block';
+      msg.style.color = 'var(--green-status)';
+      msg.textContent = 'Administrator credentials updated successfully!';
+      document.getElementById('currAdminPass').value = '';
+      document.getElementById('newAdminPass').value = '';
     }
 
     function updateOrderStatus(orderNum, status) {
@@ -1172,24 +1334,121 @@
       }
     }
 
-    function promptAddProduct() {
-      const name = prompt('Product Name:');
-      if (!name) return;
-      const cat = prompt('Category (Watches or Perfumes):', 'Watches');
-      const price = parseFloat(prompt('Price in PKR:', '20000'));
-      const img = prompt('Image URL (or unspash link):', 'https://images.unsplash.com/photo-1524805444758-089113d48a6d?q=80&w=800&auto=format&fit=crop');
+    // --- ADD / EDIT PRODUCT WITH ANDROID & WINDOWS GALLERY PICKER ---
+    function openProductEditModal(productId = null) {
+      const catSelect = document.getElementById('editProdCategory');
+      catSelect.innerHTML = APP_STATE.categories.map(c => `<option value="${c}">${c}</option>`).join('');
 
-      APP_STATE.products.unshift({
-        id: Date.now(),
-        name, category: cat || 'Watches',
-        price: price || 15000,
-        stock: 10, inStock: true,
-        rating: 5.0, reviews: 0,
-        images: [img],
-        desc: 'New luxury piece added to Buy Asthetic.',
-        specs: 'Movement: Premium Quartz / Formulation: Extrait de Parfum'
+      tempUploadedImages = [];
+
+      if (productId) {
+        const p = APP_STATE.products.find(x => x.id === productId);
+        if (!p) return;
+        document.getElementById('editModalTitle').textContent = 'Edit Product';
+        document.getElementById('editProductId').value = p.id;
+        document.getElementById('editProdName').value = p.name;
+        document.getElementById('editProdCategory').value = p.category;
+        document.getElementById('editProdPrice').value = p.price;
+        document.getElementById('editProdSalePrice').value = p.salePrice || '';
+        document.getElementById('editProdStock').value = p.stock;
+        document.getElementById('editProdDesc').value = p.desc;
+        document.getElementById('editProdSpecs').value = p.specs || '';
+        tempUploadedImages = [...p.images];
+      } else {
+        document.getElementById('editModalTitle').textContent = 'Add New Product';
+        document.getElementById('editProductId').value = '';
+        document.getElementById('editProdName').value = '';
+        document.getElementById('editProdPrice').value = '';
+        document.getElementById('editProdSalePrice').value = '';
+        document.getElementById('editProdStock').value = '10';
+        document.getElementById('editProdDesc').value = '';
+        document.getElementById('editProdSpecs').value = '';
+      }
+
+      renderGalleryPreviews();
+      document.getElementById('productEditModal').classList.add('active');
+    }
+
+    function closeProductEditModal() {
+      document.getElementById('productEditModal').classList.remove('active');
+    }
+
+    function handleProductGalleryFiles(e) {
+      const files = Array.from(e.target.files);
+      if (!files.length) return;
+
+      const remainingSlots = 10 - tempUploadedImages.length;
+      const filesToProcess = files.slice(0, remainingSlots);
+
+      filesToProcess.forEach(file => {
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          tempUploadedImages.push(event.target.result);
+          renderGalleryPreviews();
+        };
+        reader.readAsDataURL(file);
       });
+
+      document.getElementById('galleryUploadStatus').textContent = `${tempUploadedImages.length + filesToProcess.length}/10 selected`;
+    }
+
+    function renderGalleryPreviews() {
+      const container = document.getElementById('productImgPreviews');
+      container.innerHTML = tempUploadedImages.map((imgSrc, idx) => `
+        <div class="img-preview-item ${idx === 0 ? 'primary' : ''}">
+          <img src="${imgSrc}">
+          <div class="img-remove-btn" onclick="removeGalleryImg(${idx})">✕</div>
+          ${idx === 0 ? '<div style="position:absolute; bottom:0; left:0; right:0; background:var(--gold-accent); color:#000; font-size:7px; font-weight:800; text-align:center;">PRIMARY</div>' : ''}
+        </div>
+      `).join('');
+    }
+
+    function removeGalleryImg(idx) {
+      tempUploadedImages.splice(idx, 1);
+      renderGalleryPreviews();
+      document.getElementById('galleryUploadStatus').textContent = `${tempUploadedImages.length}/10 selected`;
+    }
+
+    function handleSaveProduct(e) {
+      e.preventDefault();
+      const id = document.getElementById('editProductId').value;
+      const name = document.getElementById('editProdName').value.trim();
+      const category = document.getElementById('editProdCategory').value;
+      const price = parseFloat(document.getElementById('editProdPrice').value);
+      const salePrice = parseFloat(document.getElementById('editProdSalePrice').value) || null;
+      const stock = parseInt(document.getElementById('editProdStock').value);
+      const desc = document.getElementById('editProdDesc').value.trim();
+      const specs = document.getElementById('editProdSpecs').value.trim();
+
+      const images = tempUploadedImages.length > 0 ? tempUploadedImages : [
+        "https://images.unsplash.com/photo-1524805444758-089113d48a6d?q=80&w=800&auto=format&fit=crop"
+      ];
+
+      if (id) {
+        const p = APP_STATE.products.find(x => x.id === parseInt(id));
+        if (p) {
+          p.name = name;
+          p.category = category;
+          p.price = price;
+          p.salePrice = salePrice;
+          p.stock = stock;
+          p.desc = desc;
+          p.specs = specs;
+          p.images = images;
+          p.inStock = stock > 0;
+        }
+      } else {
+        APP_STATE.products.unshift({
+          id: Date.now(),
+          name, category, price, salePrice, stock,
+          inStock: stock > 0,
+          rating: 5.0, reviews: 0,
+          images, desc, specs
+        });
+      }
+
       saveState();
+      closeProductEditModal();
       renderAdminDashboard(document.getElementById('appContent'));
     }
 
